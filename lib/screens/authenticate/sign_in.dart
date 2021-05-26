@@ -19,7 +19,7 @@ class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
-  bool isNUS = true;
+  bool isNUS = false;
 
   // text field state
   String email = '';
@@ -30,46 +30,49 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
 
     var defaultLogin = <Widget>[
-      SizedBox(height: 15.0),
       SvgPicture.asset('assets/logo.svg'),
-      SizedBox(height: 20.0),
-      TextFormField(
-        decoration: textInputDecoration.copyWith(hintText: 'Email'),
-        validator: (val) => val!.isEmpty ? 'Enter an email' : null,
-        onChanged: (val) => setState(() { email = val; }),
-      ),
-      SizedBox(height: 20.0),
-      TextFormField(
-        decoration: textInputDecoration.copyWith(hintText: 'Password'),
-        validator: (val) { return val!.length < 6
-            ? 'Enter a password 6+ chars long' : null; },
-        obscureText: true,
-        onChanged: (val) => setState(() { password = val; }),
-      ),
-      SizedBox(height: 20.0),
-      ElevatedButton(
-          child: Text('Sign in', style: TextStyle(color: Colors.white)),
-          onPressed: () async {
-            if (_formKey.currentState!.validate()) {
-              setState(() { loading = true; });
-              dynamic result =
-              await _auth.signInWithEmailAndPassword(email, password);
-              if (result == null) {
-                setState(() {
-                  loading = false;
-                  error = 'could not sign in with those credentials';
-                });
-              }
-            }
-          }),
-      Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0),
+      Container(
+        height: 205,
+        child: Column(
+          children: [
+            TextFormField(
+              decoration: textInputDecoration.copyWith(hintText: 'Email'),
+              validator: (val) => val!.isEmpty ? 'Enter an email' : null,
+              onChanged: (val) => setState(() { email = val; }),
+            ),
+            TextFormField(
+              decoration: textInputDecoration.copyWith(hintText: 'Password'),
+              validator: (val) { return val!.length < 6
+                  ? 'Enter a password 6+ chars long' : null; },
+              obscureText: true,
+              onChanged: (val) => setState(() { password = val; }),
+            ),
+            ElevatedButton(
+                child: Text('Sign in', style: TextStyle(color: Colors.white)),
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    setState(() { loading = true; });
+                    dynamic result =
+                    await _auth.signInWithEmailAndPassword(email, password);
+                    if (result == null) {
+                      setState(() {
+                        loading = false;
+                        error = 'could not sign in with those credentials';
+                      });
+                    }
+                  }
+                }),
+            Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0),
+            ),
+          ],
+        ),
       ),
       SvgPicture.asset('assets/tree.svg'),
     ];
 
     // ignore: non_constant_identifier_names
     var NUSLogin = <Widget>[
-      SizedBox(height: 100.0),
+      SizedBox(height: 80.0),
       SvgPicture.asset('assets/logo.svg'),
       SizedBox(height: 20.0),
       Stack(
@@ -86,6 +89,8 @@ class _SignInState extends State<SignIn> {
                 child: Text('NUSNET ID', style: TextStyle(color: Colors.white)),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
+                    email = "admin@google.com"; // default email for dev
+                    password = "adminadmin"; // default password for dev
                     setState(() { loading = true; });
                     dynamic result =
                     await _auth.signInWithEmailAndPassword(email, password);

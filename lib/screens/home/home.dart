@@ -1,10 +1,12 @@
-import 'package:myapp/screens/home/brew_list.dart';
+import 'package:myapp/models/event.dart';
+import 'package:myapp/screens/home/event_list.dart';
 import 'package:myapp/screens/home/settings_form.dart';
 import 'package:myapp/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/services/auth.dart';
+import 'package:myapp/shared/constants.dart';
+import 'package:myapp/shared/navigation.dart';
 import 'package:provider/provider.dart';
-import 'package:myapp/models/brew.dart';
 
 class Home extends StatelessWidget {
 
@@ -22,11 +24,11 @@ class Home extends StatelessWidget {
       });
     }
 
-    return StreamProvider<List<Brew>?>.value(
+    return StreamProvider<List<Event>?>.value(
       initialData: null,
-      value: DatabaseService(uid: '').brews,
+      value: DatabaseService(uid: '').events,
       child: Scaffold(
-        backgroundColor: Colors.brown[50],
+        backgroundColor: BACKGROUND_COLOR,
         appBar: AppBar(
           title: Text('Brew Crew'),
           backgroundColor: Colors.brown[400],
@@ -53,8 +55,9 @@ class Home extends StatelessWidget {
           //     fit: BoxFit.cover,
           //   ),
           // ),
-          child: BrewList(),
+          child: EventList(),
         ),
+        bottomNavigationBar: NavigationBar(),
       )
     );
   }

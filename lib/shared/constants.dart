@@ -37,3 +37,5 @@ Color BACKGROUND_COLOR = HexColor.fromHex('FDFDFD');
 Color GREEN_1 = HexColor.fromHex('BFE1D7');
 // ignore: non_constant_identifier_names
 Color ORANGE_1 = HexColor.fromHex('E1B58F');
+// ignore: non_constant_identifier_names
+Color CARD_BACKGROUND = HexColor.fromHex('F8F8F8');
