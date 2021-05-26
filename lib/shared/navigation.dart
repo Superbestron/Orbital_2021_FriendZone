@@ -14,28 +14,28 @@ class NavigationBar extends StatelessWidget {
           Padding(
             child: IconButton(
               onPressed: (){},
-              icon: Icon(Icons.home, size: 30,),
+              icon: Icon(Icons.home, size: 30),
             ),
             padding: const EdgeInsets.only(top: 4.0, bottom: 4.0, left: 10.0, right: 10.0),
           ),
           Padding(
             child: IconButton(
               onPressed: (){},
-              icon: Icon(Icons.calendar_today, size: 25,),
+              icon: Icon(Icons.calendar_today, size: 25),
             ),
             padding: const EdgeInsets.only(top: 4.0, bottom: 4.0, left: 10.0, right: 10.0),
           ),
           Padding(
             child: IconButton(
               onPressed: (){},
-              icon: Icon(Icons.add, size: 30,),
+              icon: Icon(Icons.add, size: 30),
             ),
             padding: const EdgeInsets.only(top: 4.0, bottom: 4.0, left: 10.0, right: 10.0),
           ),
           Padding(
             child: IconButton(
               onPressed: (){},
-              icon: Icon(Icons.notifications, size: 30,),
+              icon: Icon(Icons.notifications, size: 30),
             ),
             padding: const EdgeInsets.only(top: 4.0, bottom: 4.0, left: 10.0, right: 10.0),
           ),

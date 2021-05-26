@@ -19,7 +19,7 @@ class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
-  bool isNUS = false;
+  bool isNUS = true;
 
   // text field state
   String email = '';
@@ -119,20 +119,30 @@ class _SignInState extends State<SignIn> {
       SvgPicture.asset('assets/tree.svg'),
     ];
 
-    return loading ? Loading() : Scaffold(
-      backgroundColor: BACKGROUND_COLOR,
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: isNUS
-                ? NUSLogin
-                : defaultLogin,
-          ),
-        ),
-      ),
-    );
+    return loading
+        ? Loading()
+        : Stack(
+          children: [
+            SvgPicture.asset(
+              'assets/background.svg',
+              fit: BoxFit.cover,
+            ),
+            Scaffold(
+              backgroundColor: Colors.transparent,
+              body: Container(
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: isNUS
+                      ? NUSLogin
+                      : defaultLogin
+                  ),
+                ),
+              ),
+            )
+          ],
+        );
   }
 }
 
