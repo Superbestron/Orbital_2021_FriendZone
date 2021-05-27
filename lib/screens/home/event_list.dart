@@ -4,6 +4,9 @@ import 'package:myapp/screens/home/event_tile.dart';
 import 'package:provider/provider.dart';
 
 class EventList extends StatefulWidget {
+  final String query;
+  EventList({required this.query});
+
   @override
   _EventListState createState() => _EventListState();
 }
@@ -11,17 +14,23 @@ class EventList extends StatefulWidget {
 class _EventListState extends State<EventList> {
   @override
   Widget build(BuildContext context) {
+    final query = widget.query;
+    final events = (Provider.of<List<Event>?>(context) ?? []).where(
+            (event) => event.name.toLowerCase().contains(query.toLowerCase())
+                || event.date.toLowerCase().contains(query.toLowerCase())
+                || event.time.toLowerCase().contains(query.toLowerCase())
+                || event.description.toLowerCase().contains(query.toLowerCase())
+    ).toList();
 
-    final events = Provider.of<List<Event>?>(context) ?? [];
-
-    events.forEach((event) {
-      print(event.name);
-      print(event.date);
-      print(event.time);
-      print(event.pax);
-      print(event.description);
-      print(event.icon);
-    });
+    // print(query);
+    // events.forEach((event) {
+    //   print(event.name);
+    //   print(event.date);
+    //   print(event.time);
+    //   print(event.pax);
+    //   print(event.description);
+    //   print(event.icon);
+    // });
 
     return ListView.builder(
       itemCount: events.length,

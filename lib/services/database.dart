@@ -75,4 +75,6 @@ class DatabaseService {
     return brewCollection.doc(uid).snapshots()
       .map(_userDataFromSnapshot);
   }
+
+
 }

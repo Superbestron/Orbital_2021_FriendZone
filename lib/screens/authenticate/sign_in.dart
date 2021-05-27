@@ -19,7 +19,7 @@ class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
-  bool isNUS = true;
+  bool isNUS = false;
 
   // text field state
   String email = '';
