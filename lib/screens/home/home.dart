@@ -29,10 +29,12 @@ class Home extends StatelessWidget {
       initialData: null,
       value: DatabaseService(uid: '').events,
       child: Stack(
+        fit: StackFit.expand,
         children: [
           SvgPicture.asset(
             'assets/background.svg',
-            fit: BoxFit.cover,
+            fit: BoxFit.fill,
+              clipBehavior: Clip.hardEdge,
           ),
           Scaffold(
             backgroundColor: Colors.transparent,
@@ -83,7 +85,6 @@ class Home extends StatelessWidget {
           )
         ],
       ),
-
     );
   }
 }

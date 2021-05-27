@@ -122,10 +122,12 @@ class _SignInState extends State<SignIn> {
     return loading
         ? Loading()
         : Stack(
+          fit: StackFit.expand,
           children: [
             SvgPicture.asset(
               'assets/background.svg',
-              fit: BoxFit.cover,
+                fit: BoxFit.cover,
+                clipBehavior: Clip.hardEdge
             ),
             Scaffold(
               backgroundColor: Colors.transparent,
