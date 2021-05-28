@@ -40,16 +40,8 @@ class DatabaseService {
     });
   }
 
-  // Future updateUserData(String sugars, String name, int strength) async {
-  //   return await eventCollection.doc(uid).set({
-  //     'sugars': sugars,
-  //     'name': name,
-  //     'strength': strength,
-  //   });
-  // }
-
   // brew list from snapshot
-  List<Event> _activityListFromSnapshot(QuerySnapshot snapshot) {
+  List<Event> _eventListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return Event(
         name: doc.get('name') ?? '',
@@ -63,7 +55,7 @@ class DatabaseService {
   }
 
   // userData from snapshot
-  EventData _activityDataFromSnapshot(DocumentSnapshot snapshot) {
+  EventData _eventDataFromSnapshot(DocumentSnapshot snapshot) {
     return EventData(
       uid: uid,
       name: snapshot.get('name'),
@@ -76,9 +68,9 @@ class DatabaseService {
   }
 
   // get events stream
-  Stream<List<Event>> get activities {
+  Stream<List<Event>> get events {
     return eventCollection.snapshots()
-      .map(_activityListFromSnapshot);
+      .map(_eventListFromSnapshot);
   }
 
   // // get brews stream
@@ -96,6 +88,6 @@ class DatabaseService {
   // get activity doc stream
   Stream<EventData> get activityData {
       return eventCollection.doc(uid).snapshots()
-        .map(_activityDataFromSnapshot);
+        .map(_eventDataFromSnapshot);
   }
 }

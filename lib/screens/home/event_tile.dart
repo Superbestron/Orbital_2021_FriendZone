@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myapp/models/event.dart';
 import 'package:myapp/screens/home/event_page.dart';
+import 'package:myapp/shared/constants.dart';
 
 class EventTile extends StatelessWidget {
 
@@ -14,17 +15,15 @@ class EventTile extends StatelessWidget {
       padding: EdgeInsets.only(top: 8.0),
       child: Card(
         margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
-
+        color: CARD_BACKGROUND,
         child: ListTile(
           visualDensity: VisualDensity(horizontal: 0, vertical: -4),
           minLeadingWidth: 10,
           dense: true,
           // Event Icon
-          trailing: Icon(
-            // TODO: Replace with activity icon
-              Icons.calendar_today,
-              size: 40.0,
-            ),
+          trailing: Image(
+            image: AssetImage('assets/event_icons/food.png'),
+          ),
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 10.0),
 
           // TODO: Formatting of event

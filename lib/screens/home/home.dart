@@ -1,6 +1,5 @@
 import 'package:myapp/models/event.dart';
 import 'package:myapp/screens/home/event_list.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myapp/screens/home/create_event.dart';
 import 'package:myapp/screens/home/profile.dart';
@@ -22,7 +21,7 @@ class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   PageController _pageController = PageController();
   final List<Widget> _children = [
-    EventList(),
+    EventList(query: ''),
     Screen1(),
     CreateEvent(),
     Screen2(),
@@ -43,6 +42,8 @@ class _HomeState extends State<Home> {
     _pageController.jumpToPage(index);
   }
 
+  String query = "";
+
   @override
   Widget build(BuildContext context) {
 
@@ -57,12 +58,14 @@ class _HomeState extends State<Home> {
 
     return StreamProvider<List<Event>?>.value(
       initialData: null,
-      value: DatabaseService(uid: '').activities,
+      value: DatabaseService(uid: '').events,
       child: Stack(
+        fit: StackFit.expand,
         children: <Widget> [
           SvgPicture.asset(
             'assets/background.svg',
-            fit: BoxFit.cover,
+            fit: BoxFit.fill,
+              clipBehavior: Clip.hardEdge,
           ),
           Scaffold(
             backgroundColor: Colors.transparent,
@@ -91,6 +94,7 @@ class _HomeState extends State<Home> {
                 // SizedBox(width: 20.0),
               ],
             ),
+
             body: Container(
               // decoration: BoxDecoration(
               //   image: DecorationImage(
