@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:myapp/models/brew.dart';
+import 'package:myapp/models/event.dart';
 import 'package:myapp/models/user.dart';
 
 class DatabaseService {
@@ -7,48 +7,95 @@ class DatabaseService {
   final String uid;
   DatabaseService({ required this.uid });
 
-  // collection reference
-  final CollectionReference brewCollection =
-    FirebaseFirestore.instance.collection('brews');
+  // collection reference to all events
+  final CollectionReference eventCollection =
+    FirebaseFirestore.instance.collection('events');
 
-  Future updateUserData(String sugars, String name, int strength) async {
-    return await brewCollection.doc(uid).set({
-      'sugars': sugars,
+  // collection reference to user profiles
+  final CollectionReference profileCollection =
+  FirebaseFirestore.instance.collection('profiles');
+
+  // TODO: Decide on what info to store about an event
+  Future updateEventData(String name, String date, String time
+      , int pax, String description, int icon) async {
+    return await eventCollection.doc(uid).set({
       'name': name,
-      'strength': strength,
+      'date': date,
+      'time' : time,
+      'pax': pax,
+      'description': description,
+      'icon': icon,
     });
   }
 
+  // TODO: Decide on what info to store about user
+  Future updateUserData(String name, int level, String faculty,
+      int points, String bio) async {
+    return await profileCollection.doc(uid).set({
+      'name': name,
+      'level': level,
+      'faculty': faculty,
+      'points': points,
+      'bio': bio,
+    });
+  }
+
+  // Future updateUserData(String sugars, String name, int strength) async {
+  //   return await eventCollection.doc(uid).set({
+  //     'sugars': sugars,
+  //     'name': name,
+  //     'strength': strength,
+  //   });
+  // }
+
   // brew list from snapshot
-  List<Brew> _brewListFromSnapshot(QuerySnapshot snapshot) {
+  List<Event> _activityListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return Brew(
+      return Event(
         name: doc.get('name') ?? '',
-        sugars: doc.get('sugars') ?? '0',
-        strength: doc.get('strength') ?? 0
+        date: doc.get('date') ?? '',
+        time: doc.get('time') ?? '',
+        pax: doc.get('pax') ?? 1,
+        description: doc.get('description') ?? '',
+        icon: doc.get('icon') ?? 0,
       );
     }).toList();
   }
 
   // userData from snapshot
-  UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
-    return UserData(
+  EventData _activityDataFromSnapshot(DocumentSnapshot snapshot) {
+    return EventData(
       uid: uid,
       name: snapshot.get('name'),
-      sugars: snapshot.get('sugars'),
-      strength: snapshot.get('strength'),
+      date: snapshot.get('date'),
+      time: snapshot.get('time'),
+      pax: snapshot.get('pax'),
+      description: snapshot.get('description'),
+      icon: snapshot.get('icon'),
     );
   }
 
-  // get brews stream
-  Stream<List<Brew>> get brews {
-    return brewCollection.snapshots()
-      .map(_brewListFromSnapshot);
+  // get events stream
+  Stream<List<Event>> get activities {
+    return eventCollection.snapshots()
+      .map(_activityListFromSnapshot);
   }
 
-  // get user doc stream
-  Stream<UserData> get userData {
-    return brewCollection.doc(uid).snapshots()
-      .map(_userDataFromSnapshot);
+  // // get brews stream
+  // Stream<List<Brew>> get brews {
+  //   return eventCollection.snapshots()
+  //     .map(_brewListFromSnapshot);
+  // }
+
+  // // get user doc stream
+  // Stream<UserData> get userData {
+  //   return eventCollection.doc(uid).snapshots()
+  //     .map(_userDataFromSnapshot);
+  // }
+
+  // get activity doc stream
+  Stream<EventData> get activityData {
+      return eventCollection.doc(uid).snapshots()
+        .map(_activityDataFromSnapshot);
   }
 }
