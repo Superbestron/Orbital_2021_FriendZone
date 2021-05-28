@@ -86,7 +86,7 @@ class DatabaseService {
   // }
 
   // get activity doc stream
-  Stream<EventData> get activityData {
+  Stream<EventData> get eventData {
       return eventCollection.doc(uid).snapshots()
         .map(_eventDataFromSnapshot);
   }

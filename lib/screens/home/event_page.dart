@@ -4,7 +4,6 @@ import 'package:myapp/services/database.dart';
 import 'package:myapp/shared/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:myapp/models/user.dart';
-import 'package:myapp/shared/constants.dart';
 
 class EventPage extends StatefulWidget {
   @override
@@ -17,9 +16,6 @@ class _EventPageState extends State<EventPage> {
   // final _formKey = GlobalKey<FormState>();
 
   // form values
-  String? _currentName;
-  String? _currentDate;
-  String? _currentTime;
   int? _pax;
   String? _currentDescription;
   int? _icon;
@@ -31,10 +27,10 @@ class _EventPageState extends State<EventPage> {
     final user = Provider.of<UserObj?>(context);
 
     return StreamBuilder<EventData>(
-        stream: DatabaseService(uid: user!.uid).activityData,
+        stream: DatabaseService(uid: user!.uid).eventData,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            EventData activityData = snapshot.data!;
+            EventData eventData = snapshot.data!;
             return Scaffold(
               backgroundColor: Colors.transparent,
               body: Column(
@@ -42,19 +38,19 @@ class _EventPageState extends State<EventPage> {
                   ListTile(
                     visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                     leading: Icon(Icons.calendar_today, size: 15),
-                    title: Text('${activityData.date}', style: TextStyle(fontSize: 15)),
+                    title: Text('${eventData.date}', style: TextStyle(fontSize: 15)),
                     minLeadingWidth: 10.0,
                   ),
                   ListTile(
                     visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                     leading: Icon(Icons.access_time, size: 15),
-                    title: Text('${activityData.time}', style: TextStyle(fontSize: 15)),
+                    title: Text('${eventData.time}', style: TextStyle(fontSize: 15)),
                     minLeadingWidth: 10.0,
                   ),
                   ListTile(
                     visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                     leading: Icon(Icons.group_rounded, size: 15),
-                    title: Text('${activityData.pax}', style: TextStyle(fontSize: 15)),
+                    title: Text('${eventData.pax}', style: TextStyle(fontSize: 15)),
                     minLeadingWidth: 10.0,
                   ),
                   ListTile(
@@ -102,7 +98,7 @@ class _EventPageState extends State<EventPage> {
                     ],
                   ),
                   SizedBox(
-                    child: Text(activityData.description),
+                    child: Text(eventData.description),
                   )
                 ],
               )
