@@ -9,9 +9,17 @@ import 'package:myapp/shared/navigation.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
 
   final AuthService _auth = AuthService();
+
+  String query = "";
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +37,12 @@ class Home extends StatelessWidget {
       initialData: null,
       value: DatabaseService(uid: '').events,
       child: Stack(
+        fit: StackFit.expand,
         children: [
           SvgPicture.asset(
             'assets/background.svg',
-            fit: BoxFit.cover,
+            fit: BoxFit.fill,
+              clipBehavior: Clip.hardEdge,
           ),
           Scaffold(
             backgroundColor: Colors.transparent,
@@ -69,13 +79,14 @@ class Home extends StatelessWidget {
                     decoration: textInputDecoration.copyWith(
                         hintText: 'Search Event by Name',
                         fillColor: CARD_BACKGROUND,
-                        filled: true
+                        filled: true,
+                        prefixIcon: Icon(Icons.search),
                     ),
-                    validator: (val) => val!.isEmpty ? 'Enter an email' : null,
+                    onChanged: (val) => setState(() { query = val; }),
                   ),
                 ),
                 Expanded(
-                  child: EventList(),
+                  child: EventList(query: query),
                 )
               ],
             ),
@@ -83,7 +94,6 @@ class Home extends StatelessWidget {
           )
         ],
       ),
-
     );
   }
 }

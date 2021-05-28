@@ -19,7 +19,7 @@ class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
-  bool isNUS = true;
+  bool isNUS = false;
 
   // text field state
   String email = '';
@@ -122,10 +122,12 @@ class _SignInState extends State<SignIn> {
     return loading
         ? Loading()
         : Stack(
+          fit: StackFit.expand,
           children: [
             SvgPicture.asset(
               'assets/background.svg',
-              fit: BoxFit.cover,
+                fit: BoxFit.cover,
+                clipBehavior: Clip.hardEdge
             ),
             Scaffold(
               backgroundColor: Colors.transparent,
