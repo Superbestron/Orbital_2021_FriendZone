@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/models/event.dart';
 import 'package:myapp/services/database.dart';
-import 'package:myapp/shared/loading.dart';
+import 'package:myapp/shared/loading_transparent.dart';
 import 'package:provider/provider.dart';
 import 'package:myapp/models/user.dart';
 
@@ -103,7 +103,7 @@ class _EventPageState extends State<EventPage> {
             )
           );
         } else {
-          return Loading();
+          return TransparentLoading();
         }
       }
     );
