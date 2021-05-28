@@ -1,5 +1,6 @@
 class Event {
 
+  final String eventID;
   final String name;
   final String date;
   final String time;
@@ -8,6 +9,7 @@ class Event {
   final int icon; // probably should change this to enum in the future
 
   Event({
+    required this.eventID,
     required this.name,
     required this.date,
     required this.time,
@@ -19,22 +21,21 @@ class Event {
 }
 
 
-// Separate class from Activity to uniquely identify an event
+// Separate class from Event to uniquely identify an event
 // TODO: Decide on a unique identifier for an event, right now its by uid
 
 class EventData {
 
-  final String uid;
+  //final String uid;
   final String name;
   final String date;
   final String time;
   final int pax;
   final String description;
   final int icon; // probably should change this to enum in the future
-  // final String uid --> initiator of the event
 
   EventData({
-    required this.uid,
+    // required this.uid,
     required this.name,
     required this.date,
     required this.time,

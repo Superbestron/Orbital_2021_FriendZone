@@ -55,41 +55,41 @@ class EventTile extends StatelessWidget {
             ],
           ),
           onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Stack(
-                  children: <Widget> [
-                    SvgPicture.asset(
-                    'assets/background.svg',
-                      fit: BoxFit.cover,
-                    ),
-                    Scaffold(
-                      backgroundColor: Colors.transparent,
-                      appBar: AppBar(
-                        leading: BackButton(color: Colors.black),
-                        title: Text(event.name, style: TextStyle(color: Colors.black)),
-                        actions: <Widget> [
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Icon(
-                              Icons.calendar_today,
-                              color: Colors.black,
-                              size: 35.0,
-                            ),
+            context,
+            MaterialPageRoute(
+              builder: (context) => Stack(
+                children: <Widget> [
+                  SvgPicture.asset(
+                  'assets/background.svg',
+                    fit: BoxFit.cover,
+                  ),
+                  Scaffold(
+                    backgroundColor: Colors.transparent,
+                    appBar: AppBar(
+                      leading: BackButton(color: Colors.black),
+                      title: Text(event.name, style: TextStyle(color: Colors.black)),
+                      actions: <Widget> [
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Icon(
+                            Icons.calendar_today,
+                            color: Colors.black,
+                            size: 35.0,
                           ),
-                        ],
-                        toolbarHeight: 100.0,
-                        elevation: 0.0,
-                        backgroundColor: Colors.transparent,
-                      ),
-                      body: Container(
-                        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-                        child: EventPage(),
-                      ),
+                        ),
+                      ],
+                      toolbarHeight: 100.0,
+                      elevation: 0.0,
+                      backgroundColor: Colors.transparent,
                     ),
-                  ],
-                ),
-              )
+                    body: Container(
+                      padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+                      child: EventPage(eventID: event.eventID),
+                    ),
+                  ),
+                ],
+              ),
+            )
           ),
         ),
       ),

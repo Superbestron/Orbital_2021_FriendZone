@@ -38,27 +38,25 @@ class _EventListState extends State<EventList> {
     // });
 
     return ListView.builder(
-          itemCount: events.length + 1,
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return Padding(
-                    padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-                    child: TextFormField(
-                      decoration: textInputDecoration.copyWith(
-                        hintText: 'Search Event by Name',
-                        fillColor: CARD_BACKGROUND,
-                        filled: true,
-                        prefixIcon: Icon(Icons.search),
-                      ),
-                      onChanged: (val) => setState(() { query = val; }),
-                    ),
-                  );
-            } else {
-              return EventTile(event: events[index - 1]);
-            }
-          },
-
-
+      itemCount: events.length + 1,
+      itemBuilder: (context, index) {
+        if (index == 0) {
+          return Padding(
+            padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+            child: TextFormField(
+              decoration: textInputDecoration.copyWith(
+                hintText: 'Search Event by Name',
+                fillColor: CARD_BACKGROUND,
+                filled: true,
+                prefixIcon: Icon(Icons.search),
+              ),
+              onChanged: (val) => setState(() { query = val; }),
+            ),
+          );
+        } else {
+          return EventTile(event: events[index - 1]);
+        }
+      },
     );
   }
 }

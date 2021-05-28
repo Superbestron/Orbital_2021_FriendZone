@@ -5,7 +5,12 @@ import 'package:myapp/models/user.dart';
 class DatabaseService {
 
   final String uid;
-  DatabaseService({ required this.uid });
+  //final String eventID;
+
+  DatabaseService({
+    required this.uid,
+    // required this.eventID
+  });
 
   // collection reference to all events
   final CollectionReference eventCollection =
@@ -40,10 +45,11 @@ class DatabaseService {
     });
   }
 
-  // brew list from snapshot
+  // Event list from snapshot
   List<Event> _eventListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return Event(
+        eventID: doc.get('eventID'),
         name: doc.get('name') ?? '',
         date: doc.get('date') ?? '',
         time: doc.get('time') ?? '',
@@ -54,10 +60,11 @@ class DatabaseService {
     }).toList();
   }
 
-  // userData from snapshot
+  // EventData from snapshot
   EventData _eventDataFromSnapshot(DocumentSnapshot snapshot) {
     return EventData(
-      uid: uid,
+      // uid: uid,
+      // eventID: eventID,
       name: snapshot.get('name'),
       date: snapshot.get('date'),
       time: snapshot.get('time'),
@@ -85,9 +92,9 @@ class DatabaseService {
   //     .map(_userDataFromSnapshot);
   // }
 
-  // get activity doc stream
-  Stream<EventData> get eventData {
-      return eventCollection.doc(uid).snapshots()
+  // get event doc stream
+  Stream<EventData> eventData(String eventID){
+      return eventCollection.doc(eventID).snapshots()
         .map(_eventDataFromSnapshot);
   }
 }

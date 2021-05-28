@@ -35,33 +35,45 @@ class _SignInState extends State<SignIn> {
         height: 205,
         child: Column(
           children: [
-            TextFormField(
-              decoration: textInputDecoration.copyWith(hintText: 'Email'),
-              validator: (val) => val!.isEmpty ? 'Enter an email' : null,
-              onChanged: (val) => setState(() { email = val; }),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: textInputDecoration.copyWith(hintText: 'Email'),
+                validator: (val) => val!.isEmpty ? 'Enter an email' : null,
+                onChanged: (val) => setState(() { email = val; }),
+              ),
             ),
-            TextFormField(
-              decoration: textInputDecoration.copyWith(hintText: 'Password'),
-              validator: (val) { return val!.length < 6
-                  ? 'Enter a password 6+ chars long' : null; },
-              obscureText: true,
-              onChanged: (val) => setState(() { password = val; }),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: textInputDecoration.copyWith(hintText: 'Password'),
+                validator: (val) { return val!.length < 6
+                    ? 'Enter a password 6+ chars long' : null; },
+                obscureText: true,
+                onChanged: (val) => setState(() { password = val; }),
+              ),
             ),
-            ElevatedButton(
-                child: Text('Sign in', style: TextStyle(color: Colors.white)),
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    setState(() { loading = true; });
-                    dynamic result =
-                    await _auth.signInWithEmailAndPassword(email, password);
-                    if (result == null) {
-                      setState(() {
-                        loading = false;
-                        error = 'could not sign in with those credentials';
-                      });
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                  child: Text('Sign in', style: TextStyle(color: Colors.white)),
+                  style: ElevatedButton.styleFrom(
+                    primary: ORANGE_1,
+                  ),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      setState(() { loading = true; });
+                      dynamic result =
+                      await _auth.signInWithEmailAndPassword(email, password);
+                      if (result == null) {
+                        setState(() {
+                          loading = false;
+                          error = 'could not sign in with those credentials';
+                        });
+                      }
                     }
-                  }
-                }),
+                  }),
+            ),
             Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0),
             ),
           ],
@@ -84,7 +96,7 @@ class _SignInState extends State<SignIn> {
           ),
           Center(
             child: Padding(
-              padding: EdgeInsets.all(22.0),
+              padding: EdgeInsets.fromLTRB(22.0, 30.0, 22.0, 22.0),
               child: ElevatedButton(
                 child: Text('NUSNET ID', style: TextStyle(color: Colors.white)),
                 onPressed: () async {
