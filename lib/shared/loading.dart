@@ -8,6 +8,7 @@ class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
+        fit: StackFit.expand,
         children: <Widget>[
           SvgPicture.asset(
             'assets/background.svg',

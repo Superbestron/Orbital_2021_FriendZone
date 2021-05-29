@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/shared/constants.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:myapp/services/database.dart';
+import 'package:myapp/models/user.dart';
+import 'package:provider/provider.dart';
 
 class CreateEvent extends StatefulWidget {
   @override
@@ -63,6 +66,8 @@ class _CreateEventState extends State<CreateEvent> {
   @override
   Widget build(BuildContext context) {
 
+    final user = Provider.of<UserObj?>(context);
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Scaffold(
@@ -108,6 +113,17 @@ class _CreateEventState extends State<CreateEvent> {
                       ),
                     ),
                   ),
+                ),
+                ElevatedButton(
+                    child: Text("Create",
+                        style: TextStyle(color: Colors.black)
+                    ),
+                    onPressed: () { DatabaseService(uid: user!.uid).createEventData(
+                      "name", "date", "time", 2, "desc", 3
+                    ); },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.brown[200],
+                    )
                 ),
               ],
             )
