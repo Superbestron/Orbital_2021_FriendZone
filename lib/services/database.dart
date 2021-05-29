@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:myapp/models/event.dart';
+import 'package:myapp/models/user.dart';
 
 class DatabaseService {
 
@@ -20,8 +21,8 @@ class DatabaseService {
   FirebaseFirestore.instance.collection('profiles');
 
   // TODO: Decide on what info to store about an event
-  Future updateEventData(String name, String date, String time,
-      int pax, String description, int icon, String eventID) async {
+  Future updateEventData(String name, String date, String time
+      , int pax, String description, int icon, String eventID) async {
     return await eventCollection.doc(uid).set({
       'name': name,
       'date': date,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/models/event.dart';
 import 'package:myapp/services/database.dart';
+import 'package:myapp/shared/constants.dart';
 import 'package:myapp/shared/loading_transparent.dart';
 import 'package:provider/provider.dart';
 import 'package:myapp/models/user.dart';
@@ -73,7 +74,7 @@ class _EventPageState extends State<EventPage> {
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.brown[200],
+                            primary: ORANGE_1,
                           ),
                           onPressed: (){}, // Link to Telegram
                           child: ListTile(
@@ -90,12 +91,12 @@ class _EventPageState extends State<EventPage> {
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.brown[200],
+                              primary: ORANGE_1,
                             ),
                           onPressed: (){}, // Confirm to join event
                             child: ListTile(
                               contentPadding: EdgeInsets.symmetric(),
-                              leading: Icon(Icons.message, size: 15.0),
+                              leading: Icon(Icons.check, size: 15.0),
                               minLeadingWidth: 5.0,
                               title: Text('Confirm Attendance', style: TextStyle(fontSize: 12)),
                             )

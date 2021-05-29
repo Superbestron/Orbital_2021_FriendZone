@@ -20,12 +20,6 @@ class EventTile extends StatelessWidget {
           visualDensity: VisualDensity(horizontal: 0, vertical: -4),
           minLeadingWidth: 10,
           dense: true,
-          // Event Icon
-          // trailing: Image(
-          //   image: AssetImage('assets/event_icons/food.png'),
-          //   width: 80.0,
-          //   height: 80.0,
-          // ),
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 10.0),
 
           // TODO: Formatting of event
@@ -97,7 +91,7 @@ class EventTile extends StatelessWidget {
                       ],
                       toolbarHeight: 75.0,
                       elevation: 0.0,
-                      backgroundColor: Colors.brown,
+                      backgroundColor: Colors.transparent,
                     ),
                     body: Container(
                       padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),

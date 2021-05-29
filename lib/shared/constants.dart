@@ -17,11 +17,6 @@ List<Icon> iconList = [
   Icon(Icons.alarm),
 ];
 
-// Time
-const months = ['January', 'February', 'March', 'April',
-  'May', 'June', 'July', 'August', 'September', 'October', 'November',
-      'December'];
-
 // constants for colors
 
 extension HexColor on Color {

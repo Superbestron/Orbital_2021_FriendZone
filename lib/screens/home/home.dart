@@ -111,7 +111,7 @@ class _HomeState extends State<Home> {
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _selectedIndex,
               unselectedItemColor: Colors.black,
-              selectedItemColor: Colors.lightBlue[400],
+              selectedItemColor: Colors.cyan,
               onTap: _onItemTapped,
               items: const <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
