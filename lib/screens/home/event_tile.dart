@@ -21,9 +21,11 @@ class EventTile extends StatelessWidget {
           minLeadingWidth: 10,
           dense: true,
           // Event Icon
-          trailing: Image(
-            image: AssetImage('assets/event_icons/food.png'),
-          ),
+          // trailing: Image(
+          //   image: AssetImage('assets/event_icons/food.png'),
+          //   width: 80.0,
+          //   height: 80.0,
+          // ),
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 10.0),
 
           // TODO: Formatting of event
@@ -32,28 +34,40 @@ class EventTile extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(0.0, 0, 0, 0),
             child: Text(event.name, style: TextStyle(fontSize: 18)),
           ),
-          subtitle: Column(
-            children: [
-              ListTile(
-                visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-                leading: Icon(Icons.calendar_today, size: 15),
-                title: Text('${event.date}', style: TextStyle(fontSize: 15)),
-                minLeadingWidth: 10.0,
+          subtitle: Row(
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  children: [
+                    ListTile(
+                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                      leading: Icon(Icons.calendar_today, size: 15),
+                      title: Text('${event.date}', style: TextStyle(fontSize: 15)),
+                      minLeadingWidth: 10.0,
+                    ),
+                    ListTile(
+                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                      leading: Icon(Icons.access_time, size: 15),
+                      title: Text('${event.time}', style: TextStyle(fontSize: 15)),
+                      minLeadingWidth: 10.0,
+                    ),
+                    ListTile(
+                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                      leading: Icon(Icons.group_rounded, size: 15),
+                      title: Text('${event.pax}', style: TextStyle(fontSize: 15)),
+                      minLeadingWidth: 10.0,
+                    ),
+                  ],
+                ),
               ),
-              ListTile(
-                visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-                leading: Icon(Icons.access_time, size: 15),
-                title: Text('${event.time}', style: TextStyle(fontSize: 15)),
-                minLeadingWidth: 10.0,
-              ),
-              ListTile(
-                visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-                leading: Icon(Icons.group_rounded, size: 15),
-                title: Text('${event.pax}', style: TextStyle(fontSize: 15)),
-                minLeadingWidth: 10.0,
+              Expanded(
+                child: Image(
+                  image: AssetImage('assets/event_icons/food.png'),
+                )
               ),
             ],
           ),
+
           onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
@@ -65,22 +79,25 @@ class EventTile extends StatelessWidget {
                   ),
                   Scaffold(
                     backgroundColor: Colors.transparent,
+                    // AppBar that is shown on event_page
                     appBar: AppBar(
                       leading: BackButton(color: Colors.black),
-                      title: Text(event.name, style: TextStyle(color: Colors.black)),
+                      title: Text(
+                        "Event Details",
+                        style: TextStyle(color: Colors.black),
+                      ),
                       actions: <Widget> [
                         Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Icon(
-                            Icons.calendar_today,
-                            color: Colors.black,
-                            size: 35.0,
+                          padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
+                          // TODO: Replace this with associated event icon
+                          child: Image(
+                            image: AssetImage('assets/event_icons/food.png'),
                           ),
                         ),
                       ],
-                      toolbarHeight: 100.0,
+                      toolbarHeight: 75.0,
                       elevation: 0.0,
-                      backgroundColor: Colors.transparent,
+                      backgroundColor: Colors.brown,
                     ),
                     body: Container(
                       padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),

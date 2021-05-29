@@ -42,7 +42,7 @@ class _EventListState extends State<EventList> {
       itemBuilder: (context, index) {
         if (index == 0) {
           return Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+            padding: EdgeInsets.all(8.0),
             child: TextFormField(
               decoration: textInputDecoration.copyWith(
                 hintText: 'Search Event by Name',

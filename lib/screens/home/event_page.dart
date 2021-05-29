@@ -34,6 +34,14 @@ class _EventPageState extends State<EventPage> {
             backgroundColor: Colors.transparent,
             body: Column(
               children: <Widget> [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                  child: Text(
+                    eventData.name,
+                    style: TextStyle(fontSize: 18.0),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
                 ListTile(
                   visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                   leading: Icon(Icons.calendar_today, size: 15),
