@@ -27,7 +27,7 @@ class _CreateEventState extends State<CreateEvent> {
     if (_date == null) {
       return 'Select Date';
     } else {
-      _dateString = '${_date!.month}-${_date!.day}-${_date!.year}';
+      _dateString = '${_date!.day}-${_date!.month}-${_date!.year}';
       return _dateString;
     }
   }

@@ -24,10 +24,7 @@ class EventTile extends StatelessWidget {
 
           // TODO: Formatting of event
 
-          title: Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 0, 0, 0),
-            child: Text(event.name, style: TextStyle(fontSize: 18)),
-          ),
+          title: Text(event.name, style: TextStyle(fontSize: 18)),
           subtitle: Row(
             children: <Widget>[
               Expanded(
@@ -36,7 +33,7 @@ class EventTile extends StatelessWidget {
                     ListTile(
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       leading: Icon(Icons.calendar_today, size: 15),
-                      title: Text('${event.date}', style: TextStyle(fontSize: 15)),
+                      title: Text(dateFormat(event), style: TextStyle(fontSize: 15)),
                       minLeadingWidth: 10.0,
                     ),
                     ListTile(

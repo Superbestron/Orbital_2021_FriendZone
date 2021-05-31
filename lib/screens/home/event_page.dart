@@ -46,7 +46,7 @@ class _EventPageState extends State<EventPage> {
                 ListTile(
                   visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                   leading: Icon(Icons.calendar_today, size: 15),
-                  title: Text('${eventData.date}', style: TextStyle(fontSize: 15)),
+                  title: Text('${dateFormatting(eventData)}', style: TextStyle(fontSize: 15)),
                   minLeadingWidth: 10.0,
                 ),
                 ListTile(

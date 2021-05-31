@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/models/event.dart';
 
 // Login Border
 const textInputDecoration = InputDecoration(
@@ -16,6 +17,20 @@ const textInputDecoration = InputDecoration(
 List<Icon> iconList = [
   Icon(Icons.alarm),
 ];
+
+// Date/Time Formatting
+List<String> months = ['January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'];
+
+String dateFormat (Event event) {
+  List<String> arr = event.date.split('-').toList();
+  return '${arr[0]} ${months[int.parse(arr[1]) - 1]} ${arr[2]}';
+}
+
+String dateFormatting (EventData eventData) {
+  List<String> arr = eventData.date.split('-').toList();
+  return '${arr[0]} ${months[int.parse(arr[1]) - 1]} ${arr[2]}';
+}
 
 // constants for colors
 

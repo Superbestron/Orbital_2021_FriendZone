@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
     Profile(),
   ];
   final List<String> _appBarTitles = [
-    'List of Events',
+    'Upcoming Events',
     'Screen 1',
     'Create New Event',
     'Screen 2',
