@@ -13,23 +13,28 @@ const textInputDecoration = InputDecoration(
   ),
 );
 
+// TODO: Update Icons here
 // List of icons
-List<Icon> iconList = [
-  Icon(Icons.alarm),
+List<Image> imageList = [
+  Image(image: AssetImage('assets/event_icons/Friends.png'),),
+  Image(image: AssetImage('assets/event_icons/Sports.png'),),
+  Image(image: AssetImage('assets/event_icons/Study.png'),),
+  Image(image: AssetImage('assets/event_icons/food.png'),),
+  Image(image: AssetImage('assets/event_icons/Cocktail Glass.png'),),
 ];
 
 // Date/Time Formatting
-List<String> months = ['January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December'];
+List<String> months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-String dateFormat (Event event) {
-  List<String> arr = event.date.split('-').toList();
-  return '${arr[0]} ${months[int.parse(arr[1]) - 1]} ${arr[2]}';
+String dateFormat (String date) {
+  List<String> arr = date.split('-').toList();
+  return '${arr[0]} ${months[int.parse(arr[1]) - 1]} ${arr[2].substring(2,4)}';
 }
 
-String dateFormatting (EventData eventData) {
-  List<String> arr = eventData.date.split('-').toList();
-  return '${arr[0]} ${months[int.parse(arr[1]) - 1]} ${arr[2]}';
+String dateFormatting (String date) {
+  List<String> arr = date.split('-').toList();
+  return '${arr[0]} ${months[int.parse(arr[1]) - 1]} ${arr[2].substring(2,4)}';
 }
 
 // constants for colors

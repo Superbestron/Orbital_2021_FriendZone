@@ -33,7 +33,7 @@ class EventTile extends StatelessWidget {
                     ListTile(
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       leading: Icon(Icons.calendar_today, size: 15),
-                      title: Text(dateFormat(event), style: TextStyle(fontSize: 15)),
+                      title: Text(dateFormat(event.date), style: TextStyle(fontSize: 15)),
                       minLeadingWidth: 10.0,
                     ),
                     ListTile(
@@ -52,9 +52,7 @@ class EventTile extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: Image(
-                  image: AssetImage('assets/event_icons/food.png'),
-                )
+                child: imageList[event.icon],
               ),
             ],
           ),
@@ -79,11 +77,8 @@ class EventTile extends StatelessWidget {
                       ),
                       actions: <Widget> [
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
-                          // TODO: Replace this with associated event icon
-                          child: Image(
-                            image: AssetImage('assets/event_icons/food.png'),
-                          ),
+                          padding: const EdgeInsets.fromLTRB(0, 15, 15, 0),
+                          child: imageList[event.icon],
                         ),
                       ],
                       toolbarHeight: 75.0,
