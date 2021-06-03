@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
     Profile(),
   ];
   final List<String> _appBarTitles = [
-    'List of Events',
+    'Upcoming Events',
     'Screen 1',
     'Create New Event',
     'Screen 2',
@@ -111,7 +111,7 @@ class _HomeState extends State<Home> {
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _selectedIndex,
               unselectedItemColor: Colors.black,
-              selectedItemColor: Colors.lightBlue[400],
+              selectedItemColor: Colors.cyan,
               onTap: _onItemTapped,
               items: const <BottomNavigationBarItem>[
                 BottomNavigationBarItem(

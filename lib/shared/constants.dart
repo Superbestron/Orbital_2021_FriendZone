@@ -12,15 +12,33 @@ const textInputDecoration = InputDecoration(
   ),
 );
 
+// TODO: Update Icons here
 // List of icons
-List<Icon> iconList = [
-  Icon(Icons.alarm),
+List<Image> imageList = [
+  Image(image: AssetImage('assets/event_icons/Friends.png'),),
+  Image(image: AssetImage('assets/event_icons/Sports.png'),),
+  Image(image: AssetImage('assets/event_icons/Study.png'),),
+  Image(image: AssetImage('assets/event_icons/food.png'),),
+  Image(image: AssetImage('assets/event_icons/Cocktail Glass.png'),),
 ];
 
-// Time
-const months = ['January', 'February', 'March', 'April',
-  'May', 'June', 'July', 'August', 'September', 'October', 'November',
-      'December'];
+// Date/Time Formatting
+List<String> months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+String getDateText(DateTime? dateTime) {
+  if (dateTime == null) {
+    return 'Select Date';
+  } else {
+    return '${dateTime.day} ${months[dateTime.month - 1]} ${dateTime.year - 2000}';
+  }
+}
+
+String getTimeText(DateTime dateTime) {
+  final hours = dateTime.hour.toString().padLeft(2, '0');
+  final minutes = dateTime.minute.toString().padLeft(2, '0');
+  return '$hours:$minutes';
+}
 
 // constants for colors
 

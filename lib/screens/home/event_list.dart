@@ -17,15 +17,63 @@ class _EventListState extends State<EventList> {
 
   String query = '';
 
+   // bool ifPastEvent(Event event, DateTime currDate, TimeOfDay currTime) {
+   //   // [day, month, year]
+   //   List<String> dateArr = event.date.split('-').toList();
+   //   int year = int.parse(dateArr[2]);
+   //   int month = int.parse(dateArr[1]);
+   //   int day = int.parse(dateArr[0]);
+   //
+   //   // [minute, hour]
+   //   List<String> timeArr = event.time.split(':').toList();
+   //   int hour = int.parse(timeArr[1]);
+   //   int minute = int.parse(timeArr[0]);
+   //
+   //   if (currDate.year > year) {
+   //     return true;
+   //   } else if (currDate.year < year) {
+   //     return false;
+   //   } else {
+   //     if (currDate.month > month) {
+   //       return true;
+   //     } else if (currDate.month < month) {
+   //       return false;
+   //     } else {
+   //       if (currDate.day > day) {
+   //         return true;
+   //       } else if (currDate.day < day) {
+   //         return false;
+   //       } else {
+   //         if (currTime.hour > hour) {
+   //           return true;
+   //         } else if (currTime.hour < hour) {
+   //           return false;
+   //         } else {
+   //           if (currTime.minute > minute) {
+   //             return true;
+   //           } else {
+   //             return false;
+   //           }
+   //         }
+   //       }
+   //     }
+   //   }
+   // }
+
+
   @override
   Widget build(BuildContext context) {
 
     List<Event> events = (Provider.of<List<Event>?>(context) ?? []).where(
             (event) => event.name.toLowerCase().contains(query.toLowerCase())
-                || event.date.toLowerCase().contains(query.toLowerCase())
-                || event.time.toLowerCase().contains(query.toLowerCase())
+                || months[event.dateTime.month].toLowerCase().contains(query.toLowerCase())
+                || event.dateTime.day.toString().contains(query.toLowerCase())
+                || event.dateTime.hour.toString().contains(query.toLowerCase())
                 || event.description.toLowerCase().contains(query.toLowerCase())
     ).toList();
+
+    // Filter the events which have already happened
+    events.removeWhere((event) => event.dateTime.isBefore(DateTime.now()));
 
     // print(query);
     // events.forEach((event) {
@@ -37,11 +85,11 @@ class _EventListState extends State<EventList> {
     //   print(event.icon);
     // });
 
-    return ListView.builder(
-      itemCount: events.length + 1,
-      itemBuilder: (context, index) {
-        if (index == 0) {
-          return Padding(
+    return SingleChildScrollView(
+      physics: ScrollPhysics(),
+      child: Column(
+        children: <Widget> [
+          Padding(
             padding: EdgeInsets.all(8.0),
             child: TextFormField(
               decoration: textInputDecoration.copyWith(
@@ -52,11 +100,17 @@ class _EventListState extends State<EventList> {
               ),
               onChanged: (val) => setState(() { query = val; }),
             ),
-          );
-        } else {
-          return EventTile(event: events[index - 1]);
-        }
-      },
+          ),
+          ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: events.length,
+            itemBuilder: (context, index) {
+              return EventTile(event: events[index]);
+            },
+          ),
+        ],
+      ),
     );
   }
 }

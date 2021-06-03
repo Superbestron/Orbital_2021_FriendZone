@@ -56,7 +56,7 @@ class _SignInState extends State<SignIn> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
-                  child: Text('Sign in', style: TextStyle(color: Colors.white)),
+                  child: Text('Sign in', style: TextStyle(color: Colors.black)),
                   style: ElevatedButton.styleFrom(
                     primary: ORANGE_1,
                   ),
