@@ -17,9 +17,10 @@ class EventPage extends StatefulWidget {
 
 class _EventPageState extends State<EventPage> {
   bool hasConfirmedAttendance(Event event, String uid) {
-    print(event.attendees);
     return event.attendees.contains(uid);
   }
+
+  String error = "";
 
   @override
   Widget build(BuildContext context) {
@@ -106,8 +107,18 @@ class _EventPageState extends State<EventPage> {
                                         primary: Colors.amber[800],
                                       ),
                                       onPressed: () async {
-                                        await dbService.removeUserFromEvent(
-                                            widget.eventID, user.uid);
+                                        int daysToEvent = event.dateTime
+                                            .difference(DateTime.now())
+                                            .inDays;
+                                        print(daysToEvent);
+                                        if (daysToEvent > 2) {
+                                          await dbService.removeUserFromEvent(
+                                              widget.eventID, user.uid);
+                                        } else {
+                                          setState(() {
+                                            error = "It is too late to withdraw!";
+                                          });
+                                        }
                                       }, // Confirm to join event
                                       child: ListTile(
                                         contentPadding: EdgeInsets.all(0.0),
@@ -142,9 +153,11 @@ class _EventPageState extends State<EventPage> {
                                           style: ElevatedButton.styleFrom(
                                             primary: ORANGE_1,
                                           ),
-                                          onPressed: () async {
-
-                                          }, // Confirm to join event
+                                          onPressed: () {
+                                            setState(() {
+                                              error = "Event full! Try other events.";
+                                            });
+                                          },
                                           child: ListTile(
                                             contentPadding: EdgeInsets.all(0.0),
                                             leading:
@@ -154,9 +167,17 @@ class _EventPageState extends State<EventPage> {
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(fontSize: 12)),
                                           ))),
-                        )
+                        ),
                       ],
                     ),
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(124, 0, 0, 0),
+                        child: SizedBox(
+                          child: Text(error,
+                              textAlign: TextAlign.center,
+                              style:
+                                  TextStyle(color: Colors.red, fontSize: 14.0)),
+                        )),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
