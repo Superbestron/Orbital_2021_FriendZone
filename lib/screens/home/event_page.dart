@@ -18,20 +18,26 @@ class EventPage extends StatefulWidget {
 
 class _EventPageState extends State<EventPage> {
 
+  bool hasConfirmedAttendance(Event event, String uid) {
+    print(event.attendees);
+    return event.attendees.contains(uid);
+  }
+
   @override
   Widget build(BuildContext context) {
 
     // Still need this to listen for user's uid
     final user = Provider.of<UserObj?>(context);
     var dbService = DatabaseService(uid: user!.uid);
-    return StreamBuilder<EventData>(
+
+    return StreamBuilder<Event>(
       // Get the event based on uid for now
       // TODO: Change this logic
-      stream: dbService.eventData(widget.eventID),
+      stream: dbService.getEvent(widget.eventID),
       // temp function to append empty attendee
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          EventData eventData = snapshot.data!;
+          Event event = snapshot.data!;
           return Scaffold(
             backgroundColor: Colors.transparent,
             body: Column(
@@ -39,7 +45,7 @@ class _EventPageState extends State<EventPage> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                   child: Text(
-                    eventData.name,
+                    event.name,
                     style: TextStyle(fontSize: 18.0),
                     textAlign: TextAlign.center,
                   ),
@@ -48,19 +54,19 @@ class _EventPageState extends State<EventPage> {
                   visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                   leading: Icon(Icons.calendar_today, size: 15),
 
-                  title: Text('${getDateText(eventData.dateTime)}', style: TextStyle(fontSize: 15)),
+                  title: Text('${getDateText(event.dateTime)}', style: TextStyle(fontSize: 15)),
                   minLeadingWidth: 10.0,
                 ),
                 ListTile(
                   visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                   leading: Icon(Icons.access_time, size: 15),
-                  title: Text('${getTimeText(eventData.dateTime)}', style: TextStyle(fontSize: 15)),
+                  title: Text('${getTimeText(event.dateTime)}', style: TextStyle(fontSize: 15)),
                   minLeadingWidth: 10.0,
                 ),
                 ListTile(
                   visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                   leading: Icon(Icons.group_rounded, size: 15),
-                  title: Text('${eventData.pax}', style: TextStyle(fontSize: 15)),
+                  title: Text('${event.attendees.length} / ${event.pax}', style: TextStyle(fontSize: 15)),
                   minLeadingWidth: 10.0,
                 ),
                 ListTile(
@@ -80,10 +86,13 @@ class _EventPageState extends State<EventPage> {
                           ),
                           onPressed: (){}, // Link to Telegram
                           child: ListTile(
-                            contentPadding: EdgeInsets.symmetric(),
+                            contentPadding: EdgeInsets.all(0.0),
                             leading: Icon(Icons.message, size: 15.0),
                             minLeadingWidth: 5.0,
-                            title: Text('Join Telegram', style: TextStyle(fontSize: 12)),
+                            title: Text('Join Telegram',
+                              style: TextStyle(fontSize: 12),
+                              textAlign: TextAlign.center,
+                            ),
                           )
                         ),
                       ),
@@ -91,20 +100,40 @@ class _EventPageState extends State<EventPage> {
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
+                        child: hasConfirmedAttendance(event, user.uid)
+                          ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.amber[800],
+                            ),
+                            onPressed: () async {
+                              await dbService.removeUserFromEvent(widget.eventID, user.uid);
+                            }, // Confirm to join event
+                            child: ListTile(
+                              contentPadding: EdgeInsets.all(0.0),
+                              leading: Icon(Icons.check, size: 15.0),
+                              minLeadingWidth: 5.0,
+                              title: Text('Unconfirm Attendance',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 12)
+                              ),
+                            )
+                          ): ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               primary: ORANGE_1,
                             ),
-                          onPressed: () async {
-                            dbService.addUserToEvent(widget.eventID, user.uid);
-                          }, // Confirm to join event
+                            onPressed: () async {
+                              await dbService.addUserToEvent(widget.eventID, user.uid);
+                            }, // Confirm to join event
                             child: ListTile(
-                              contentPadding: EdgeInsets.symmetric(),
+                              contentPadding: EdgeInsets.all(0.0),
                               leading: Icon(Icons.check, size: 15.0),
                               minLeadingWidth: 5.0,
-                              title: Text('Confirm Attendance', style: TextStyle(fontSize: 12)),
+                              title: Text('Confirm Attendance',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 12)
+                              ),
                             )
-                        ),
+                          )
                       ),
                     )
                   ],
@@ -112,7 +141,7 @@ class _EventPageState extends State<EventPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
-                    child: Text(eventData.description),
+                    child: Text(event.description),
                   ),
                 )
               ],

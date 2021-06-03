@@ -142,7 +142,7 @@ class _CreateEventState extends State<CreateEvent> {
                   decoration: textInputDecoration.copyWith(hintText: 'Event Description'),
                   validator: (val) => val!.isEmpty ? 'Enter an event description' : null,
                   onChanged: (val) => setState(() { _description = val; }),
-                  maxLines: 3,
+                  maxLines: 4,
                 ),
               ),
               ListTile(
@@ -262,7 +262,8 @@ class _CreateEventState extends State<CreateEvent> {
                         if (_formKey.currentState!.validate()) {
                           _dateTime = DateTime(_dateTime!.year, _dateTime!.month, _dateTime!.day,
                               _time!.hour, _time!.minute);
-                          await DatabaseService(uid: user!.uid).createEventData(
+                          DatabaseService db = DatabaseService(uid: user!.uid);
+                          String eventID = await db.createEventData(
                             _name, _dateTime!,
                             _pax, _description, _icon,
                           );
@@ -271,8 +272,8 @@ class _CreateEventState extends State<CreateEvent> {
                               content: Text('You have successfully created an event!'),
                               action: SnackBarAction(
                                 label: 'Undo',
-                                onPressed: () {
-                                  // TODO: Some code to undo the change.
+                                onPressed: () async {
+                                  await db.deleteEvent(eventID);
                                 },
                               ),
                             )

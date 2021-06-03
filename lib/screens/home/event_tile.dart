@@ -45,7 +45,7 @@ class EventTile extends StatelessWidget {
                     ListTile(
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       leading: Icon(Icons.group_rounded, size: 15),
-                      title: Text('${event.pax}', style: TextStyle(fontSize: 15)),
+                      title: Text('${event.attendees.length} / ${event.pax}', style: TextStyle(fontSize: 15)),
                       minLeadingWidth: 10.0,
                     ),
                   ],
