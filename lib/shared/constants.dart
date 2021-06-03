@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/models/event.dart';
 
 // Login Border
 const textInputDecoration = InputDecoration(
@@ -27,14 +26,18 @@ List<Image> imageList = [
 List<String> months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-String dateFormat (String date) {
-  List<String> arr = date.split('-').toList();
-  return '${arr[0]} ${months[int.parse(arr[1]) - 1]} ${arr[2].substring(2,4)}';
+String getDateText(DateTime? dateTime) {
+  if (dateTime == null) {
+    return 'Select Date';
+  } else {
+    return '${dateTime.day} ${months[dateTime.month - 1]} ${dateTime.year - 2000}';
+  }
 }
 
-String dateFormatting (String date) {
-  List<String> arr = date.split('-').toList();
-  return '${arr[0]} ${months[int.parse(arr[1]) - 1]} ${arr[2].substring(2,4)}';
+String getTimeText(DateTime dateTime) {
+  final hours = dateTime.hour.toString().padLeft(2, '0');
+  final minutes = dateTime.minute.toString().padLeft(2, '0');
+  return '$hours:$minutes';
 }
 
 // constants for colors

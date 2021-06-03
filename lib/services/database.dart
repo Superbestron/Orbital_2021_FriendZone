@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:myapp/models/event.dart';
 import 'package:myapp/models/user.dart';
+import 'package:flutter/material.dart';
 
 class DatabaseService {
 
@@ -25,8 +26,7 @@ class DatabaseService {
     var event = await ref.get().then((snapshot) =>
       EventData(
           name: snapshot.get('name'),
-          date: snapshot.get('date'),
-          time: snapshot.get('time'),
+          dateTime: snapshot.get('dateTime'),
           pax: snapshot.get('pax'),
           description: snapshot.get('description'),
           icon: snapshot.get('icon'),
@@ -37,12 +37,11 @@ class DatabaseService {
   }
 
   // TODO: Decide on what info to store about an event
-  Future updateEventData(String name, String date, String time,
+  Future updateEventData(String name, DateTime dateTime,
       int pax, String description, int icon, String eventID, List<dynamic> attendees) async {
     return await eventCollection.doc(eventID).set({
       'name': name,
-      'date': date,
-      'time' : time,
+      'dateTime': dateTime,
       'pax': pax,
       'description': description,
       'icon': icon,
@@ -51,15 +50,14 @@ class DatabaseService {
     });
   }
 
-  Future createEventData(String name, String date, String time,
+  Future createEventData(String name, DateTime dateTime,
       int pax, String description, int icon) async {
     String newDocID = eventCollection.doc().id;
     List<dynamic> attendees = [];
     attendees.add(uid);
     return await eventCollection.doc(newDocID).set({
       'name': name,
-      'date': date,
-      'time' : time,
+      'dateTime': dateTime,
       'pax': pax,
       'description': description,
       'icon': icon,
@@ -69,23 +67,32 @@ class DatabaseService {
   }
 
   // TODO: Decide on what info to store about user
-  Future updateUserData(String name, int level, String faculty,
-      int points, String bio) async {
+  Future updateUserData(Image profileImage, String name, int level, int faculty,
+      int points, String bio, List<EventData> events) async {
     return await profileCollection.doc(uid).set({
+      'profileImage': profileImage,
       'name': name,
       'level': level,
       'faculty': faculty,
       'points': points,
       'bio': bio,
+      'events' : events,
     });
   }
 
   Future getUserData() async {
     DocumentReference ref = profileCollection.doc(uid);
-    UserObj user = await ref.get().then((snapshot) =>
+    UserData user = await ref.get().then((snapshot) =>
       // use snapshot.get(field_name) to add other fields easily
-      UserObj (
-        uid: ref.id
+      UserData (
+        uid: ref.id,
+        profileImage: snapshot.get('profileImage'),
+        name: snapshot.get('name'),
+        level: snapshot.get('level'),
+        faculty: snapshot.get('faculty'),
+        points: snapshot.get('points'),
+        bio: snapshot.get('bio'),
+        events: snapshot.get('icon'),
       )
     );
     return user;
@@ -97,8 +104,7 @@ class DatabaseService {
       return Event(
         eventID: doc.get('eventID'),
         name: doc.get('name') ?? '',
-        date: doc.get('date') ?? '',
-        time: doc.get('time') ?? '',
+        dateTime: doc.get('dateTime').toDate(),
         pax: doc.get('pax') ?? 1,
         description: doc.get('description') ?? '',
         icon: doc.get('icon') ?? 0,
@@ -112,8 +118,7 @@ class DatabaseService {
       // uid: uid,
       // eventID: eventID,
       name: snapshot.get('name'),
-      date: snapshot.get('date'),
-      time: snapshot.get('time'),
+      dateTime: snapshot.get('dateTime').toDate(),
       pax: snapshot.get('pax'),
       description: snapshot.get('description'),
       icon: snapshot.get('icon'),
@@ -149,7 +154,7 @@ class DatabaseService {
     EventData event = await getEventData(eventID);
     List<dynamic> newAttendees = List.from(event.attendees);
     newAttendees.add(uid);
-    updateEventData(event.name, event.date, event.time, event.pax, event.description,
+    updateEventData(event.name, event.dateTime, event.pax, event.description,
     event.icon, eventID, newAttendees);
   }
 }

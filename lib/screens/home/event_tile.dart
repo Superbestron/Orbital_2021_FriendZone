@@ -33,13 +33,13 @@ class EventTile extends StatelessWidget {
                     ListTile(
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       leading: Icon(Icons.calendar_today, size: 15),
-                      title: Text(dateFormat(event.date), style: TextStyle(fontSize: 15)),
+                      title: Text(getDateText(event.dateTime), style: TextStyle(fontSize: 15)),
                       minLeadingWidth: 10.0,
                     ),
                     ListTile(
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       leading: Icon(Icons.access_time, size: 15),
-                      title: Text('${event.time}', style: TextStyle(fontSize: 15)),
+                      title: Text('${getTimeText(event.dateTime)}', style: TextStyle(fontSize: 15)),
                       minLeadingWidth: 10.0,
                     ),
                     ListTile(

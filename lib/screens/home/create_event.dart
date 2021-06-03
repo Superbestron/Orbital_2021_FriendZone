@@ -14,10 +14,8 @@ class _CreateEventState extends State<CreateEvent> {
   // 1st Icon is selected by default
   List<bool> _isSelected = [true, false, false, false, false];
   String _name = '';
-  DateTime? _date;
-  String _dateString = '';
+  DateTime? _dateTime;
   TimeOfDay? _time;
-  String _timeString = '';
   int _pax = 2;
   String _description = '';
   int _icon = 1;
@@ -35,23 +33,13 @@ class _CreateEventState extends State<CreateEvent> {
     }
   }
 
-  String getDateText() {
-    if (_date == null) {
-      return 'Select Date';
-    } else {
-      _dateString = '${_date!.day}-${_date!.month}-${_date!.year}';
-      return _dateString;
-    }
-  }
-
-  String getTimeText() {
+  String _getTimeText() {
     if (_time == null) {
       return 'Select Time';
     } else {
       final hours = _time!.hour.toString().padLeft(2, '0');
       final minutes = _time!.minute.toString().padLeft(2, '0');
-      _timeString = '$hours:$minutes';
-      return _timeString;
+      return '$hours:$minutes';
     }
   }
 
@@ -65,7 +53,7 @@ class _CreateEventState extends State<CreateEvent> {
 
     if (newDate != null) {
       setState(() {
-        _date = newDate;
+        _dateTime = newDate;
       });
     }
   }
@@ -114,7 +102,7 @@ class _CreateEventState extends State<CreateEvent> {
                       subtitle: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
-                          child: Text(getDateText(),
+                          child: Text(getDateText(_dateTime),
                               style: TextStyle(color: Colors.black)
                           ),
                           onPressed: () { pickDate(context); },
@@ -134,7 +122,7 @@ class _CreateEventState extends State<CreateEvent> {
                       subtitle: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
-                          child: Text(getTimeText(),
+                          child: Text(_getTimeText(),
                               style: TextStyle(color: Colors.black)
                           ),
                           onPressed: () { pickTime(context); },
@@ -272,8 +260,10 @@ class _CreateEventState extends State<CreateEvent> {
                       onPressed: () async {
                         // TODO: Validate that date and time are set by the user
                         if (_formKey.currentState!.validate()) {
+                          _dateTime = DateTime(_dateTime!.year, _dateTime!.month, _dateTime!.day,
+                              _time!.hour, _time!.minute);
                           await DatabaseService(uid: user!.uid).createEventData(
-                            _name, _dateString, _timeString,
+                            _name, _dateTime!,
                             _pax, _description, _icon,
                           );
                           ScaffoldMessenger.of(context).showSnackBar(

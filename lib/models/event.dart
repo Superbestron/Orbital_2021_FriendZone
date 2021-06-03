@@ -1,20 +1,16 @@
-import 'package:myapp/models/user.dart';
-
 class Event {
 
   final String eventID;
-  final String name;
-  final String date;
-  final String time;
-  final int pax;
-  final String description;
-  final int icon; // probably should change this to enum in the future
+  String name;
+  DateTime dateTime;
+  int pax;
+  String description;
+  int icon; // probably should change this to enum in the future
 
   Event({
     required this.eventID,
     required this.name,
-    required this.date,
-    required this.time,
+    required this.dateTime,
     required this.pax,
     required this.description,
     required this.icon,
@@ -29,19 +25,17 @@ class Event {
 class EventData {
 
   //final String uid;
-  final String name;
-  final String date;
-  final String time;
-  final int pax;
-  final String description;
-  final int icon; // probably should change this to enum in the future
+  String name;
+  DateTime dateTime;
+  int pax;
+  String description;
+  int icon; // probably should change this to enum in the future
   List<dynamic> attendees;
 
   EventData({
     // required this.uid,
     required this.name,
-    required this.date,
-    required this.time,
+    required this.dateTime,
     required this.pax,
     required this.description,
     required this.icon,

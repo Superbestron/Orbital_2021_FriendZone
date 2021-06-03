@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/models/event.dart';
 import 'package:myapp/services/database.dart';
@@ -48,13 +47,14 @@ class _EventPageState extends State<EventPage> {
                 ListTile(
                   visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                   leading: Icon(Icons.calendar_today, size: 15),
-                  title: Text('${dateFormatting(eventData.date)}', style: TextStyle(fontSize: 15)),
+
+                  title: Text('${getDateText(eventData.dateTime)}', style: TextStyle(fontSize: 15)),
                   minLeadingWidth: 10.0,
                 ),
                 ListTile(
                   visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                   leading: Icon(Icons.access_time, size: 15),
-                  title: Text('${eventData.time}', style: TextStyle(fontSize: 15)),
+                  title: Text('${getTimeText(eventData.dateTime)}', style: TextStyle(fontSize: 15)),
                   minLeadingWidth: 10.0,
                 ),
                 ListTile(
