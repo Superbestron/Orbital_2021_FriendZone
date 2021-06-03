@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/models/event.dart';
 import 'package:myapp/screens/home/event_tile.dart';
+import 'package:myapp/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:myapp/shared/constants.dart';
 

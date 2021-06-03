@@ -20,10 +20,26 @@ class DatabaseService {
   final CollectionReference profileCollection =
   FirebaseFirestore.instance.collection('profiles');
 
+  Future getEventData(String eventID) async {
+    DocumentReference ref = eventCollection.doc(eventID);
+    var event = await ref.get().then((snapshot) =>
+      EventData(
+          name: snapshot.get('name'),
+          date: snapshot.get('date'),
+          time: snapshot.get('time'),
+          pax: snapshot.get('pax'),
+          description: snapshot.get('description'),
+          icon: snapshot.get('icon'),
+          attendees: [],
+      )
+    );
+    return event;
+  }
+
   // TODO: Decide on what info to store about an event
-  Future updateEventData(String name, String date, String time
-      , int pax, String description, int icon, String eventID) async {
-    return await eventCollection.doc(uid).set({
+  Future updateEventData(String name, String date, String time,
+      int pax, String description, int icon, String eventID, List<dynamic> attendees) async {
+    return await eventCollection.doc(eventID).set({
       'name': name,
       'date': date,
       'time' : time,
@@ -31,12 +47,15 @@ class DatabaseService {
       'description': description,
       'icon': icon,
       'eventID': eventID,
+      'attendees': attendees,
     });
   }
 
   Future createEventData(String name, String date, String time,
       int pax, String description, int icon) async {
     String newDocID = eventCollection.doc().id;
+    List<dynamic> attendees = [];
+    attendees.add(uid);
     return await eventCollection.doc(newDocID).set({
       'name': name,
       'date': date,
@@ -45,6 +64,7 @@ class DatabaseService {
       'description': description,
       'icon': icon,
       'eventID': newDocID,
+      'attendees': attendees,
     });
   }
 
@@ -58,6 +78,17 @@ class DatabaseService {
       'points': points,
       'bio': bio,
     });
+  }
+
+  Future getUserData() async {
+    DocumentReference ref = profileCollection.doc(uid);
+    UserObj user = await ref.get().then((snapshot) =>
+      // use snapshot.get(field_name) to add other fields easily
+      UserObj (
+        uid: ref.id
+      )
+    );
+    return user;
   }
 
   // Event list from snapshot
@@ -86,6 +117,7 @@ class DatabaseService {
       pax: snapshot.get('pax'),
       description: snapshot.get('description'),
       icon: snapshot.get('icon'),
+      attendees: snapshot.get('attendees'),
     );
   }
 
@@ -111,5 +143,13 @@ class DatabaseService {
   Stream<EventData> eventData(String eventID){
       return eventCollection.doc(eventID).snapshots()
         .map(_eventDataFromSnapshot);
+  }
+
+  Future addUserToEvent(String eventID, String uid) async {
+    EventData event = await getEventData(eventID);
+    List<dynamic> newAttendees = List.from(event.attendees);
+    newAttendees.add(uid);
+    updateEventData(event.name, event.date, event.time, event.pax, event.description,
+    event.icon, eventID, newAttendees);
   }
 }

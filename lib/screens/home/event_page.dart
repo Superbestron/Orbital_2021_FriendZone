@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/models/event.dart';
 import 'package:myapp/services/database.dart';
@@ -23,11 +24,12 @@ class _EventPageState extends State<EventPage> {
 
     // Still need this to listen for user's uid
     final user = Provider.of<UserObj?>(context);
-
+    var dbService = DatabaseService(uid: user!.uid);
     return StreamBuilder<EventData>(
       // Get the event based on uid for now
       // TODO: Change this logic
-      stream: DatabaseService(uid: user!.uid).eventData(widget.eventID),
+      stream: dbService.eventData(widget.eventID),
+      // temp function to append empty attendee
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           EventData eventData = snapshot.data!;
@@ -93,7 +95,9 @@ class _EventPageState extends State<EventPage> {
                             style: ElevatedButton.styleFrom(
                               primary: ORANGE_1,
                             ),
-                          onPressed: (){}, // Confirm to join event
+                          onPressed: () async {
+                            dbService.addUserToEvent(widget.eventID, user.uid);
+                          }, // Confirm to join event
                             child: ListTile(
                               contentPadding: EdgeInsets.symmetric(),
                               leading: Icon(Icons.check, size: 15.0),

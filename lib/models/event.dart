@@ -1,3 +1,5 @@
+import 'package:myapp/models/user.dart';
+
 class Event {
 
   final String eventID;
@@ -33,6 +35,7 @@ class EventData {
   final int pax;
   final String description;
   final int icon; // probably should change this to enum in the future
+  List<dynamic> attendees;
 
   EventData({
     // required this.uid,
@@ -42,6 +45,7 @@ class EventData {
     required this.pax,
     required this.description,
     required this.icon,
+    required this.attendees,
   });
 
 }

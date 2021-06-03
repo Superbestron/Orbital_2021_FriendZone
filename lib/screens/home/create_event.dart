@@ -154,7 +154,7 @@ class _CreateEventState extends State<CreateEvent> {
                   decoration: textInputDecoration.copyWith(hintText: 'Event Description'),
                   validator: (val) => val!.isEmpty ? 'Enter an event description' : null,
                   onChanged: (val) => setState(() { _description = val; }),
-                  maxLines: 7,
+                  maxLines: 3,
                 ),
               ),
               ListTile(
