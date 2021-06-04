@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myapp/screens/home/create_event.dart';
 import 'package:myapp/screens/home/profile.dart';
 import 'package:myapp/screens/home/screen1.dart';
-import 'package:myapp/screens/home/screen2.dart';
+import 'package:myapp/screens/home/notifications.dart';
 import 'package:myapp/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/services/auth.dart';
@@ -21,17 +21,17 @@ class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   PageController _pageController = PageController();
   final List<Widget> _children = [
-    EventList(query: ''),
+    EventList(),
     Screen1(),
     CreateEvent(),
-    Screen2(),
+    Notifications(),
     Profile(),
   ];
   final List<String> _appBarTitles = [
     'Upcoming Events',
     'Screen 1',
     'Create New Event',
-    'Screen 2',
+    'Signed Up Events',
     'My Profile',
   ];
 
@@ -70,7 +70,6 @@ class _HomeState extends State<Home> {
           Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              centerTitle: true,
               title: Text(_appBarTitles[_selectedIndex],
                   style: TextStyle(
                       color: Colors.black,
@@ -80,12 +79,14 @@ class _HomeState extends State<Home> {
               toolbarHeight: 100.0,
               elevation: 0.0,
               actions: <Widget>[
-                TextButton.icon(
-                  icon: Icon(Icons.person, color: Colors.black),
-                  label: Text('logout', style: TextStyle(color: Colors.black)),
-                  onPressed: () async { await _auth.signOut(); }
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                  child: TextButton.icon(
+                    icon: Icon(Icons.person, color: Colors.black),
+                    label: Text('logout', style: TextStyle(color: Colors.black)),
+                    onPressed: () async { await _auth.signOut(); }
+                  ),
                 ),
-                SizedBox(width: 20.0),
                 // TextButton.icon(
                 //   icon: Icon(Icons.settings),
                 //   label: Text('settings'),

@@ -20,11 +20,11 @@ class EventTile extends StatelessWidget {
           visualDensity: VisualDensity(horizontal: 0, vertical: -4),
           minLeadingWidth: 10,
           dense: true,
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 10.0),
-
-          // TODO: Formatting of event
-
-          title: Text(event.name, style: TextStyle(fontSize: 18)),
+          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          title: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8.0),
+            child: Text(event.name, style: TextStyle(fontSize: 18)),
+          ),
           subtitle: Row(
             children: <Widget>[
               Expanded(
@@ -32,18 +32,21 @@ class EventTile extends StatelessWidget {
                   children: [
                     ListTile(
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                      dense: true,
                       leading: Icon(Icons.calendar_today, size: 15),
                       title: Text(getDateText(event.dateTime), style: TextStyle(fontSize: 15)),
                       minLeadingWidth: 10.0,
                     ),
                     ListTile(
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                      dense: true,
                       leading: Icon(Icons.access_time, size: 15),
                       title: Text('${getTimeText(event.dateTime)}', style: TextStyle(fontSize: 15)),
                       minLeadingWidth: 10.0,
                     ),
                     ListTile(
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                      dense: true,
                       leading: Icon(Icons.group_rounded, size: 15),
                       title: Text('${event.attendees.length} / ${event.pax}', style: TextStyle(fontSize: 15)),
                       minLeadingWidth: 10.0,
@@ -52,7 +55,11 @@ class EventTile extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: imageList[event.icon],
+                child: Column(
+                  children: <Widget> [
+                    imageList[event.icon],
+                  ],
+                ),
               ),
             ],
           ),

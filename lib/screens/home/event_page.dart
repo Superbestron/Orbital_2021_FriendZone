@@ -9,7 +9,7 @@ import 'package:myapp/models/user.dart';
 class EventPage extends StatefulWidget {
   final String eventID;
 
-  EventPage({required this.eventID});
+  EventPage({ required this.eventID });
 
   @override
   _EventPageState createState() => _EventPageState();
@@ -110,7 +110,7 @@ class _EventPageState extends State<EventPage> {
                                         int daysToEvent = event.dateTime
                                             .difference(DateTime.now())
                                             .inDays;
-                                        print(daysToEvent);
+                                        // print(daysToEvent);
                                         if (daysToEvent > 2) {
                                           await dbService.removeUserFromEvent(
                                               widget.eventID, user.uid);
@@ -124,7 +124,7 @@ class _EventPageState extends State<EventPage> {
                                         contentPadding: EdgeInsets.all(0.0),
                                         leading: Icon(Icons.check, size: 15.0),
                                         minLeadingWidth: 5.0,
-                                        title: Text('Unconfirm Attendance',
+                                        title: Text('Revoke Attendance',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(fontSize: 12)),
                                       ))
@@ -181,7 +181,7 @@ class _EventPageState extends State<EventPage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
-                        child: Text(event.description),
+                        child: Text(event.description, textAlign: TextAlign.start),
                       ),
                     )
                   ],

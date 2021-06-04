@@ -6,8 +6,6 @@ import 'package:myapp/shared/constants.dart';
 
 
 class EventList extends StatefulWidget {
-  final String query;
-  EventList({required this.query});
 
   @override
   _EventListState createState() => _EventListState();
@@ -17,56 +15,12 @@ class _EventListState extends State<EventList> {
 
   String query = '';
 
-   // bool ifPastEvent(Event event, DateTime currDate, TimeOfDay currTime) {
-   //   // [day, month, year]
-   //   List<String> dateArr = event.date.split('-').toList();
-   //   int year = int.parse(dateArr[2]);
-   //   int month = int.parse(dateArr[1]);
-   //   int day = int.parse(dateArr[0]);
-   //
-   //   // [minute, hour]
-   //   List<String> timeArr = event.time.split(':').toList();
-   //   int hour = int.parse(timeArr[1]);
-   //   int minute = int.parse(timeArr[0]);
-   //
-   //   if (currDate.year > year) {
-   //     return true;
-   //   } else if (currDate.year < year) {
-   //     return false;
-   //   } else {
-   //     if (currDate.month > month) {
-   //       return true;
-   //     } else if (currDate.month < month) {
-   //       return false;
-   //     } else {
-   //       if (currDate.day > day) {
-   //         return true;
-   //       } else if (currDate.day < day) {
-   //         return false;
-   //       } else {
-   //         if (currTime.hour > hour) {
-   //           return true;
-   //         } else if (currTime.hour < hour) {
-   //           return false;
-   //         } else {
-   //           if (currTime.minute > minute) {
-   //             return true;
-   //           } else {
-   //             return false;
-   //           }
-   //         }
-   //       }
-   //     }
-   //   }
-   // }
-
-
   @override
   Widget build(BuildContext context) {
 
     List<Event> events = (Provider.of<List<Event>?>(context) ?? []).where(
             (event) => event.name.toLowerCase().contains(query.toLowerCase())
-                || months[event.dateTime.month].toLowerCase().contains(query.toLowerCase())
+                || months[event.dateTime.month - 1].toLowerCase().contains(query.toLowerCase())
                 || event.dateTime.day.toString().contains(query.toLowerCase())
                 || event.dateTime.hour.toString().contains(query.toLowerCase())
                 || event.description.toLowerCase().contains(query.toLowerCase())
@@ -74,16 +28,6 @@ class _EventListState extends State<EventList> {
 
     // Filter the events which have already happened
     events.removeWhere((event) => event.dateTime.isBefore(DateTime.now()));
-
-    // print(query);
-    // events.forEach((event) {
-    //   print(event.name);
-    //   print(event.date);
-    //   print(event.time);
-    //   print(event.pax);
-    //   print(event.description);
-    //   print(event.icon);
-    // });
 
     return SingleChildScrollView(
       physics: ScrollPhysics(),
