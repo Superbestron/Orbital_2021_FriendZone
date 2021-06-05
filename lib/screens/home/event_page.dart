@@ -9,7 +9,7 @@ import 'package:myapp/models/user.dart';
 class EventPage extends StatefulWidget {
   final String eventID;
 
-  EventPage({ required this.eventID });
+  EventPage({required this.eventID});
 
   @override
   _EventPageState createState() => _EventPageState();
@@ -116,7 +116,8 @@ class _EventPageState extends State<EventPage> {
                                               widget.eventID, user.uid);
                                         } else {
                                           setState(() {
-                                            error = "It is too late to withdraw!";
+                                            error =
+                                                "It is too late to withdraw!";
                                           });
                                         }
                                       }, // Confirm to join event
@@ -155,7 +156,8 @@ class _EventPageState extends State<EventPage> {
                                           ),
                                           onPressed: () {
                                             setState(() {
-                                              error = "Event full! Try other events.";
+                                              error =
+                                                  "Event full! Try other events.";
                                             });
                                           },
                                           child: ListTile(
@@ -181,7 +183,8 @@ class _EventPageState extends State<EventPage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
-                        child: Text(event.description, textAlign: TextAlign.start),
+                        child:
+                            Text(event.description, textAlign: TextAlign.start),
                       ),
                     )
                   ],
