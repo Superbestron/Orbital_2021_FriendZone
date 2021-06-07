@@ -30,6 +30,9 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
 
     var defaultLogin = <Widget>[
+      SizedBox(
+          height: 20,
+      ),
       SvgPicture.asset('assets/logo.svg'),
       Container(
         height: 205,
@@ -53,26 +56,42 @@ class _SignInState extends State<SignIn> {
                 onChanged: (val) => setState(() { password = val; }),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                  child: Text('Sign in', style: TextStyle(color: Colors.black)),
-                  style: ElevatedButton.styleFrom(
-                    primary: ORANGE_1,
-                  ),
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      setState(() { loading = true; });
-                      dynamic result =
-                      await _auth.signInWithEmailAndPassword(email, password);
-                      if (result == null) {
-                        setState(() {
-                          loading = false;
-                          error = 'could not sign in with those credentials';
-                        });
-                      }
-                    }
-                  }),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                      child: Text('Register', style: TextStyle(color: Colors.black)),
+                      style: ElevatedButton.styleFrom(
+                        primary: ORANGE_1,
+                      ),
+                      onPressed: () {
+                        widget.toggleView();
+                      }),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                      child: Text('Sign in', style: TextStyle(color: Colors.black)),
+                      style: ElevatedButton.styleFrom(
+                        primary: ORANGE_1,
+                      ),
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          setState(() { loading = true; });
+                          dynamic result =
+                          await _auth.signInWithEmailAndPassword(email, passord);
+                          if (result == null) {
+                            setState(() {
+                              loading = false;
+                              error = 'could not sign in with those credentials';
+                            });
+                          }
+                        }
+                      }),
+                ),
+              ],
             ),
             Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0),
             ),
