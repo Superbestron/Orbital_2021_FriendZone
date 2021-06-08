@@ -110,13 +110,14 @@ class _EventPageState extends State<EventPage> {
                                         int daysToEvent = event.dateTime
                                             .difference(DateTime.now())
                                             .inDays;
-                                        print(daysToEvent);
+                                        // print(daysToEvent);
                                         if (daysToEvent > 2) {
                                           await dbService.removeUserFromEvent(
                                               widget.eventID, user.uid);
                                         } else {
                                           setState(() {
-                                            error = "It is too late to withdraw!";
+                                            error =
+                                                "It is too late to withdraw!";
                                           });
                                         }
                                       }, // Confirm to join event
@@ -124,7 +125,7 @@ class _EventPageState extends State<EventPage> {
                                         contentPadding: EdgeInsets.all(0.0),
                                         leading: Icon(Icons.check, size: 15.0),
                                         minLeadingWidth: 5.0,
-                                        title: Text('Unconfirm Attendance',
+                                        title: Text('Revoke Attendance',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(fontSize: 12)),
                                       ))
@@ -155,7 +156,8 @@ class _EventPageState extends State<EventPage> {
                                           ),
                                           onPressed: () {
                                             setState(() {
-                                              error = "Event full! Try other events.";
+                                              error =
+                                                  "Event full! Try other events.";
                                             });
                                           },
                                           child: ListTile(
@@ -181,7 +183,8 @@ class _EventPageState extends State<EventPage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
-                        child: Text(event.description),
+                        child:
+                            Text(event.description, textAlign: TextAlign.start),
                       ),
                     )
                   ],

@@ -98,6 +98,12 @@ class _SignInState extends State<SignIn> {
           ],
         ),
       ),
+      // Toggle Register Page
+      TextButton.icon(
+        icon: Icon(Icons.person),
+        label: Text('Register'),
+        onPressed: () { widget.toggleView(); },
+      ),
       SvgPicture.asset('assets/tree.svg'),
     ];
 

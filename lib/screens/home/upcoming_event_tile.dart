@@ -2,11 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myapp/models/event.dart';
 import 'package:myapp/screens/home/event_page.dart';
+import 'package:myapp/shared/clock.dart';
 import 'package:myapp/shared/constants.dart';
 
-class EventTile extends StatelessWidget {
+class UpcomingEventTile extends StatelessWidget {
+
   final Event event;
-  EventTile({required this.event});
+  UpcomingEventTile({ required this.event });
+
+  // Probably can color the card red/amber to inform users
+  // that their event has been cancelled/edited when they
+  // click the notifications page
+  // static const Color CANCELLED = Colors.red;
+  // static Color? EDITED = Colors.amber[800];
 
   @override
   Widget build(BuildContext context) {
@@ -33,24 +41,21 @@ class EventTile extends StatelessWidget {
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       dense: true,
                       leading: Icon(Icons.calendar_today, size: 15),
-                      title: Text(getDateText(event.dateTime),
-                          style: TextStyle(fontSize: 15)),
+                      title: Text(getDateText(event.dateTime), style: TextStyle(fontSize: 15)),
                       minLeadingWidth: 10.0,
                     ),
                     ListTile(
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       dense: true,
                       leading: Icon(Icons.access_time, size: 15),
-                      title: Text('${getTimeText(event.dateTime)}',
-                          style: TextStyle(fontSize: 15)),
+                      title: Text('${getTimeText(event.dateTime)}', style: TextStyle(fontSize: 15)),
                       minLeadingWidth: 10.0,
                     ),
                     ListTile(
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       dense: true,
                       leading: Icon(Icons.group_rounded, size: 15),
-                      title: Text('${event.attendees.length} / ${event.pax}',
-                          style: TextStyle(fontSize: 15)),
+                      title: Text('${event.attendees.length} / ${event.pax}', style: TextStyle(fontSize: 15)),
                       minLeadingWidth: 10.0,
                     ),
                   ],
@@ -58,18 +63,20 @@ class EventTile extends StatelessWidget {
               ),
               Expanded(
                 child: Column(
-                  children: <Widget>[
+                  children: <Widget> [
                     imageList[event.icon],
+                    Clock(dateTime: event.dateTime).build(context),
                   ],
                 ),
               ),
             ],
           ),
+
           onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => Stack(
-                  children: <Widget>[
+                  children: <Widget> [
                     SvgPicture.asset(
                       'assets/background.svg',
                       fit: BoxFit.cover,
@@ -83,7 +90,7 @@ class EventTile extends StatelessWidget {
                           "Event Details",
                           style: TextStyle(color: Colors.black),
                         ),
-                        actions: <Widget>[
+                        actions: <Widget> [
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 15, 15, 0),
                             child: imageList[event.icon],
@@ -94,61 +101,16 @@ class EventTile extends StatelessWidget {
                         backgroundColor: Colors.transparent,
                       ),
                       body: Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 20.0, horizontal: 60.0),
+                        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
                         child: EventPage(eventID: event.eventID),
                       ),
                     ),
                   ],
                 ),
-              )),
+              )
+          ),
         ),
       ),
     );
   }
 }
-
-// For reference
-
-// import 'package:flutter/material.dart';
-// import 'package:myapp/models/event.dart';
-
-//
-// class BrewTile extends StatelessWidget {
-//
-//   final Event event;
-//   BrewTile({ required this.brew });
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: EdgeInsets.only(top: 8.0),
-//       child: Card(
-//         margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
-//         child: ListTile(
-//           leading: CircleAvatar(
-//             radius: 25.0,
-//             backgroundColor: Colors.brown[brew.strength],
-//             // backgroundImage: AssetImage('assets/...png'),
-//           ),
-//           title: Text(brew.name),
-//           subtitle: Text('Takes ${brew.sugars} sugar(s)'),
-//           onTap: () => Navigator.push(
-//             context,
-//             MaterialPageRoute(
-//               builder: (context) => Scaffold(
-//                 appBar: AppBar(
-//                   leading: BackButton(),
-//                 ),
-//                 body: Container(
-//                   padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-//                   child: EventPage(),
-//                 ),
-//               ),
-//             )
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
