@@ -56,56 +56,60 @@ class _SignInState extends State<SignIn> {
                 onChanged: (val) => setState(() { password = val; }),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                      child: Text('Register', style: TextStyle(color: Colors.black)),
-                      style: ElevatedButton.styleFrom(
-                        primary: ORANGE_1,
-                      ),
-                      onPressed: () {
-                        widget.toggleView();
-                      }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                      child: Text('Sign in', style: TextStyle(color: Colors.black)),
-                      style: ElevatedButton.styleFrom(
-                        primary: ORANGE_1,
-                      ),
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          setState(() { loading = true; });
-                          dynamic result =
-                          await _auth.signInWithEmailAndPassword(email, passord);
-                          if (result == null) {
-                            setState(() {
-                              loading = false;
-                              error = 'could not sign in with those credentials';
-                            });
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                        child: Text('Register', style: TextStyle(color: Colors.black)),
+                        style: ElevatedButton.styleFrom(
+                          primary: ORANGE_1,
+                        ),
+                        onPressed: () {
+                          widget.toggleView();
+                        }),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                        child: Text('Sign in', style: TextStyle(color: Colors.black)),
+                        style: ElevatedButton.styleFrom(
+                          primary: ORANGE_1,
+                        ),
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            setState(() { loading = true; });
+                            dynamic result =
+                            await _auth.signInWithEmailAndPassword(email, password);
+                            if (result == null) {
+                              setState(() {
+                                loading = false;
+                                error = 'Incorrect Email/Password!';
+                              });
+                            }
                           }
-                        }
-                      }),
-                ),
-              ],
+                        }),
+                  ),
+                ],
+              ),
             ),
-            Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0),
-            ),
+            Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0)),
           ],
         ),
       ),
       // Toggle Register Page
-      TextButton.icon(
-        icon: Icon(Icons.person),
-        label: Text('Register'),
-        onPressed: () { widget.toggleView(); },
-      ),
+      // TextButton.icon(
+      //   icon: Icon(Icons.person),
+      //   label: Text('Register'),
+      //   onPressed: () { widget.toggleView(); },
+      // ),
+      SizedBox(height: 24.0),
       SvgPicture.asset('assets/tree.svg'),
     ];
+
+
 
     // ignore: non_constant_identifier_names
     var NUSLogin = <Widget>[

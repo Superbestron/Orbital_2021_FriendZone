@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class UserObj {
 
   final String uid;
@@ -12,7 +10,7 @@ class UserObj {
 class UserData {
 
   final String uid;
-  Image profileImage;
+  String profileImagePath;
   String name;
   int level;
   // Provide a list of options for users to choose from
@@ -20,11 +18,11 @@ class UserData {
   int points;
   String bio;
   // Just need to store eventIDs of the events the user is participating
-  List<String> events;
+  List<dynamic> events;
 
   UserData({
     required this.uid,
-    required this.profileImage,
+    required this.profileImagePath,
     required this.name,
     required this.level,
     required this.faculty,

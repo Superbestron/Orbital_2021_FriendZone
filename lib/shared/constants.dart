@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 // Login Border
-const textInputDecoration = InputDecoration(
+var textInputDecoration = InputDecoration(
   fillColor: Colors.white,
   filled: true,
   enabledBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.white, width: 2.0),
+    borderSide: BorderSide(color: GREEN_1, width: 2.0),
   ),
   focusedBorder: OutlineInputBorder(
     borderSide: BorderSide(color: Colors.pink, width: 2.0),
@@ -67,3 +67,10 @@ Color GREEN_1 = HexColor.fromHex('BFE1D7');
 Color ORANGE_1 = HexColor.fromHex('E1B58F');
 // ignore: non_constant_identifier_names
 Color CARD_BACKGROUND = HexColor.fromHex('F8F8F8');
+Color? greyedOut = Colors.grey[400];
+Color? revokeAttendance = HexColor.fromHex('FED8B1');
+
+// Different text types
+const TEXT_FIELD_HEADING = TextStyle(fontSize: 20);
+const BOLDED_NORMAL = TextStyle(fontWeight: FontWeight.bold, fontSize: 16);
+const NORMAL = TextStyle(fontSize: 16);

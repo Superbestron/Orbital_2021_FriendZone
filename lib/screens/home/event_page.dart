@@ -9,7 +9,7 @@ import 'package:myapp/models/user.dart';
 class EventPage extends StatefulWidget {
   final String eventID;
 
-  EventPage({required this.eventID});
+  EventPage({ required this.eventID });
 
   @override
   _EventPageState createState() => _EventPageState();
@@ -39,13 +39,16 @@ class _EventPageState extends State<EventPage> {
             return Scaffold(
                 backgroundColor: Colors.transparent,
                 body: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                      child: Text(
-                        event.name,
-                        style: TextStyle(fontSize: 18.0),
-                        textAlign: TextAlign.center,
+                    Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                        child: Text(
+                          event.name,
+                          style: TEXT_FIELD_HEADING,
+                        ),
                       ),
                     ),
                     ListTile(
@@ -73,7 +76,7 @@ class _EventPageState extends State<EventPage> {
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       // Right now I'm just gonna hard code this thing.
                       title: Text('Initiated by Tze Henn',
-                          style: TextStyle(fontSize: 15)),
+                          style: NORMAL),
                       minLeadingWidth: 10.0,
                     ),
                     Row(
@@ -104,7 +107,7 @@ class _EventPageState extends State<EventPage> {
                               child: hasConfirmedAttendance(event, user.uid)
                                   ? ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        primary: Colors.amber[800],
+                                        primary: revokeAttendance,
                                       ),
                                       onPressed: () async {
                                         int daysToEvent = event.dateTime
@@ -128,7 +131,8 @@ class _EventPageState extends State<EventPage> {
                                         title: Text('Revoke Attendance',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(fontSize: 12)),
-                                      ))
+                                      ),
+                                    )
                                   : event.attendees.length < event.pax
                                       ? ElevatedButton(
                                           style: ElevatedButton.styleFrom(
@@ -173,20 +177,30 @@ class _EventPageState extends State<EventPage> {
                       ],
                     ),
                     Padding(
-                        padding: const EdgeInsets.fromLTRB(124, 0, 0, 0),
-                        child: SizedBox(
-                          child: Text(error,
-                              textAlign: TextAlign.center,
-                              style:
-                                  TextStyle(color: Colors.red, fontSize: 14.0)),
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.fromLTRB(124, 0, 0, 0),
                       child: SizedBox(
-                        child:
-                            Text(event.description, textAlign: TextAlign.start),
+                        child: Text(error,
+                          textAlign: TextAlign.center,
+                          style:
+                            TextStyle(color: Colors.red, fontSize: 14.0)),
+                      )),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Event Description',
+                            style: TEXT_FIELD_HEADING,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            event.description,
+                            style: NORMAL,
+                          ),
+                        ],
                       ),
-                    )
+                    ),
                   ],
                 ));
           } else {
