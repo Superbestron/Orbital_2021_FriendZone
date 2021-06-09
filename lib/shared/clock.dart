@@ -27,7 +27,7 @@ class Clock extends StatelessWidget {
             timeLeft(dateTime.difference(DateTime.now())),
             style: TextStyle(
               fontSize: 14,
-              color: Colors.cyan[500],
+              color: Colors.cyan[600],
             ),
             textAlign: TextAlign.center,
           ),

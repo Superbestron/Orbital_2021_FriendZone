@@ -39,7 +39,6 @@ class DatabaseService {
     return event;
   }
 
-  // TODO: Decide on what info to store about an event
   Future updateEventData(String name, DateTime dateTime,
       int pax, String description, int icon, String eventID, List<dynamic> attendees) async {
     return await eventCollection.doc(eventID).set({
@@ -58,15 +57,7 @@ class DatabaseService {
     String newDocID = eventCollection.doc().id;
     List<dynamic> attendees = [];
     attendees.add(uid);
-    await eventCollection.doc(newDocID).set({
-      'name': name,
-      'dateTime': dateTime,
-      'pax': pax,
-      'description': description,
-      'icon': icon,
-      'eventID': newDocID,
-      'attendees': attendees,
-    });
+    updateEventData(name, dateTime, pax, description, icon, newDocID, attendees);
     return newDocID;
   }
 
@@ -138,10 +129,10 @@ class DatabaseService {
   }
 
   // TODO: Decide on what info to store about user
-  Future updateUserData(String imagePath, String name, int level, int faculty,
+  Future updateUserData(String profileImagePath, String name, int level, int faculty,
       int points, String bio, List<dynamic> events) async {
     return await profileCollection.doc(uid).set({
-      'imagePath': imagePath,
+      'profileImagePath': profileImagePath,
       'name': name,
       'level': level,
       'faculty': faculty,
@@ -170,20 +161,20 @@ class DatabaseService {
   //   await FirebaseStorage.instance.ref('images/5D637A11-6B11-415C-A97E-DAFA6D7457DD.heic').getDownloadURL();
   // }
 
-  Future uploadImageToFirebase(File image, UserData userData) async {
-    try {
-      // Make random image
-      String imageLocation = 'images/$uid.jpg';
-
-      // Upload image to Firebase
-      await FirebaseStorage.instance.ref(imageLocation).putFile(image);
-
-      updateUserData(imageLocation, userData.name, userData.level, userData.faculty,
-          userData.points, userData.bio, userData.events);
-    } on FirebaseException catch (e) {
-      print(e.code);
-    } catch (e) {
-      print(e);
-    }
-  }
+  // Future uploadImageToFirebase(File image, UserData userData) async {
+  //   try {
+  //     // Make random image
+  //     String imageLocation = 'images/$uid.jpg';
+  //
+  //     // Upload image to Firebase
+  //     await FirebaseStorage.instance.ref(imageLocation).putFile(image);
+  //
+  //     updateUserData(imageLocation, userData.name, userData.level, userData.faculty,
+  //         userData.points, userData.bio, userData.events);
+  //   } on FirebaseException catch (e) {
+  //     print(e.code);
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 }

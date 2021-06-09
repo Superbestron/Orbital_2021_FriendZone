@@ -35,6 +35,14 @@ class MyApp extends StatelessWidget {
                 color: Colors.black,
               ))
             )
+          ),
+          iconTheme: IconThemeData(
+            color: ORANGE_1
+          ),
+          snackBarTheme: SnackBarThemeData(
+            contentTextStyle: TextStyle(
+              color: Colors.black
+            ),
           )
         ),
         home: Wrapper(),

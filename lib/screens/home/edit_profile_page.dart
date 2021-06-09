@@ -21,7 +21,7 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
 
-  File? _image;
+  // File? _image;
   final picker = ImagePicker();
   String _name = '';
   String _bio = '';
@@ -125,8 +125,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       );
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          backgroundColor: Colors.cyan,
-                          content: Text('Successfully edited your profile!'),
+                          backgroundColor: GREEN_1,
+                          content: Text('Successfully edited your profile!')
                         )
                       );
                     }
@@ -134,9 +134,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
                 const SizedBox(height: 60),
                 SvgPicture.asset(
-                    'assets/tree.svg',
-                    fit: BoxFit.cover,
-                    clipBehavior: Clip.hardEdge
+                  'assets/tree.svg',
+                  // fit: BoxFit.cover,
+                  clipBehavior: Clip.hardEdge
                 ),
               ]
             )

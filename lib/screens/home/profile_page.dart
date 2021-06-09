@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:myapp/models/user.dart';
 import 'package:myapp/screens/home/edit_profile_page.dart';
 import 'package:myapp/services/database.dart';
@@ -39,9 +40,9 @@ class _ProfilePageState extends State<ProfilePage> {
               physics: BouncingScrollPhysics(),
               children: [
                 ProfileWidget(
+                  // TODO: Edit profile pic
                   // image: userData.profileImage
                   image: AssetImage('assets/food.png'),
-                  // TODO: Edit profile pic
                   onClicked: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) {
@@ -52,11 +53,16 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 const SizedBox(height: 24),
                 buildName(userData),
-                const SizedBox(height: 24),
-                const SizedBox(height: 24),
+                const SizedBox(height: 36),
                 NumbersWidget(points: userData.points, level: userData.level),
-                const SizedBox(height: 48),
+                const SizedBox(height: 36),
                 buildAbout(userData),
+                const SizedBox(height: 36),
+                SvgPicture.asset(
+                    'assets/tree.svg',
+                    // fit: BoxFit.cover,
+                    clipBehavior: Clip.hardEdge
+                ),
               ],
             ),
           );
@@ -73,15 +79,18 @@ Widget buildAbout(UserData userData) => Container(
   child: Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
-        'About',
-        style: TEXT_FIELD_HEADING,
-      ),
+      Text('About', style: TEXT_FIELD_HEADING),
       const SizedBox(height: 16),
-      Text(
-        userData.bio,
-        style: NORMAL,
-      ),
+      Container(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: 100
+          ),
+          child: Text(userData.bio),
+        ),
+        decoration: boxDecoration,
+        padding: const EdgeInsets.all(15.0),
+      )
     ],
   ),
 );
@@ -101,18 +110,33 @@ class NumbersWidget extends StatelessWidget {
   Widget build(BuildContext context) => Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
-      buildButton(context, '$points', 'Points'),
+      Column(
+        children: [
+          Icon(Icons.star),
+          buildButton(context, '$points', 'Points'),
+        ],
+      ),
       buildDivider(),
-      buildButton(context, '$level', 'level'),
+      Column(
+        children: [
+          Icon(Icons.mood),
+          buildButton(context, '$level', 'level'),
+        ],
+      ),
       buildDivider(),
       // TODO: Possible button
       // buildButton(context, '$friends', 'Friends'),
-      buildButton(context, '50', 'Followers'),
+      Column(
+        children: [
+          Icon(Icons.social_distance),
+          buildButton(context, '50', 'Friends'),
+        ],
+      ),
     ],
   );
   Widget buildDivider() => Container(
     height: 24,
-    child: VerticalDivider(),
+    child: VerticalDivider(color: Colors.grey),
   );
 
   Widget buildButton(BuildContext context, String value, String text) =>

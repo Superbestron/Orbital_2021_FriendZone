@@ -12,6 +12,14 @@ var textInputDecoration = InputDecoration(
   ),
 );
 
+var boxDecoration = BoxDecoration(
+  border: Border.all(
+    color: GREEN_1,
+    width: 2.0
+  ),
+  borderRadius: BorderRadius.all(Radius.circular(20))
+);
+
 // TODO: Update Icons here
 // List of icons
 List<Image> imageList = [

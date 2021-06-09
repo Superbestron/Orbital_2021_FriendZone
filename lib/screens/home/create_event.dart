@@ -260,7 +260,7 @@ class _CreateEventState extends State<CreateEvent> {
                           );
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('You have successfully created an event!'),
+                              content: Text('Successfully created an event!'),
                               action: SnackBarAction(
                                 label: 'Undo',
                                 onPressed: () async {
