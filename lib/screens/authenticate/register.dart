@@ -43,7 +43,7 @@ class _RegisterState extends State<Register> {
                             Padding(
                               padding: EdgeInsets.all(16.0),
                               child: Text(
-                                  "Create an account!",
+                                "Create an account!",
                                 style: TextStyle(
                                   fontSize: 25,
                                 ),
