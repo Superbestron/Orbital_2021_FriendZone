@@ -84,7 +84,8 @@ Widget buildAbout(UserData userData) => Container(
       Container(
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            minHeight: 100
+            minHeight: 100,
+            minWidth: 500,
           ),
           child: Text(userData.bio),
         ),
