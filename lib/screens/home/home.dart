@@ -3,7 +3,7 @@ import 'package:myapp/screens/home/event_list.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myapp/screens/home/create_event.dart';
 import 'package:myapp/screens/home/profile_page.dart';
-import 'package:myapp/screens/home/screen1.dart';
+import 'package:myapp/screens/home/maps.dart';
 import 'package:myapp/screens/home/notifications.dart';
 import 'package:myapp/services/database.dart';
 import 'package:flutter/material.dart';
@@ -22,14 +22,14 @@ class _HomeState extends State<Home> {
   PageController _pageController = PageController();
   final List<Widget> _children = [
     EventList(),
-    Screen1(),
+    Maps(),
     CreateEvent(),
     Notifications(),
     ProfilePage(),
   ];
   final List<String> _appBarTitles = [
     'Upcoming Events',
-    'Screen 1',
+    'Events Near You',
     'Create New Event',
     'Signed Up Events',
     'My Profile',
@@ -115,8 +115,8 @@ class _HomeState extends State<Home> {
                       label: 'Home',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.calendar_today),
-                      label: 'Calendar',
+                      icon: Icon(Icons.map_outlined),
+                      label: 'Maps',
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.add),

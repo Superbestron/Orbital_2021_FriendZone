@@ -54,6 +54,13 @@ flutter {
     source '../..'
 }
 
+android {
+    defaultConfig {
+        minSdkVersion 20
+        multiDexEnabled true
+    }
+}
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
