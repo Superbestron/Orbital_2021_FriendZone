@@ -1,7 +1,8 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:myapp/models/event.dart';
 import 'package:myapp/models/user.dart';
-import 'package:flutter/material.dart';
 
 class DatabaseService {
 
@@ -17,10 +18,11 @@ class DatabaseService {
   final CollectionReference eventCollection =
     FirebaseFirestore.instance.collection('events');
 
-  // collection reference to user profiles
+  // collection reference to all user profiles
   final CollectionReference profileCollection =
   FirebaseFirestore.instance.collection('profiles');
 
+  // EVENTS
   Future getEventData(String eventID) async {
     DocumentReference ref = eventCollection.doc(eventID);
     var event = await ref.get().then((snapshot) =>
@@ -37,7 +39,6 @@ class DatabaseService {
     return event;
   }
 
-  // TODO: Decide on what info to store about an event
   Future updateEventData(String name, DateTime dateTime,
       int pax, String description, int icon, String eventID, List<dynamic> attendees) async {
     return await eventCollection.doc(eventID).set({
@@ -56,48 +57,8 @@ class DatabaseService {
     String newDocID = eventCollection.doc().id;
     List<dynamic> attendees = [];
     attendees.add(uid);
-    await eventCollection.doc(newDocID).set({
-      'name': name,
-      'dateTime': dateTime,
-      'pax': pax,
-      'description': description,
-      'icon': icon,
-      'eventID': newDocID,
-      'attendees': attendees,
-    });
+    updateEventData(name, dateTime, pax, description, icon, newDocID, attendees);
     return newDocID;
-  }
-
-  // TODO: Decide on what info to store about user
-  Future updateUserData(Image profileImage, String name, int level, int faculty,
-      int points, String bio, List<Event> events) async {
-    return await profileCollection.doc(uid).set({
-      'profileImage': profileImage,
-      'name': name,
-      'level': level,
-      'faculty': faculty,
-      'points': points,
-      'bio': bio,
-      'events' : events,
-    });
-  }
-
-  Future getUserData() async {
-    DocumentReference ref = profileCollection.doc(uid);
-    UserData user = await ref.get().then((snapshot) =>
-      // use snapshot.get(field_name) to add other fields easily
-      UserData (
-        uid: ref.id,
-        profileImage: snapshot.get('profileImage'),
-        name: snapshot.get('name'),
-        level: snapshot.get('level'),
-        faculty: snapshot.get('faculty'),
-        points: snapshot.get('points'),
-        bio: snapshot.get('bio'),
-        events: snapshot.get('icon'),
-      )
-    );
-    return user;
   }
 
   // Event list from snapshot
@@ -135,22 +96,10 @@ class DatabaseService {
       .map(_eventListFromSnapshot);
   }
 
-  // // get brews stream
-  // Stream<List<Brew>> get brews {
-  //   return eventCollection.snapshots()
-  //     .map(_brewListFromSnapshot);
-  // }
-
-  // // get user doc stream
-  // Stream<UserData> get userData {
-  //   return eventCollection.doc(uid).snapshots()
-  //     .map(_userDataFromSnapshot);
-  // }
-
   // get event doc stream
   Stream<Event> getEvent(String eventID){
-      return eventCollection.doc(eventID).snapshots()
-        .map(_eventFromSnapshot);
+    return eventCollection.doc(eventID).snapshots()
+      .map(_eventFromSnapshot);
   }
 
   Future addUserToEvent(String eventID, String uid) async {
@@ -172,4 +121,60 @@ class DatabaseService {
     return await updateEventData(event.name, event.dateTime, event.pax,
       event.description, event.icon, event.eventID, event.attendees);
   }
+
+  // get profile stream
+  Stream<UserData> get userData {
+    return profileCollection.doc(uid).snapshots()
+        .map(_userDataFromSnapshot);
+  }
+
+  // TODO: Decide on what info to store about user
+  Future updateUserData(String profileImagePath, String name, int level, int faculty,
+      int points, String bio, List<dynamic> events) async {
+    return await profileCollection.doc(uid).set({
+      'profileImagePath': profileImagePath,
+      'name': name,
+      'level': level,
+      'faculty': faculty,
+      'points': points,
+      'bio': bio,
+      'events': events,
+    });
+  }
+
+  // Maps snapshot of user's data from Firebase back to UserData object
+  UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
+    // use snapshot.get(field_name) to add other fields easily
+    return UserData(
+      uid: uid,
+      profileImagePath: snapshot.get('profileImagePath'),
+      name: snapshot.get('name'),
+      level: snapshot.get('level'),
+      faculty: snapshot.get('faculty'),
+      points: snapshot.get('points'),
+      bio: snapshot.get('bio'),
+      events: snapshot.get('events'),
+    );
+  }
+
+  // Future getImageDataFromFirebase(String profileImagePath) async {
+  //   await FirebaseStorage.instance.ref('images/5D637A11-6B11-415C-A97E-DAFA6D7457DD.heic').getDownloadURL();
+  // }
+
+  // Future uploadImageToFirebase(File image, UserData userData) async {
+  //   try {
+  //     // Make random image
+  //     String imageLocation = 'images/$uid.jpg';
+  //
+  //     // Upload image to Firebase
+  //     await FirebaseStorage.instance.ref(imageLocation).putFile(image);
+  //
+  //     updateUserData(imageLocation, userData.name, userData.level, userData.faculty,
+  //         userData.points, userData.bio, userData.events);
+  //   } on FirebaseException catch (e) {
+  //     print(e.code);
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 }

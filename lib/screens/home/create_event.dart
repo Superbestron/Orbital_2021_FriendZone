@@ -79,7 +79,6 @@ class _CreateEventState extends State<CreateEvent> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Scaffold(
-        backgroundColor: Colors.transparent,
         body: Form(
           key: _formKey,
           child: Column(
@@ -223,10 +222,6 @@ class _CreateEventState extends State<CreateEvent> {
                           width: 2),
                       ),
                     ),
-                    // TextButton(
-                    //     child: Image(image: AssetImage('assets/food.png')),
-                    //     onPressed: (){}
-                    // ),
                   ], 
                 )
               ),
@@ -250,12 +245,8 @@ class _CreateEventState extends State<CreateEvent> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: FloatingActionButton(
-                      //foregroundColor: ORANGE_1,
-                      backgroundColor: Colors.cyan[100],
+                      backgroundColor: ORANGE_1,
                       tooltip: 'Create Event',
-                      // style: FloatingActionButton.styleFrom(
-                      //   primary: ORANGE_1,
-                      // ),
                       child: Icon(Icons.add),
                       onPressed: () async {
                         // TODO: Validate that date and time are set by the user
@@ -269,7 +260,7 @@ class _CreateEventState extends State<CreateEvent> {
                           );
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('You have successfully created an event!'),
+                              content: Text('Successfully created an event!'),
                               action: SnackBarAction(
                                 label: 'Undo',
                                 onPressed: () async {

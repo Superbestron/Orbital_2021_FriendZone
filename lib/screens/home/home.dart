@@ -2,8 +2,8 @@ import 'package:myapp/models/event.dart';
 import 'package:myapp/screens/home/event_list.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myapp/screens/home/create_event.dart';
-import 'package:myapp/screens/home/profile.dart';
-import 'package:myapp/screens/home/screen1.dart';
+import 'package:myapp/screens/home/profile_page.dart';
+import 'package:myapp/screens/home/maps.dart';
 import 'package:myapp/screens/home/notifications.dart';
 import 'package:myapp/services/database.dart';
 import 'package:flutter/material.dart';
@@ -16,20 +16,19 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   int _selectedIndex = 0;
   final AuthService _auth = AuthService();
   PageController _pageController = PageController();
   final List<Widget> _children = [
     EventList(),
-    Screen1(),
+    Maps(),
     CreateEvent(),
     Notifications(),
-    Profile(),
+    ProfilePage(),
   ];
   final List<String> _appBarTitles = [
     'Upcoming Events',
-    'Screen 1',
+    'Events Near You',
     'Create New Event',
     'Signed Up Events',
     'My Profile',
@@ -46,7 +45,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-
     // void _showSettingsPanel() {
     //   showModalBottomSheet(context: context, builder: (context) {
     //     return Container(
@@ -61,41 +59,36 @@ class _HomeState extends State<Home> {
       value: DatabaseService(uid: '').events,
       child: Stack(
         fit: StackFit.expand,
-        children: <Widget> [
+        children: <Widget>[
           SvgPicture.asset(
             'assets/background.svg',
             fit: BoxFit.cover,
-              clipBehavior: Clip.hardEdge,
+            clipBehavior: Clip.hardEdge,
           ),
           Scaffold(
-            backgroundColor: Colors.transparent,
             appBar: AppBar(
-              title: Text(_appBarTitles[_selectedIndex],
-                  style: TextStyle(
-                      color: Colors.black,
-                  ),
+              title: Text(
+                _appBarTitles[_selectedIndex],
               ),
-              backgroundColor: Colors.transparent,
               toolbarHeight: 100.0,
-              elevation: 0.0,
               actions: <Widget>[
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
                   child: TextButton.icon(
-                    icon: Icon(Icons.person, color: Colors.black),
-                    label: Text('logout', style: TextStyle(color: Colors.black)),
-                    onPressed: () async { await _auth.signOut(); }
-                  ),
+                      icon: Icon(Icons.person, color: Colors.black),
+                      label:
+                          Text('logout', style: TextStyle(color: Colors.black)),
+                      onPressed: () async {
+                        await _auth.signOut();
+                      }),
                 ),
                 // TextButton.icon(
                 //   icon: Icon(Icons.settings),
                 //   label: Text('settings'),
                 //   onPressed: () => _showSettingsPanel(),
                 // ),
-                // SizedBox(width: 20.0),
               ],
             ),
-
             body: Container(
               // decoration: BoxDecoration(
               //   image: DecorationImage(
@@ -120,8 +113,8 @@ class _HomeState extends State<Home> {
                   label: 'Home',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.calendar_today),
-                  label: 'Calendar',
+                  icon: Icon(Icons.map_outlined),
+                  label: 'Maps',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.add),
@@ -139,7 +132,7 @@ class _HomeState extends State<Home> {
             ),
           ),
         ],
-      )
+      ),
     );
   }
 }

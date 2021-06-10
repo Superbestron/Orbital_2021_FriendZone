@@ -5,21 +5,18 @@ import 'package:myapp/shared/loading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SignIn extends StatefulWidget {
-
   final Function toggleView;
-  SignIn({ required this.toggleView });
+
+  SignIn({required this.toggleView});
 
   @override
   _SignInState createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
-
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
-
-  bool isNUS = false;
 
   // text field state
   String email = '';
@@ -28,41 +25,67 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-
-    var defaultLogin = <Widget>[
-      SizedBox(
-          height: 20,
-      ),
-      SvgPicture.asset('assets/logo.svg'),
-      Container(
-        height: 205,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: textInputDecoration.copyWith(hintText: 'Email'),
-                validator: (val) => val!.isEmpty ? 'Enter an email' : null,
-                onChanged: (val) => setState(() { email = val; }),
+    var loginWidget = <Widget>[
+      Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 409, 0, 0),
+            child: SvgPicture.asset('assets/tree.svg'),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+            child: Center(child: SvgPicture.asset('assets/logo.svg')),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 233, 0, 0),
+            child: Container(
+              height: 250,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: TextFormField(
+                      decoration:
+                          textInputDecoration.copyWith(hintText: 'Email'),
+                      validator: (val) =>
+                          val!.isEmpty ? 'Enter an email' : null,
+                      onChanged: (val) => setState(() {
+                        email = val;
+                      }),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: TextFormField(
+                      decoration:
+                          textInputDecoration.copyWith(hintText: 'Password'),
+                      validator: (val) {
+                        return val!.length < 6
+                            ? 'Enter a password 6+ chars long'
+                            : null;
+                      },
+                      obscureText: true,
+                      onChanged: (val) => setState(() {
+                        password = val;
+                      }),
+                    ),
+                  ),
+                  Text(error,
+                      style: TextStyle(color: Colors.red, fontSize: 14.0)),
+                ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: textInputDecoration.copyWith(hintText: 'Password'),
-                validator: (val) { return val!.length < 6
-                    ? 'Enter a password 6+ chars long' : null; },
-                obscureText: true,
-                onChanged: (val) => setState(() { password = val; }),
-              ),
-            ),
-            Row(
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 375, 0, 0),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
-                      child: Text('Register', style: TextStyle(color: Colors.black)),
+                      child: Text('Register',
+                          style: TextStyle(color: Colors.white)),
                       style: ElevatedButton.styleFrom(
                         primary: ORANGE_1,
                       ),
@@ -73,19 +96,22 @@ class _SignInState extends State<SignIn> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
-                      child: Text('Sign in', style: TextStyle(color: Colors.black)),
+                      child: Text('Sign in',
+                          style: TextStyle(color: Colors.white)),
                       style: ElevatedButton.styleFrom(
                         primary: ORANGE_1,
                       ),
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          setState(() { loading = true; });
-                          dynamic result =
-                          await _auth.signInWithEmailAndPassword(email, passord);
+                          setState(() {
+                            loading = true;
+                          });
+                          dynamic result = await _auth
+                              .signInWithEmailAndPassword(email, password);
                           if (result == null) {
                             setState(() {
                               loading = false;
-                              error = 'could not sign in with those credentials';
+                              error = 'Incorrect Email/Password!';
                             });
                           }
                         }
@@ -93,111 +119,36 @@ class _SignInState extends State<SignIn> {
                 ),
               ],
             ),
-            Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0),
-            ),
-          ],
-        ),
-      ),
-      // Toggle Register Page
-      TextButton.icon(
-        icon: Icon(Icons.person),
-        label: Text('Register'),
-        onPressed: () { widget.toggleView(); },
-      ),
-      SvgPicture.asset('assets/tree.svg'),
-    ];
-
-    // ignore: non_constant_identifier_names
-    var NUSLogin = <Widget>[
-      SizedBox(height: 80.0),
-      SvgPicture.asset('assets/logo.svg'),
-      SizedBox(height: 20.0),
-      Stack(
-        children: <Widget>[
-          Center(
-            child:SvgPicture.asset(
-              'assets/login.svg',
-            ),
           ),
-          Center(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(22.0, 30.0, 22.0, 22.0),
-              child: ElevatedButton(
-                child: Text('NUSNET ID', style: TextStyle(color: Colors.white)),
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    email = "admin@google.com"; // default email for dev
-                    password = "adminadmin"; // default password for dev
-                    setState(() { loading = true; });
-                    dynamic result =
-                    await _auth.signInWithEmailAndPassword(email, password);
-                    if (result == null) {
-                      setState(() {
-                        loading = false;
-                        error = 'could not sign in with those credentials';
-                      });
-                    }
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: ORANGE_1,
-                  minimumSize: Size(135, 40),
-                  textStyle: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          // Toggle Register Page
+          // TextButton.icon(
+          //   icon: Icon(Icons.person),
+          //   label: Text('Register'),
+          //   onPressed: () { widget.toggleView(); },
+          // ),
         ],
       ),
-      Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0),
-      ),
-      SvgPicture.asset('assets/tree.svg'),
     ];
 
     return loading
         ? Loading()
         : Stack(
-          fit: StackFit.expand,
-          children: [
-            SvgPicture.asset(
-              'assets/background.svg',
-                fit: BoxFit.cover,
-                clipBehavior: Clip.hardEdge
-            ),
-            Scaffold(
-              backgroundColor: Colors.transparent,
-              body: Container(
-                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: isNUS
-                      ? NUSLogin
-                      : defaultLogin
+            fit: StackFit.expand,
+            children: [
+              SvgPicture.asset('assets/background.svg',
+                  fit: BoxFit.cover, clipBehavior: Clip.hardEdge),
+              Scaffold(
+                backgroundColor: Colors.transparent,
+                body: Container(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(children: loginWidget),
                   ),
                 ),
               ),
-            )
-          ],
-        );
+            ],
+          );
   }
 }
-
-// old app bar
-
-// flutter pub get
-// to install dependencies in flutter
-// appBar: AppBar(
-//     backgroundColor: GREEN_1,
-//     elevation: 0.0,
-//     title: Text('Sign in to FriendZone'),
-//     actions: <Widget>[
-//         TextButton.icon(
-//         icon: Icon(Icons.person),
-//         label: Text('Register'),
-//         onPressed: () { widget.toggleView(); },
-//         )
-//     ]
-// ),

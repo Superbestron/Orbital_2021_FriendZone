@@ -6,6 +6,7 @@ import 'package:myapp/shared/constants.dart';
 
 class EventTile extends StatelessWidget {
   final Event event;
+
   EventTile({required this.event});
 
   @override
@@ -70,12 +71,9 @@ class EventTile extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => Stack(
                   children: <Widget>[
-                    SvgPicture.asset(
-                      'assets/background.svg',
-                      fit: BoxFit.cover,
-                    ),
+                    SvgPicture.asset('assets/background.svg',
+                        fit: BoxFit.cover, clipBehavior: Clip.hardEdge),
                     Scaffold(
-                      backgroundColor: Colors.transparent,
                       // AppBar that is shown on event_page
                       appBar: AppBar(
                         leading: BackButton(color: Colors.black),
@@ -90,8 +88,6 @@ class EventTile extends StatelessWidget {
                           ),
                         ],
                         toolbarHeight: 75.0,
-                        elevation: 0.0,
-                        backgroundColor: Colors.transparent,
                       ),
                       body: Container(
                         padding: EdgeInsets.symmetric(
