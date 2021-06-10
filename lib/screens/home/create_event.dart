@@ -47,8 +47,12 @@ class _CreateEventState extends State<CreateEvent> {
     final newDate = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(DateTime.now().year),
-        lastDate: DateTime(DateTime.now().year + 1),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(
+          DateTime.now().year + 1,
+          DateTime.now().month,
+          DateTime.now().day
+        ),
     );
 
     if (newDate != null) {

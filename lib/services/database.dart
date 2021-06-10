@@ -157,9 +157,9 @@ class DatabaseService {
     );
   }
 
-  // Future getImageDataFromFirebase(String profileImagePath) async {
-  //   await FirebaseStorage.instance.ref('images/5D637A11-6B11-415C-A97E-DAFA6D7457DD.heic').getDownloadURL();
-  // }
+  Future getImageDataFromFirebase(String profileImagePath) async {
+    await FirebaseStorage.instance.ref('images/5D637A11-6B11-415C-A97E-DAFA6D7457DD.heic').getDownloadURL();
+  }
 
   // Future uploadImageToFirebase(File image, UserData userData) async {
   //   try {

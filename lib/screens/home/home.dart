@@ -67,7 +67,7 @@ class _HomeState extends State<Home> {
               SvgPicture.asset(
                 'assets/background.svg',
                 fit: BoxFit.cover,
-                  clipBehavior: Clip.hardEdge,
+                clipBehavior: Clip.hardEdge,
               ),
               Scaffold(
                 appBar: AppBar(
