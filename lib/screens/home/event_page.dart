@@ -9,7 +9,7 @@ import 'package:myapp/models/user.dart';
 class EventPage extends StatefulWidget {
   final String eventID;
 
-  EventPage({ required this.eventID });
+  EventPage({required this.eventID});
 
   @override
   _EventPageState createState() => _EventPageState();
@@ -75,8 +75,7 @@ class _EventPageState extends State<EventPage> {
                     ListTile(
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       // Right now I'm just gonna hard code this thing.
-                      title: Text('Initiated by Tze Henn',
-                          style: NORMAL),
+                      title: Text('Initiated by Tze Henn', style: NORMAL),
                       minLeadingWidth: 10.0,
                     ),
                     Row(
@@ -177,13 +176,13 @@ class _EventPageState extends State<EventPage> {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(124, 0, 0, 0),
-                      child: SizedBox(
-                        child: Text(error,
-                          textAlign: TextAlign.center,
-                          style:
-                            TextStyle(color: Colors.red, fontSize: 14.0)),
-                      )),
+                        padding: const EdgeInsets.fromLTRB(124, 0, 0, 0),
+                        child: SizedBox(
+                          child: Text(error,
+                              textAlign: TextAlign.center,
+                              style:
+                                  TextStyle(color: Colors.red, fontSize: 14.0)),
+                        )),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 15),
                       child: Column(

@@ -29,11 +29,15 @@ class _SignInState extends State<SignIn> {
       Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.all(30),
-            child: SvgPicture.asset('assets/logo.svg'),
+            padding: EdgeInsets.fromLTRB(0, 409, 0, 0),
+            child: SvgPicture.asset('assets/tree.svg'),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 235, 0, 0),
+            padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+            child: Center(child: SvgPicture.asset('assets/logo.svg')),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 233, 0, 0),
             child: Container(
               height: 250,
               child: Column(
@@ -73,49 +77,47 @@ class _SignInState extends State<SignIn> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(0, 380, 0, 0),
-            child: Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                        child: Text('Register',
-                            style: TextStyle(color: Colors.white)),
-                        style: ElevatedButton.styleFrom(
-                          primary: ORANGE_1,
-                        ),
-                        onPressed: () {
-                          widget.toggleView();
-                        }),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                        child: Text('Sign in',
-                            style: TextStyle(color: Colors.white)),
-                        style: ElevatedButton.styleFrom(
-                          primary: ORANGE_1,
-                        ),
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
+            padding: EdgeInsets.fromLTRB(0, 375, 0, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                      child: Text('Register',
+                          style: TextStyle(color: Colors.white)),
+                      style: ElevatedButton.styleFrom(
+                        primary: ORANGE_1,
+                      ),
+                      onPressed: () {
+                        widget.toggleView();
+                      }),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                      child: Text('Sign in',
+                          style: TextStyle(color: Colors.white)),
+                      style: ElevatedButton.styleFrom(
+                        primary: ORANGE_1,
+                      ),
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          setState(() {
+                            loading = true;
+                          });
+                          dynamic result = await _auth
+                              .signInWithEmailAndPassword(email, password);
+                          if (result == null) {
                             setState(() {
-                              loading = true;
+                              loading = false;
+                              error = 'Incorrect Email/Password!';
                             });
-                            dynamic result = await _auth
-                                .signInWithEmailAndPassword(email, password);
-                            if (result == null) {
-                              setState(() {
-                                loading = false;
-                                error = 'Incorrect Email/Password!';
-                              });
-                            }
                           }
-                        }),
-                  ),
-                ],
-              ),
+                        }
+                      }),
+                ),
+              ],
             ),
           ),
           // Toggle Register Page
@@ -124,10 +126,6 @@ class _SignInState extends State<SignIn> {
           //   label: Text('Register'),
           //   onPressed: () { widget.toggleView(); },
           // ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 409, 0, 0),
-            child: SvgPicture.asset('assets/tree.svg'),
-          )
         ],
       ),
     ];
@@ -149,7 +147,7 @@ class _SignInState extends State<SignIn> {
                     child: Column(children: loginWidget),
                   ),
                 ),
-              )
+              ),
             ],
           );
   }
