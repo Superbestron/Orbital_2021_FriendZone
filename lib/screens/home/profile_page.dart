@@ -15,38 +15,49 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
 
-  // late ImageProvider _image;
+  ImageProvider? _profileImage;
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserObj?>(context);
     var dbService = DatabaseService(uid: user!.uid);
 
-    // Future _urlToImage(String profileImagePath) async {
-    //   await dbService.getImageDataFromFirebase(profileImagePath).then((url) =>
-    //     setState(() {
-    //       _image = NetworkImage(url);
-    //     })
-    //   );
-    // }
+    void _urlToImage(String profileImagePath) {
+      print(profileImagePath=='');
+      // if user did not upload any profile picture
+      if (profileImagePath == '') {
+        _profileImage = AssetImage('assets/default-profile-pic.jpeg');
+      } else {
+        dbService.getImageURLFromFirebase(profileImagePath).then((url) =>
+            setState(() {
+              _profileImage = NetworkImage(url);
+            })
+        );
+      }
+    }
 
     return StreamBuilder<UserData>(
       stream: dbService.userData,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           UserData userData = snapshot.data!;
+          _urlToImage(userData.profileImagePath);
           return Scaffold(
             body: ListView(
               physics: BouncingScrollPhysics(),
               children: [
                 ProfileWidget(
                   // TODO: Edit profile pic
-                  // image: userData.profileImage
-                  image: AssetImage('assets/food.png'),
+                  // While the image is loading, show a white background
+                  image: _profileImage ?? AssetImage('assets/plain-white-background.jpeg'),
                   onClicked: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) {
-                        return EditProfilePage(userData: userData);
+                        return EditProfilePage(
+                          userData: userData,
+                          profileImage: _profileImage!
+
+                        );
                       })
                     );
                   },

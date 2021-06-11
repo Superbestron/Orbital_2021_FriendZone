@@ -76,6 +76,7 @@ class UpcomingEventTile extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) => Stack(
+                  fit: StackFit.expand,
                   children: <Widget> [
                     SvgPicture.asset(
                       'assets/background.svg',

@@ -9,10 +9,12 @@ import 'package:myapp/shared/constants.dart';
 
 class EditProfilePage extends StatefulWidget {
 
-  final userData;
+  final UserData userData;
+  final ImageProvider profileImage;
 
   const EditProfilePage({
-    required this.userData
+    required this.userData,
+    required this.profileImage
   });
 
   @override
@@ -21,33 +23,35 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
 
-  // File? _image;
+  late File _imageFile;
   final picker = ImagePicker();
   String _name = '';
   String _bio = '';
   final _formKey = GlobalKey<FormState>();
   late DatabaseService dbService;
   late UserData userData;
+  ImageProvider? _currentImage;
 
   void initState() {
     dbService = DatabaseService(uid: widget.userData.uid);
     userData = widget.userData;
     _name = userData.name;
     _bio = userData.bio;
+    _currentImage = widget.profileImage;
     super.initState();
   }
 
-  // Future getImageFromGallery() async {
-  //   final pickedImage = await picker.getImage(source: ImageSource.gallery);
-  //   dbService.uploadImageToFirebase(pickedImage, widget.userData);
-  //   setState(() {
-  //     if (pickedImage != null) {
-  //       _image = File(pickedImage.path);
-  //     } else {
-  //       print('No Image Selected');
-  //     }
-  //   });
-  // }
+  Future getImageFromGallery() async {
+    final PickedFile? pickedImage = await picker.getImage(source: ImageSource.gallery);
+    setState(() {
+      if (pickedImage != null) {
+        _imageFile = File(pickedImage.path);
+        _currentImage = FileImage(_imageFile);
+      } else {
+        print('No Image Selected');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,12 +78,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
               physics: BouncingScrollPhysics(),
               children: [
                 ProfileWidget(
-                  // TODO: replace with user's current image
-                  // image: AssetImage('assets/food.png'),
-                  image: AssetImage('assets/food.png'),
+                  // TODO: HERE
+                  image: _currentImage ?? AssetImage('assets/default-profile-pic.jpeg'),
                   isEdit: true,
                   onClicked: () async {
-                    // getImageFromGallery();
+                    getImageFromGallery();
                   }
                 ),
                 const SizedBox(height: 24),
@@ -118,6 +121,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   child: Text('Save'),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
+                      userData.profileImagePath =
+                        await dbService.uploadImageToFirebase(_imageFile, userData);
                       await dbService
                         .updateUserData(
                           userData.profileImagePath, _name, userData.level, userData.faculty,
