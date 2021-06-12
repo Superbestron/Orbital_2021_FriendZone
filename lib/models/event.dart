@@ -1,5 +1,6 @@
 class Event {
 
+  final String initiatorID;
   final String eventID;
   String name;
   DateTime dateTime;
@@ -9,6 +10,7 @@ class Event {
   List<dynamic> attendees;
 
   Event({
+    required this.initiatorID,
     required this.eventID,
     required this.name,
     required this.dateTime,

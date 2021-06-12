@@ -20,6 +20,7 @@ class _EventPageState extends State<EventPage> {
     return event.attendees.contains(uid);
   }
 
+  String initiator = "";
   String error = "";
 
   @override
@@ -36,6 +37,14 @@ class _EventPageState extends State<EventPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             Event event = snapshot.data!;
+            void setInitiatorName() async {
+              String name = await dbService.getNameFromUserID(event.initiatorID);
+              setState(() {
+                print(name);
+                initiator = name;
+              });
+            }
+            setInitiatorName();
             return Scaffold(
                 backgroundColor: Colors.transparent,
                 body: Column(
@@ -74,8 +83,7 @@ class _EventPageState extends State<EventPage> {
                     ),
                     ListTile(
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-                      // Right now I'm just gonna hard code this thing.
-                      title: Text('Initiated by Tze Henn',
+                      title: Text('Initiated by $initiator',
                           style: NORMAL),
                       minLeadingWidth: 10.0,
                     ),

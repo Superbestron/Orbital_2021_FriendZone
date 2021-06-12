@@ -268,9 +268,10 @@ class _CreateEventState extends State<CreateEvent> {
                         if (_formKey.currentState!.validate()) {
                           _dateTime = DateTime(_dateTime!.year, _dateTime!.month, _dateTime!.day,
                               _time!.hour, _time!.minute);
-                          DatabaseService db = DatabaseService(uid: user!.uid);
+                          String _uid = user!.uid;
+                          DatabaseService db = DatabaseService(uid: _uid);
                           String eventID = await db.createEventData(
-                            _name, _dateTime!,
+                            _uid, _name, _dateTime!,
                             _pax, _description, _icon,
                           );
                           ScaffoldMessenger.of(context).showSnackBar(

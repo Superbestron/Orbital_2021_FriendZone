@@ -42,6 +42,7 @@ class DatabaseService {
     DocumentReference ref = eventCollection.doc(eventID);
     var event = await ref.get().then((snapshot) =>
       Event(
+        initiatorID: snapshot.get('initiatorID'),
         eventID: snapshot.get('eventID'),
         name: snapshot.get('name'),
         dateTime: snapshot.get('dateTime').toDate(),
@@ -54,9 +55,10 @@ class DatabaseService {
     return event;
   }
 
-  Future updateEventData(String name, DateTime dateTime,
+  Future updateEventData(String initiatorID, String name, DateTime dateTime,
       int pax, String description, int icon, String eventID, List<dynamic> attendees) async {
     return await eventCollection.doc(eventID).set({
+      'initiatorID': initiatorID,
       'name': name,
       'dateTime': dateTime,
       'pax': pax,
@@ -67,12 +69,12 @@ class DatabaseService {
     });
   }
 
-  Future createEventData(String name, DateTime dateTime,
+  Future createEventData(String initiatorID, String name, DateTime dateTime,
       int pax, String description, int icon) async {
     String newDocID = eventCollection.doc().id;
     List<dynamic> attendees = [];
     attendees.add(uid);
-    updateEventData(name, dateTime, pax, description, icon, newDocID, attendees);
+    updateEventData(initiatorID, name, dateTime, pax, description, icon, newDocID, attendees);
     return newDocID;
   }
 
@@ -80,6 +82,7 @@ class DatabaseService {
   List<Event> _eventListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return Event(
+        initiatorID: doc.get('initiatorID'),
         eventID: doc.get('eventID'),
         name: doc.get('name') ?? '',
         dateTime: doc.get('dateTime').toDate(),
@@ -94,7 +97,7 @@ class DatabaseService {
   // EventData from snapshot
   Event _eventFromSnapshot(DocumentSnapshot snapshot) {
     return Event(
-      // uid: uid,
+      initiatorID: snapshot.get('initiatorID'),
       eventID: snapshot.get('eventID'),
       name: snapshot.get('name'),
       dateTime: snapshot.get('dateTime').toDate(),
@@ -122,7 +125,7 @@ class DatabaseService {
 
     List<dynamic> newAttendees = event.attendees;
     newAttendees.add(uid);
-    await updateEventData(event.name, event.dateTime, event.pax,
+    await updateEventData(event.initiatorID, event.name, event.dateTime, event.pax,
         event.description, event.icon, eventID, newAttendees);
   }
 
@@ -133,7 +136,7 @@ class DatabaseService {
   Future removeUserFromEvent(String eventID, String uid) async {
     Event event = await getEventData(eventID);
     event.attendees.remove(uid);
-    return await updateEventData(event.name, event.dateTime, event.pax,
+    return await updateEventData(event.initiatorID, event.name, event.dateTime, event.pax,
       event.description, event.icon, event.eventID, event.attendees);
   }
 
@@ -197,5 +200,11 @@ class DatabaseService {
     } catch (e) {
       print(e);
     }
+  }
+
+  Future getNameFromUserID(String userID) {
+    return profileCollection.doc(userID).get().then((snapshot) =>
+      snapshot.get('name')
+    );
   }
 }
