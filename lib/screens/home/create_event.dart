@@ -47,8 +47,12 @@ class _CreateEventState extends State<CreateEvent> {
     final newDate = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(DateTime.now().year),
-        lastDate: DateTime(DateTime.now().year + 1),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(
+          DateTime.now().year + 1,
+          DateTime.now().month,
+          DateTime.now().day
+        ),
     );
 
     if (newDate != null) {
@@ -81,7 +85,8 @@ class _CreateEventState extends State<CreateEvent> {
       child: Scaffold(
         body: Form(
           key: _formKey,
-          child: Column(
+          child: ListView(
+            physics: BouncingScrollPhysics(),
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -152,77 +157,87 @@ class _CreateEventState extends State<CreateEvent> {
                 subtitle: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextButton(
-                      onPressed:() {
-                        setState(() {
-                          selectButton(0);
-                          _icon = 0;
-                        });
-                      },
-                      child: imageList[0],
-                      style: TextButton.styleFrom(
-                        side: BorderSide(
-                          color: _isSelected[0] ? GREEN_1 : Colors.transparent,
-                          width: 2),
+                    Expanded(
+                      child: TextButton(
+                        onPressed:() {
+                          setState(() {
+                            selectButton(0);
+                            _icon = 0;
+                          });
+                        },
+                        child: imageList[0],
+                        style: TextButton.styleFrom(
+                          side: BorderSide(
+                            color: _isSelected[0] ? GREEN_1 : Colors.transparent,
+                            width: 2),
+                        ),
                       ),
                     ),
-                    TextButton(
-                      onPressed:() {
-                        setState(() {
-                          selectButton(1);
-                          _icon = 1;
-                        });
-                      },
-                      child: imageList[1],
-                      style: TextButton.styleFrom(
-                        side: BorderSide(
-                          color: _isSelected[1] ? GREEN_1 : Colors.transparent,
-                          width: 2),
+                    Expanded(
+                      child: TextButton(
+                        onPressed:() {
+                          setState(() {
+                            selectButton(1);
+                            _icon = 1;
+                          });
+                        },
+                        child: imageList[1],
+                        style: TextButton.styleFrom(
+                          side: BorderSide(
+                            color: _isSelected[1] ? GREEN_1 : Colors.transparent,
+                            width: 2),
+                        ),
                       ),
                     ),
-                    TextButton(
-                      onPressed:() {
-                        setState(() {
-                          selectButton(2);
-                          _icon = 2;
-                        });
-                      },
-                      child: imageList[2],
-                      style: TextButton.styleFrom(
-                        side: BorderSide(
-                          color: _isSelected[2] ? GREEN_1 : Colors.transparent,
-                          width: 2),
+                    Expanded(
+                      child: TextButton(
+                        onPressed:() {
+                          setState(() {
+                            selectButton(2);
+                            _icon = 2;
+                          });
+                        },
+                        child: imageList[2],
+                        style: TextButton.styleFrom(
+                          side: BorderSide(
+                            color: _isSelected[2] ? GREEN_1 : Colors.transparent,
+                            width: 2),
+                        ),
                       ),
                     ),
-                    TextButton(
-                      onPressed:() {
-                        setState(() {
-                          selectButton(3);
-                          _icon = 3;
-                        });
-                      },
-                      child: imageList[3],
-                      style: TextButton.styleFrom(
-                        side: BorderSide(
-                          color: _isSelected[3] ? GREEN_1 : Colors.transparent,
-                          width: 2),
+                    Expanded(
+                      child: TextButton(
+                        onPressed:() {
+                          setState(() {
+                            selectButton(3);
+                            _icon = 3;
+                          });
+                        },
+                        child: imageList[3],
+                        style: TextButton.styleFrom(
+                          side: BorderSide(
+                            color: _isSelected[3] ? GREEN_1 : Colors.transparent,
+                            width: 2),
+                        ),
                       ),
                     ),
-                    TextButton(
-                      onPressed:() {
-                        setState(() {
-                          selectButton(4);
-                          _icon = 4;
-                        });
-                      },
-                      child: imageList[4],
-                      style: TextButton.styleFrom(
-                        side: BorderSide(
-                          color: _isSelected[4] ? GREEN_1 : Colors.transparent,
-                          width: 2),
+                    Expanded(
+                      child: TextButton(
+                        onPressed:() {
+                          setState(() {
+                            selectButton(4);
+                            _icon = 4;
+                          });
+                        },
+                        child: imageList[4],
+                        style: TextButton.styleFrom(
+                          side: BorderSide(
+                            color: _isSelected[4] ? GREEN_1 : Colors.transparent,
+                            width: 2),
+                        ),
                       ),
                     ),
-                  ], 
+                  ],
                 )
               ),
               Row(
@@ -275,24 +290,6 @@ class _CreateEventState extends State<CreateEvent> {
                   ),
                 ],
               ),
-
-              // ListTile(
-              //   visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-              //   leading: Icon(Icons.calendar_today, size: 15),
-              //   title: Text('Date', style: TextStyle(fontSize: 15)),
-              // ),
-              // ListTile(
-              //   visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-              //   leading: Icon(Icons.access_time, size: 15),
-              //   title: Text('Time', style: TextStyle(fontSize: 15)),
-              //   minLeadingWidth: 10.0,
-              // ),
-              // ListTile(
-              //   visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-              //   leading: Icon(Icons.group_rounded, size: 15),
-              //   title: Text('Pax', style: TextStyle(fontSize: 15)),
-              //   minLeadingWidth: 10.0,
-              // ),
             ],
           ),
         ),

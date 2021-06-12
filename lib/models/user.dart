@@ -14,7 +14,7 @@ class UserData {
   String name;
   int level;
   // Provide a list of options for users to choose from
-  int faculty;
+  String faculty;
   int points;
   String bio;
   // Just need to store eventIDs of the events the user is participating

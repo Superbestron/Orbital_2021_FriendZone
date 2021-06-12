@@ -6,7 +6,6 @@ import 'package:myapp/shared/constants.dart';
 
 class EventTile extends StatelessWidget {
   final Event event;
-
   EventTile({required this.event});
 
   @override
@@ -69,33 +68,38 @@ class EventTile extends StatelessWidget {
           onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Stack(
-                  children: <Widget>[
-                    SvgPicture.asset('assets/background.svg',
-                        fit: BoxFit.cover, clipBehavior: Clip.hardEdge),
-                    Scaffold(
-                      // AppBar that is shown on event_page
-                      appBar: AppBar(
-                        leading: BackButton(color: Colors.black),
-                        title: Text(
-                          "Event Details",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        actions: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 15, 15, 0),
-                            child: imageList[event.icon],
+                builder: (context) => SafeArea(
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: <Widget>[
+                      SvgPicture.asset(
+                        'assets/background.svg',
+                        fit: BoxFit.cover,
+                      ),
+                      Scaffold(
+                        // AppBar that is shown on event_page
+                        appBar: AppBar(
+                          leading: BackButton(color: Colors.black),
+                          title: Text(
+                            "Event Details",
+                            style: TextStyle(color: Colors.black),
                           ),
-                        ],
-                        toolbarHeight: 75.0,
+                          actions: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 15, 15, 0),
+                              child: imageList[event.icon],
+                            ),
+                          ],
+                          toolbarHeight: 75.0,
+                        ),
+                        body: Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 20.0, horizontal: 60.0),
+                          child: EventPage(eventID: event.eventID),
+                        ),
                       ),
-                      body: Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 20.0, horizontal: 60.0),
-                        child: EventPage(eventID: event.eventID),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               )),
         ),

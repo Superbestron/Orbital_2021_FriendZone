@@ -66,7 +66,7 @@ class UpcomingEventTile extends StatelessWidget {
               ),
               Expanded(
                 child: Column(
-                  children: <Widget>[
+                  children: <Widget> [
                     imageList[event.icon],
                     Clock(dateTime: event.dateTime).build(context),
                   ],
@@ -78,7 +78,8 @@ class UpcomingEventTile extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) => Stack(
-                  children: <Widget>[
+                  fit: StackFit.expand,
+                  children: <Widget> [
                     SvgPicture.asset(
                       'assets/background.svg',
                       fit: BoxFit.cover,
@@ -93,7 +94,7 @@ class UpcomingEventTile extends StatelessWidget {
                           "Event Details",
                           style: TextStyle(color: Colors.black),
                         ),
-                        actions: <Widget>[
+                        actions: <Widget> [
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 15, 15, 0),
                             child: imageList[event.icon],
@@ -111,7 +112,8 @@ class UpcomingEventTile extends StatelessWidget {
                     ),
                   ],
                 ),
-              )),
+              )
+          ),
         ),
       ),
     );

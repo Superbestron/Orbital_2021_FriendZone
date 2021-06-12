@@ -9,7 +9,7 @@ import 'package:myapp/models/user.dart';
 class EventPage extends StatefulWidget {
   final String eventID;
 
-  EventPage({required this.eventID});
+  EventPage({ required this.eventID });
 
   @override
   _EventPageState createState() => _EventPageState();
@@ -75,7 +75,8 @@ class _EventPageState extends State<EventPage> {
                     ListTile(
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       // Right now I'm just gonna hard code this thing.
-                      title: Text('Initiated by Tze Henn', style: NORMAL),
+                      title: Text('Initiated by Tze Henn',
+                          style: NORMAL),
                       minLeadingWidth: 10.0,
                     ),
                     Row(
@@ -86,16 +87,21 @@ class _EventPageState extends State<EventPage> {
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   primary: ORANGE_1,
+                                  padding: EdgeInsets.all(2.0),
                                 ),
                                 onPressed: () {}, // Link to Telegram
                                 child: ListTile(
-                                  contentPadding: EdgeInsets.all(0.0),
+                                  dense: true,
+                                  contentPadding: EdgeInsets.fromLTRB(8.0, 0, 0, 0),
                                   leading: Icon(Icons.message, size: 15.0),
                                   minLeadingWidth: 5.0,
-                                  title: Text(
-                                    'Join Telegram',
-                                    style: TextStyle(fontSize: 12),
-                                    textAlign: TextAlign.center,
+                                  title: Transform(
+                                    transform: Matrix4.translationValues(-10, 0.0, 0.0),
+                                    child: Text(
+                                      'Join Telegram',
+                                      style: TextStyle(fontSize: 12),
+                                      textAlign: TextAlign.center,
+                                    ),
                                   ),
                                 )),
                           ),
@@ -107,6 +113,7 @@ class _EventPageState extends State<EventPage> {
                                   ? ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                         primary: revokeAttendance,
+                                        padding: EdgeInsets.all(2.0),
                                       ),
                                       onPressed: () async {
                                         int daysToEvent = event.dateTime
@@ -124,18 +131,23 @@ class _EventPageState extends State<EventPage> {
                                         }
                                       }, // Confirm to join event
                                       child: ListTile(
-                                        contentPadding: EdgeInsets.all(0.0),
+                                        dense: true,
+                                        contentPadding: EdgeInsets.fromLTRB(5.0, 0, 0, 0),
                                         leading: Icon(Icons.check, size: 15.0),
-                                        minLeadingWidth: 5.0,
-                                        title: Text('Revoke Attendance',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(fontSize: 12)),
+                                        minLeadingWidth: 0,
+                                        title: Transform(
+                                          transform: Matrix4.translationValues(-10, 0.0, 0.0),
+                                          child: Text('Revoke Attendance',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(fontSize: 12)),
+                                        ),
                                       ),
                                     )
                                   : event.attendees.length < event.pax
                                       ? ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                             primary: ORANGE_1,
+                                            padding: EdgeInsets.all(2.0),
                                           ),
                                           onPressed: () async {
                                             if (event.attendees.length <
@@ -145,13 +157,17 @@ class _EventPageState extends State<EventPage> {
                                             }
                                           }, // Confirm to join event
                                           child: ListTile(
-                                            contentPadding: EdgeInsets.all(0.0),
+                                            dense: true,
+                                            contentPadding: EdgeInsets.fromLTRB(5.0, 0, 0, 0),
                                             leading:
                                                 Icon(Icons.check, size: 15.0),
-                                            minLeadingWidth: 5.0,
-                                            title: Text('Confirm Attendance',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(fontSize: 12)),
+                                            minLeadingWidth: 0,
+                                            title: Transform(
+                                              transform: Matrix4.translationValues(-10, 0.0, 0.0),
+                                              child: Text('Confirm Attendance',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(fontSize: 12)),
+                                            ),
                                           ))
                                       : ElevatedButton(
                                           style: ElevatedButton.styleFrom(
@@ -176,13 +192,13 @@ class _EventPageState extends State<EventPage> {
                       ],
                     ),
                     Padding(
-                        padding: const EdgeInsets.fromLTRB(124, 0, 0, 0),
-                        child: SizedBox(
-                          child: Text(error,
-                              textAlign: TextAlign.center,
-                              style:
-                                  TextStyle(color: Colors.red, fontSize: 14.0)),
-                        )),
+                      padding: const EdgeInsets.fromLTRB(124, 0, 0, 0),
+                      child: SizedBox(
+                        child: Text(error,
+                          textAlign: TextAlign.center,
+                          style:
+                            TextStyle(color: Colors.red, fontSize: 14.0)),
+                      )),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 15),
                       child: Column(
