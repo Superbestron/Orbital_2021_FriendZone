@@ -23,14 +23,19 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
 
+  static const DEFAULT_PROFILE_PIC = AssetImage('assets/default-profile-pic.jpeg');
+  bool _hasDeletedProfileImage = false;
+  bool _hasChosenNewImage = false;
   late File _imageFile;
   final picker = ImagePicker();
   String _name = '';
   String _bio = '';
+  late String _faculty;
   final _formKey = GlobalKey<FormState>();
   late DatabaseService dbService;
   late UserData userData;
   ImageProvider? _currentImage;
+  late List<String> _faculties;
 
   void initState() {
     dbService = DatabaseService(uid: widget.userData.uid);
@@ -38,6 +43,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _name = userData.name;
     _bio = userData.bio;
     _currentImage = widget.profileImage;
+    _faculty = userData.faculty;
+    _faculties = faculties;
     super.initState();
   }
 
@@ -47,6 +54,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
       if (pickedImage != null) {
         _imageFile = File(pickedImage.path);
         _currentImage = FileImage(_imageFile);
+        _hasDeletedProfileImage = false;
+        _hasChosenNewImage = true;
       } else {
         print('No Image Selected');
       }
@@ -66,7 +75,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           Scaffold(
             appBar: AppBar(
-              leading: BackButton(color: Colors.black),
+              leading: BackButton(color: Colors.black,),
               title: Text(
                 "Edit Profile",
                 style: TextStyle(color: Colors.black),
@@ -78,12 +87,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
               physics: BouncingScrollPhysics(),
               children: [
                 ProfileWidget(
-                  // TODO: HERE
-                  image: _currentImage ?? AssetImage('assets/default-profile-pic.jpeg'),
+                  image: _currentImage ?? DEFAULT_PROFILE_PIC,
                   isEdit: true,
                   onClicked: () async {
                     getImageFromGallery();
                   }
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() { _currentImage = DEFAULT_PROFILE_PIC; });
+                    _hasDeletedProfileImage = true;
+                    _hasChosenNewImage = false;
+                  },
+                  child: Text('Remove Profile Image'),
                 ),
                 const SizedBox(height: 24),
                 Form(
@@ -104,7 +121,39 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ]
                   )
                 ),
-
+                const SizedBox(height: 24),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text('Faculty', style: BOLDED_NORMAL),
+                ),
+                Container(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: 50,
+                      minWidth: 300,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: DropdownButton(
+                        isExpanded: true,
+                        items: _faculties
+                            .map((faculty) {
+                              print(_faculties.length);
+                          return DropdownMenuItem(
+                            value: faculty,
+                            child: Text(faculty),
+                          );
+                        }).toList(),
+                        menuMaxHeight: 300,
+                        onChanged: (val) {
+                          return setState(() { _faculty = val.toString(); });
+                        },
+                        value: _faculty,
+                      ),
+                    ),
+                  ),
+                  decoration: boxDecoration.copyWith(borderRadius: BorderRadius.all(Radius.circular(5))),
+                ),
                 const SizedBox(height: 24),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -121,13 +170,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   child: Text('Save'),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      userData.profileImagePath =
+                      if (_hasDeletedProfileImage) {
+                        // If user clicks on remove image button
+                        await dbService.deleteImageFromFirebase(userData.profileImagePath);
+                        userData.profileImagePath = '';
+                      } else if (_hasChosenNewImage) {
+                        // Else upload selected image
+                        userData.profileImagePath =
                         await dbService.uploadImageToFirebase(_imageFile, userData);
+                      }
                       await dbService
                         .updateUserData(
-                          userData.profileImagePath, _name, userData.level, userData.faculty,
+                          userData.profileImagePath, _name, userData.level, _faculty,
                           userData.points, _bio, userData.events,
                       );
+
+                      // Go back to the profile page screen with the selected image
+                      // (or default image if the user decides not to put an image)
+                      Navigator.pop(context, _hasDeletedProfileImage
+                          ? DEFAULT_PROFILE_PIC
+                          : _currentImage);
+
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           backgroundColor: GREEN_1,

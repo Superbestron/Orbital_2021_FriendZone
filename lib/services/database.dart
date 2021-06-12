@@ -144,7 +144,7 @@ class DatabaseService {
   }
 
   // TODO: Decide on what info to store about user
-  Future updateUserData(String profileImagePath, String name, int level, int faculty,
+  Future updateUserData(String profileImagePath, String name, int level, String faculty,
       int points, String bio, List<dynamic> events) async {
     print('updating...');
     print(profileImagePath);
@@ -179,6 +179,11 @@ class DatabaseService {
     return await storage.ref(profileImagePath).getDownloadURL();
   }
 
+  Future deleteImageFromFirebase(String profileImagePath) async {
+    return await storage.ref().child(profileImagePath).delete();
+  }
+
+  // Returns the profile image path
   Future uploadImageToFirebase(File image, UserData userData) async {
     try {
       // Make random image

@@ -29,7 +29,7 @@ class _EventListState extends State<EventList> {
     events.removeWhere((event) => event.dateTime.isBefore(DateTime.now()));
 
     return SingleChildScrollView(
-      physics: ScrollPhysics(),
+      physics: BouncingScrollPhysics(),
       child: Column(
         children: <Widget>[
           Padding(

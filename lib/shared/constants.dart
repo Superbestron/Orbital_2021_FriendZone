@@ -30,6 +30,17 @@ List<Image> imageList = [
   Image(image: AssetImage('assets/event_icons/Cocktail Glass.png'),),
 ];
 
+// List of Faculties
+List<String> faculties = [
+  '',
+  'School of Computing',
+  'Faculty of Arts and Social Sciences',
+  'School of Business',
+  'Faculty of Dentistry',
+  'Faculty of Engineering',
+  'Faculty of Science'
+];
+
 // Date/Time Formatting
 List<String> months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

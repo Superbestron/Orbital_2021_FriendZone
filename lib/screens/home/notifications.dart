@@ -28,7 +28,7 @@ class _NotificationsState extends State<Notifications> {
 
     return SafeArea(
       child: SingleChildScrollView(
-        physics: ScrollPhysics(),
+        physics: BouncingScrollPhysics(),
         child: Column(
           children: <Widget> [
             Align(
