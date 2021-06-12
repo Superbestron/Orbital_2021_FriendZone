@@ -76,6 +76,7 @@ class _HomeState extends State<Home> {
 
                 body: Container(
                   child: PageView(
+                    physics: NeverScrollableScrollPhysics(),
                     controller: _pageController,
                     children: _children,
                     onPageChanged: _onItemTapped,
