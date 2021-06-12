@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:myapp/models/user.dart';
-import 'package:myapp/screens/home/profile_widget.dart';
+import 'package:myapp/screens/profile/profile_widget.dart';
 import 'package:myapp/services/database.dart';
 import 'package:myapp/shared/constants.dart';
 
@@ -65,8 +65,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
 
-    return SafeArea(
-      child: Stack(
+    return Stack(
         fit: StackFit.expand,
         children: <Widget>[
           SvgPicture.asset(
@@ -210,7 +209,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
             )
           ),
         ]
-      ),
-    );
+      );
   }
 }

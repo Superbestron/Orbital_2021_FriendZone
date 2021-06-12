@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myapp/models/event.dart';
-import 'package:myapp/screens/home/event_page.dart';
+import 'package:myapp/screens/event/event_page.dart';
 import 'package:myapp/shared/clock.dart';
 import 'package:myapp/shared/constants.dart';
 

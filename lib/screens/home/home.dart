@@ -1,9 +1,10 @@
 import 'package:myapp/models/event.dart';
 import 'package:myapp/screens/home/event_list.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:myapp/screens/home/create_event.dart';
-import 'package:myapp/screens/home/profile_page.dart';
-import 'package:myapp/screens/home/notifications.dart';
+import 'package:myapp/screens/create_event/create_event.dart';
+import 'package:myapp/screens/profile/profile_page.dart';
+import 'package:myapp/screens/notifications/notifications.dart';
+import 'package:myapp/screens/maps/maps.dart';
 import 'package:myapp/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/services/auth.dart';
@@ -44,21 +45,11 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    // void _showSettingsPanel() {
-    //   showModalBottomSheet(context: context, builder: (context) {
-    //     return Container(
-    //       padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-    //       child: SettingsForm(),
-    //     );
-    //   });
-    // }
 
-    return SafeArea(
-      child: StreamProvider<List<Event>?>.value(
+    return StreamProvider<List<Event>?>.value(
         initialData: null,
         value: DatabaseService(uid: '').events,
-        child: SafeArea(
-          child: Stack(
+        child: Stack(
             fit: StackFit.expand,
             children: <Widget> [
               SvgPicture.asset(
@@ -80,21 +71,10 @@ class _HomeState extends State<Home> {
                         onPressed: () async { await _auth.signOut(); }
                       ),
                     ),
-                    // TextButton.icon(
-                    //   icon: Icon(Icons.settings),
-                    //   label: Text('settings'),
-                    //   onPressed: () => _showSettingsPanel(),
-                    // ),
                   ],
                 ),
 
                 body: Container(
-                  // decoration: BoxDecoration(
-                  //   image: DecorationImage(
-                  //     image: AssetImage('assets/...png'),
-                  //     fit: BoxFit.cover,
-                  //   ),
-                  // ),
                   child: PageView(
                     controller: _pageController,
                     children: _children,
@@ -112,8 +92,8 @@ class _HomeState extends State<Home> {
                       label: 'Home',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.calendar_today),
-                      label: 'Calendar',
+                      icon: Icon(Icons.map_outlined),
+                      label: 'Maps',
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.add),
@@ -132,8 +112,6 @@ class _HomeState extends State<Home> {
               ),
             ],
           ),
-        )
-      ),
-    );
+      );
   }
 }

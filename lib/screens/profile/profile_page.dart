@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:myapp/models/user.dart';
-import 'package:myapp/screens/home/edit_profile_page.dart';
+import 'package:myapp/screens/profile/edit_profile_page.dart';
 import 'package:myapp/services/database.dart';
 import 'package:myapp/shared/constants.dart';
 import 'package:myapp/shared/loading_transparent.dart';
-import 'package:myapp/screens/home/profile_widget.dart';
+import 'package:myapp/screens/profile/profile_widget.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {

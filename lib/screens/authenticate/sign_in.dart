@@ -7,7 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class SignIn extends StatefulWidget {
   final Function toggleView;
 
-  SignIn({ required this.toggleView });
+  SignIn({required this.toggleView});
 
   @override
   _SignInState createState() => _SignInState();
@@ -73,109 +73,8 @@ class _SignInState extends State<SignIn> {
                   Text(error,
                       style: TextStyle(color: Colors.red, fontSize: 14.0)),
                 ],
-    var loginWidget = <Widget>[
-      Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(30),
-            child: SvgPicture.asset('assets/logo.svg'),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 235, 0, 0),
-            child: Container(
-              height: 250,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: TextFormField(
-                      decoration:
-                          textInputDecoration.copyWith(hintText: 'Email'),
-                      validator: (val) =>
-                          val!.isEmpty ? 'Enter an email' : null,
-                      onChanged: (val) => setState(() {
-                        email = val;
-                      }),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: TextFormField(
-                      decoration:
-                          textInputDecoration.copyWith(hintText: 'Password'),
-                      validator: (val) {
-                        return val!.length < 6
-                            ? 'Enter a password 6+ chars long'
-                            : null;
-                      },
-                      obscureText: true,
-                      onChanged: (val) => setState(() {
-                        password = val;
-                      }),
-                    ),
-                  ),
-                  Text(error,
-                      style: TextStyle(color: Colors.red, fontSize: 14.0)),
-                ],
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 380, 0, 0),
-            child: Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                        child: Text('Register',
-                            style: TextStyle(color: Colors.white)),
-                        style: ElevatedButton.styleFrom(
-                          primary: ORANGE_1,
-                        ),
-                        onPressed: () {
-                          widget.toggleView();
-                        }),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                        child: Text('Sign in',
-                            style: TextStyle(color: Colors.white)),
-                        style: ElevatedButton.styleFrom(
-                          primary: ORANGE_1,
-                        ),
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            setState(() {
-                              loading = true;
-                            });
-                            dynamic result = await _auth
-                                .signInWithEmailAndPassword(email, password);
-                            if (result == null) {
-                              setState(() {
-                                loading = false;
-                                error = 'Incorrect Email/Password!';
-                              });
-                            }
-                          }
-                        }),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          // Toggle Register Page
-          // TextButton.icon(
-          //   icon: Icon(Icons.person),
-          //   label: Text('Register'),
-          //   onPressed: () { widget.toggleView(); },
-          // ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 409, 0, 0),
-            child: SvgPicture.asset('assets/tree.svg'),
-          )
           ),
           Padding(
             padding: EdgeInsets.fromLTRB(0, 375, 0, 0),
@@ -221,17 +120,8 @@ class _SignInState extends State<SignIn> {
               ],
             ),
           ),
-          // Toggle Register Page
-          // TextButton.icon(
-          //   icon: Icon(Icons.person),
-          //   label: Text('Register'),
-          //   onPressed: () { widget.toggleView(); },
-          // ),
         ],
       ),
-      Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0),
-      ),
-      SvgPicture.asset('assets/tree.svg'),
     ];
 
     return loading
@@ -256,20 +146,3 @@ class _SignInState extends State<SignIn> {
           );
   }
 }
-
-// old app bar
-
-// flutter pub get
-// to install dependencies in flutter
-// appBar: AppBar(
-//     backgroundColor: GREEN_1,
-//     elevation: 0.0,
-//     title: Text('Sign in to FriendZone'),
-//     actions: <Widget>[
-//         TextButton.icon(
-//         icon: Icon(Icons.person),
-//         label: Text('Register'),
-//         onPressed: () { widget.toggleView(); },
-//         )
-//     ]
-// ),
