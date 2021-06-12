@@ -6,6 +6,7 @@ import 'package:myapp/models/user.dart';
 import 'package:myapp/screens/profile/profile_widget.dart';
 import 'package:myapp/services/database.dart';
 import 'package:myapp/shared/constants.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class EditProfilePage extends StatefulWidget {
 
@@ -48,7 +49,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     super.initState();
   }
 
-  Future getImageFromGallery() async {
+  Future _getImageFromGallery() async {
     final PickedFile? pickedImage = await picker.getImage(source: ImageSource.gallery);
     setState(() {
       if (pickedImage != null) {
@@ -56,15 +57,54 @@ class _EditProfilePageState extends State<EditProfilePage> {
         _currentImage = FileImage(_imageFile);
         _hasDeletedProfileImage = false;
         _hasChosenNewImage = true;
+
       } else {
         print('No Image Selected');
       }
     });
+    File? croppedFile = await ImageCropper.cropImage(
+      sourcePath: _imageFile.path,
+      cropStyle: CropStyle.circle,
+      aspectRatioPresets: Platform.isAndroid
+      ? [
+      CropAspectRatioPreset.square,
+      CropAspectRatioPreset.ratio3x2,
+      CropAspectRatioPreset.original,
+      CropAspectRatioPreset.ratio4x3,
+      CropAspectRatioPreset.ratio16x9
+      ]
+      : [
+      CropAspectRatioPreset.original,
+      CropAspectRatioPreset.square,
+      CropAspectRatioPreset.ratio3x2,
+      CropAspectRatioPreset.ratio4x3,
+      CropAspectRatioPreset.ratio5x3,
+      CropAspectRatioPreset.ratio5x4,
+      CropAspectRatioPreset.ratio7x5,
+      CropAspectRatioPreset.ratio16x9
+      ],
+      androidUiSettings: AndroidUiSettings(
+        showCropGrid: false,
+        toolbarTitle: 'Crop Image',
+        toolbarColor: ORANGE_1,
+        toolbarWidgetColor: Colors.white,
+        initAspectRatio: CropAspectRatioPreset.original,
+        lockAspectRatio: false
+      ),
+      iosUiSettings: IOSUiSettings(
+        title: 'Crop Image',
+      )
+    );
+    if (croppedFile != null) {
+      _imageFile = croppedFile;
+      setState(() {
+        _currentImage = FileImage(_imageFile);
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Stack(
         fit: StackFit.expand,
         children: <Widget>[
@@ -89,7 +129,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   image: _currentImage ?? DEFAULT_PROFILE_PIC,
                   isEdit: true,
                   onClicked: () async {
-                    getImageFromGallery();
+                    _getImageFromGallery();
                   }
                 ),
                 const SizedBox(height: 24),
