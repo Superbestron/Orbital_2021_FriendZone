@@ -5,26 +5,25 @@ import 'package:myapp/screens/home/upcoming_event_tile.dart';
 import 'package:provider/provider.dart';
 
 class Notifications extends StatefulWidget {
-
   @override
   _NotificationsState createState() => _NotificationsState();
 }
 
 class _NotificationsState extends State<Notifications> {
-
   @override
   Widget build(BuildContext context) {
-
     final user = Provider.of<UserObj?>(context);
     Iterable<Event> events = (Provider.of<List<Event>?>(context) ?? [])
         .where((event) => event.attendees.contains(user!.uid));
 
     // Filter the events which have already happened
-    List<Event> upcomingEvents =
-      events.where((event) => event.dateTime.isAfter(DateTime.now())).toList();
+    List<Event> upcomingEvents = events
+        .where((event) => event.dateTime.isAfter(DateTime.now()))
+        .toList();
 
-    List<Event> pastEvents =
-    events.where((event) => event.dateTime.isBefore(DateTime.now())).toList();
+    List<Event> pastEvents = events
+        .where((event) => event.dateTime.isBefore(DateTime.now()))
+        .toList();
 
     return SafeArea(
       child: SingleChildScrollView(

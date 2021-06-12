@@ -6,9 +6,9 @@ import 'package:myapp/shared/clock.dart';
 import 'package:myapp/shared/constants.dart';
 
 class UpcomingEventTile extends StatelessWidget {
-
   final Event event;
-  UpcomingEventTile({ required this.event });
+
+  UpcomingEventTile({required this.event});
 
   // Probably can color the card red/amber to inform users
   // that their event has been cancelled/edited when they
@@ -41,21 +41,24 @@ class UpcomingEventTile extends StatelessWidget {
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       dense: true,
                       leading: Icon(Icons.calendar_today, size: 15),
-                      title: Text(getDateText(event.dateTime), style: TextStyle(fontSize: 15)),
+                      title: Text(getDateText(event.dateTime),
+                          style: TextStyle(fontSize: 15)),
                       minLeadingWidth: 10.0,
                     ),
                     ListTile(
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       dense: true,
                       leading: Icon(Icons.access_time, size: 15),
-                      title: Text('${getTimeText(event.dateTime)}', style: TextStyle(fontSize: 15)),
+                      title: Text('${getTimeText(event.dateTime)}',
+                          style: TextStyle(fontSize: 15)),
                       minLeadingWidth: 10.0,
                     ),
                     ListTile(
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       dense: true,
                       leading: Icon(Icons.group_rounded, size: 15),
-                      title: Text('${event.attendees.length} / ${event.pax}', style: TextStyle(fontSize: 15)),
+                      title: Text('${event.attendees.length} / ${event.pax}',
+                          style: TextStyle(fontSize: 15)),
                       minLeadingWidth: 10.0,
                     ),
                   ],
@@ -71,7 +74,6 @@ class UpcomingEventTile extends StatelessWidget {
               ),
             ],
           ),
-
           onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
@@ -81,6 +83,7 @@ class UpcomingEventTile extends StatelessWidget {
                     SvgPicture.asset(
                       'assets/background.svg',
                       fit: BoxFit.cover,
+                      clipBehavior: Clip.hardEdge,
                     ),
                     Scaffold(
                       backgroundColor: Colors.transparent,
@@ -102,7 +105,8 @@ class UpcomingEventTile extends StatelessWidget {
                         backgroundColor: Colors.transparent,
                       ),
                       body: Container(
-                        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 20.0, horizontal: 60.0),
                         child: EventPage(eventID: event.eventID),
                       ),
                     ),

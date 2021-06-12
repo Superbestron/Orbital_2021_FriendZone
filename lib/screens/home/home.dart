@@ -3,7 +3,6 @@ import 'package:myapp/screens/home/event_list.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myapp/screens/home/create_event.dart';
 import 'package:myapp/screens/home/profile_page.dart';
-import 'package:myapp/screens/home/screen1.dart';
 import 'package:myapp/screens/home/notifications.dart';
 import 'package:myapp/services/database.dart';
 import 'package:flutter/material.dart';
@@ -16,20 +15,19 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   int _selectedIndex = 0;
   final AuthService _auth = AuthService();
   PageController _pageController = PageController();
   final List<Widget> _children = [
     EventList(),
-    Screen1(),
+    Maps(),
     CreateEvent(),
     Notifications(),
     ProfilePage(),
   ];
   final List<String> _appBarTitles = [
     'Upcoming Events',
-    'Screen 1',
+    'Events Near You',
     'Create New Event',
     'Signed Up Events',
     'My Profile',
@@ -46,7 +44,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-
     // void _showSettingsPanel() {
     //   showModalBottomSheet(context: context, builder: (context) {
     //     return Container(

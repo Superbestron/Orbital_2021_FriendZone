@@ -14,8 +14,8 @@ https://user-images.githubusercontent.com/60974969/120209857-bb01b680-c261-11eb-
 
 
 <p align="center">
-  <a href="https://github.com/Superbestron/Orbital_2021_FriendZone/blob/master/assets/docs/milestone_1/poster.png">
-    <img src="https://github.com/Superbestron/Orbital_2021_FriendZone/blob/master/assets/docs/milestone_1/poster.png" width="50%" height=auto>
+  <a href="https://github.com/Superbestron/Orbital_2021_FriendZone/blob/master/assets/docs/milestone_2/poster.png">
+    <img src="https://github.com/Superbestron/Orbital_2021_FriendZone/blob/master/assets/docs/milestone_2/poster.png" width="50%" height=auto>
 </p>
   
 <p align="center">
