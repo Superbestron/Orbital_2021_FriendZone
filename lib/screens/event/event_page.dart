@@ -5,6 +5,7 @@ import 'package:myapp/shared/constants.dart';
 import 'package:myapp/shared/loading_transparent.dart';
 import 'package:provider/provider.dart';
 import 'package:myapp/models/user.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EventPage extends StatefulWidget {
   final String eventID;
@@ -40,7 +41,6 @@ class _EventPageState extends State<EventPage> {
             void setInitiatorName() async {
               String name = await dbService.getNameFromUserID(event.initiatorID);
               setState(() {
-                print(name);
                 initiator = name;
               });
             }
@@ -97,7 +97,9 @@ class _EventPageState extends State<EventPage> {
                                   primary: ORANGE_1,
                                   padding: EdgeInsets.all(2.0),
                                 ),
-                                onPressed: () {}, // Link to Telegram
+                                onPressed: () async {
+                                  await launch(event.telegramURL);
+                                }, // Link to Telegram
                                 child: ListTile(
                                   dense: true,
                                   contentPadding: EdgeInsets.fromLTRB(8.0, 0, 0, 0),
