@@ -80,21 +80,21 @@ class _SignInState extends State<SignIn> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(0, 390, 0, 0),
+            padding: EdgeInsets.fromLTRB(0, 395, 0, 0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
-                      child: Text('Register',
-                          style: TextStyle(color: Colors.white)),
-                      style: ElevatedButton.styleFrom(
-                        primary: ORANGE_1,
-                      ),
-                      onPressed: () {
-                        widget.toggleView();
-                      }),
+                    child: Text('Register',
+                        style: TextStyle(color: Colors.white)),
+                    style: ElevatedButton.styleFrom(
+                      primary: ORANGE_1,
+                    ),
+                    onPressed: () {
+                      widget.toggleView();
+                    }),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),

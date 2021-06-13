@@ -44,7 +44,6 @@ class DatabaseService {
       Event(
         location: snapshot.get('location'),
         telegramURL: snapshot.get('telegramURL'),
-        initiatorID: snapshot.get('initiatorID'),
         eventID: snapshot.get('eventID'),
         name: snapshot.get('name'),
         dateTime: snapshot.get('dateTime').toDate(),
@@ -57,12 +56,11 @@ class DatabaseService {
     return event;
   }
 
-  Future updateEventData(String location, String telegramURL, String initiatorID, String name, DateTime dateTime,
+  Future updateEventData(String location, String telegramURL, String name, DateTime dateTime,
       int pax, String description, int icon, String eventID, List<dynamic> attendees) async {
     return await eventCollection.doc(eventID).set({
       'location': location,
       'telegramURL': telegramURL,
-      'initiatorID': initiatorID,
       'name': name,
       'dateTime': dateTime,
       'pax': pax,
@@ -73,12 +71,12 @@ class DatabaseService {
     });
   }
 
-  Future createEventData(String location, String telegramURL, String initiatorID, String name, DateTime dateTime,
+  Future createEventData(String location, String telegramURL, String name, DateTime dateTime,
       int pax, String description, int icon) async {
     String newDocID = eventCollection.doc().id;
     List<dynamic> attendees = [];
     attendees.add(uid);
-    updateEventData(location, telegramURL, initiatorID, name, dateTime, pax, description, icon, newDocID, attendees);
+    updateEventData(location, telegramURL, name, dateTime, pax, description, icon, newDocID, attendees);
     return newDocID;
   }
 
@@ -88,7 +86,6 @@ class DatabaseService {
       return Event(
         location: doc.get('location'),
         telegramURL: doc.get('telegramURL'),
-        initiatorID: doc.get('initiatorID'),
         eventID: doc.get('eventID'),
         name: doc.get('name') ?? '',
         dateTime: doc.get('dateTime').toDate(),
@@ -105,7 +102,6 @@ class DatabaseService {
     return Event(
       location: snapshot.get('location'),
       telegramURL: snapshot.get('telegramURL'),
-      initiatorID: snapshot.get('initiatorID'),
       eventID: snapshot.get('eventID'),
       name: snapshot.get('name'),
       dateTime: snapshot.get('dateTime').toDate(),
@@ -133,7 +129,7 @@ class DatabaseService {
 
     List<dynamic> newAttendees = event.attendees;
     newAttendees.add(uid);
-    await updateEventData(event.location, event.telegramURL, event.initiatorID, event.name, event.dateTime, event.pax,
+    await updateEventData(event.location, event.telegramURL,  event.name, event.dateTime, event.pax,
         event.description, event.icon, eventID, newAttendees);
   }
 
@@ -144,8 +140,8 @@ class DatabaseService {
   Future removeUserFromEvent(String eventID, String uid) async {
     Event event = await getEventData(eventID);
     event.attendees.remove(uid);
-    return await updateEventData(event.location, event.telegramURL, event.initiatorID, event.name, event.dateTime, event.pax,
-      event.description, event.icon, event.eventID, event.attendees);
+    return await updateEventData(event.location, event.telegramURL, event.name, event.dateTime, event.pax,
+      event.description, event.icon, eventID, event.attendees);
   }
 
   // get profile stream
@@ -157,8 +153,7 @@ class DatabaseService {
   // TODO: Decide on what info to store about user
   Future updateUserData(String profileImagePath, String name, int level, String faculty,
       int points, String bio, List<dynamic> events) async {
-    print('updating...');
-    print(profileImagePath);
+    print('Updating User Data');
     return await profileCollection.doc(uid).set({
       'profileImagePath': profileImagePath,
       'name': name,

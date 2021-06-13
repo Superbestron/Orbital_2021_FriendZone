@@ -70,7 +70,7 @@ class _MapsState extends State<Maps> {
   }
 
   List getCoordinate(String location) {
-    for (List item in locations) {
+    for (List item in LOCATIONS) {
       if (item[0] == location) {
         return [item[1], item[2]];
       }
@@ -116,7 +116,7 @@ class _MapsState extends State<Maps> {
                         actions: <Widget> [
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 15, 15, 0),
-                            child: imageList[event.icon],
+                            child: IMAGE_LIST[event.icon],
                           ),
                         ],
                         toolbarHeight: 75.0,

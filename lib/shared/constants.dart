@@ -8,7 +8,7 @@ var textInputDecoration = InputDecoration(
     borderSide: BorderSide(color: GREEN_1, width: 2.0),
   ),
   focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.pink, width: 2.0),
+    borderSide: BorderSide(color: ORANGE_1, width: 2.0),
   ),
 );
 
@@ -22,7 +22,7 @@ var boxDecoration = BoxDecoration(
 
 // TODO: Update Icons here
 // List of icons
-List<Image> imageList = [
+const List<Image> IMAGE_LIST = [
   Image(image: AssetImage('assets/event_icons/Friends.png'),),
   Image(image: AssetImage('assets/event_icons/Sports.png'),),
   Image(image: AssetImage('assets/event_icons/Study.png'),),
@@ -31,7 +31,7 @@ List<Image> imageList = [
 ];
 
 // List of Faculties
-List<String> faculties = [
+const List<String> FACULTIES = [
   '',
   'School of Computing',
   'Faculty of Arts and Social Sciences',
@@ -42,14 +42,14 @@ List<String> faculties = [
 ];
 
 // Date/Time Formatting
-List<String> months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+const List<String> MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 String getDateText(DateTime? dateTime) {
   if (dateTime == null) {
     return 'Select Date';
   } else {
-    return '${dateTime.day} ${months[dateTime.month - 1]} ${dateTime.year - 2000}';
+    return '${dateTime.day} ${MONTHS[dateTime.month - 1]} ${dateTime.year - 2000}';
   }
 }
 
@@ -95,13 +95,13 @@ const BOLDED_NORMAL = TextStyle(fontWeight: FontWeight.bold, fontSize: 16);
 const NORMAL = TextStyle(fontSize: 16);
 
 // locations for selection
-List locations = [
+const List LOCATIONS = [
   ["Others", null, null],
   ["Dean's Office, FASS", 1.294312, 103.771062],
   ["Faculty of Engineering", 1.299187, 103.771312],
   ["NUS Alumni Relations", 1.293312, 103.773687],
   ["NUS Biological Sciences", 1.295562, 103.778688],
-  ["NUS Buiness School", 1.292562, 103.774187],
+  ["NUS Business School", 1.292562, 103.774187],
   ["NUS Department of Chemistry", 1.296562, 103.778937],
   ["NUS Department of Chinese Studies", 1.295937, 103.772063],
   ["NUS Enterprise", 1.292438, 103.775688],

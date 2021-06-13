@@ -24,7 +24,7 @@ class _EditEventState extends State<EditEvent> {
   int _pax = 2;
   String _description = '';
   int _icon = 0;
-  String _location = locations[0][0];
+  String _location = LOCATIONS[0][0];
   List<int> numbers = List.generate(25, (index) => index++);
 
   final _formKey = GlobalKey<FormState>();
@@ -115,7 +115,7 @@ class _EditEventState extends State<EditEvent> {
             actions: <Widget>[
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 15, 15, 0),
-                child: imageList[_icon],
+                child: IMAGE_LIST[_icon],
               ),
             ],
             toolbarHeight: 75.0,
@@ -230,7 +230,7 @@ class _EditEventState extends State<EditEvent> {
                                     _icon = 0;
                                   });
                                 },
-                                child: imageList[0],
+                                child: IMAGE_LIST[0],
                                 style: TextButton.styleFrom(
                                   side: BorderSide(
                                       color: _isSelected[0]
@@ -248,7 +248,7 @@ class _EditEventState extends State<EditEvent> {
                                     _icon = 1;
                                   });
                                 },
-                                child: imageList[1],
+                                child: IMAGE_LIST[1],
                                 style: TextButton.styleFrom(
                                   side: BorderSide(
                                       color: _isSelected[1]
@@ -266,7 +266,7 @@ class _EditEventState extends State<EditEvent> {
                                     _icon = 2;
                                   });
                                 },
-                                child: imageList[2],
+                                child: IMAGE_LIST[2],
                                 style: TextButton.styleFrom(
                                   side: BorderSide(
                                       color: _isSelected[2]
@@ -284,7 +284,7 @@ class _EditEventState extends State<EditEvent> {
                                     _icon = 3;
                                   });
                                 },
-                                child: imageList[3],
+                                child: IMAGE_LIST[3],
                                 style: TextButton.styleFrom(
                                   side: BorderSide(
                                       color: _isSelected[3]
@@ -302,7 +302,7 @@ class _EditEventState extends State<EditEvent> {
                                     _icon = 4;
                                   });
                                 },
-                                child: imageList[4],
+                                child: IMAGE_LIST[4],
                                 style: TextButton.styleFrom(
                                   side: BorderSide(
                                       color: _isSelected[4]
@@ -320,7 +320,7 @@ class _EditEventState extends State<EditEvent> {
                         Text('Location: '),
                         DropdownButton(
                             value: _location,
-                            items: locations.map((location) {
+                            items: LOCATIONS.map((location) {
                               return DropdownMenuItem(
                                 value: location[0],
                                 child: Text('${location[0]}'),
@@ -400,7 +400,6 @@ class _EditEventState extends State<EditEvent> {
                                   db.updateEventData(
                                       _location,
                                       _telegramURL,
-                                      _uid,
                                       _name,
                                       _dateTime!,
                                       _pax,

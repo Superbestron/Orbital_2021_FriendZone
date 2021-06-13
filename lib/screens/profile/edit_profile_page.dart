@@ -44,7 +44,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _bio = userData.bio;
     _currentImage = widget.profileImage;
     _faculty = userData.faculty;
-    _faculties = faculties;
+    _faculties = FACULTIES;
     super.initState();
   }
 

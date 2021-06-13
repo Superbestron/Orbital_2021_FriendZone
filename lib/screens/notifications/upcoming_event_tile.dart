@@ -71,7 +71,7 @@ class UpcomingEventTile extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: <Widget> [
-                    imageList[event.icon],
+                    IMAGE_LIST[event.icon],
                     Clock(dateTime: event.dateTime).build(context),
                   ],
                 ),
@@ -101,7 +101,7 @@ class UpcomingEventTile extends StatelessWidget {
                         actions: <Widget> [
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 15, 15, 0),
-                            child: imageList[event.icon],
+                            child: IMAGE_LIST[event.icon],
                           ),
                         ],
                         toolbarHeight: 75.0,
@@ -115,7 +115,7 @@ class UpcomingEventTile extends StatelessWidget {
                                 vertical: 20.0, horizontal: 60.0),
                             child: EventPage(eventID: event.eventID),
                           ),
-                          user!.uid == event.initiatorID ? Column(
+                          user!.uid == event.attendees[0] ? Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Row(

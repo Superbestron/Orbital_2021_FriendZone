@@ -17,7 +17,7 @@ class _EventListState extends State<EventList> {
     List<Event> events = (Provider.of<List<Event>?>(context) ?? [])
         .where((event) =>
             event.name.toLowerCase().contains(query.toLowerCase()) ||
-            months[event.dateTime.month - 1]
+            MONTHS[event.dateTime.month - 1]
                 .toLowerCase()
                 .contains(query.toLowerCase()) ||
             event.dateTime.day.toString().contains(query.toLowerCase()) ||
@@ -33,7 +33,7 @@ class _EventListState extends State<EventList> {
       child: Column(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: TextFormField(
               decoration: textInputDecoration.copyWith(
                 hintText: 'Search Event by Name',
@@ -47,7 +47,7 @@ class _EventListState extends State<EventList> {
             ),
           ),
           ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             shrinkWrap: true,
             itemCount: events.length,
             itemBuilder: (context, index) {

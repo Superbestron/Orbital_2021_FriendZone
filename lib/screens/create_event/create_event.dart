@@ -20,9 +20,9 @@ class _CreateEventState extends State<CreateEvent> {
   int _pax = 2;
   String _description = '';
   int _icon = 0;
-  List<int> numbers = List.generate(25, (index) => index++);
+  List<int> numbers = List.generate(9, (index) => index++);
 
-  String _location = locations[0][0];
+  String _location = LOCATIONS[0][0];
 
   final _formKey = GlobalKey<FormState>();
 
@@ -159,9 +159,64 @@ class _CreateEventState extends State<CreateEvent> {
                   onChanged: (val) => setState(() { _telegramURL = val; }),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 45.0),
+                      child: Text('Pax: ', style: NORMAL),
+                    ),
+                    DropdownButton(
+                        value: _pax,
+                        items: numbers.map((x) => x + 2).map((pax) {
+                          return DropdownMenuItem(
+                            value: pax,
+                            child: Text('$pax'),
+                          );
+                        }).toList(),
+                        onChanged: (val) {
+                          return setState(() { _pax = int.parse(val.toString()); });
+                        }
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Text('Location: ', style: NORMAL),
+                    ),
+                    DropdownButton(
+                        itemHeight: kMinInteractiveDimension,
+                        isDense: true,
+                        value: _location,
+                        items: LOCATIONS.map((location) {
+                          return DropdownMenuItem(
+                            value: location[0],
+                            child: SizedBox(
+                              child: Text('${location[0]}',
+                                  overflow: TextOverflow.visible
+                              ),
+                              width: 230,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (val) {
+                          return setState(() {
+                            _location = val.toString();
+                          });
+                        }
+                    ),
+                  ],
+                ),
+              ),
               ListTile(
                 title: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.fromLTRB(5, 16, 6, 8),
                   child: Text('Choose your event icon: '),
                 ),
                 subtitle: Row(
@@ -175,7 +230,7 @@ class _CreateEventState extends State<CreateEvent> {
                             _icon = 0;
                           });
                         },
-                        child: imageList[0],
+                        child: IMAGE_LIST[0],
                         style: TextButton.styleFrom(
                           side: BorderSide(
                             color: _isSelected[0] ? GREEN_1 : Colors.transparent,
@@ -191,7 +246,7 @@ class _CreateEventState extends State<CreateEvent> {
                             _icon = 1;
                           });
                         },
-                        child: imageList[1],
+                        child: IMAGE_LIST[1],
                         style: TextButton.styleFrom(
                           side: BorderSide(
                             color: _isSelected[1] ? GREEN_1 : Colors.transparent,
@@ -207,7 +262,7 @@ class _CreateEventState extends State<CreateEvent> {
                             _icon = 2;
                           });
                         },
-                        child: imageList[2],
+                        child: IMAGE_LIST[2],
                         style: TextButton.styleFrom(
                           side: BorderSide(
                             color: _isSelected[2] ? GREEN_1 : Colors.transparent,
@@ -223,7 +278,7 @@ class _CreateEventState extends State<CreateEvent> {
                             _icon = 3;
                           });
                         },
-                        child: imageList[3],
+                        child: IMAGE_LIST[3],
                         style: TextButton.styleFrom(
                           side: BorderSide(
                             color: _isSelected[3] ? GREEN_1 : Colors.transparent,
@@ -239,7 +294,7 @@ class _CreateEventState extends State<CreateEvent> {
                             _icon = 4;
                           });
                         },
-                        child: imageList[4],
+                        child: IMAGE_LIST[4],
                         style: TextButton.styleFrom(
                           side: BorderSide(
                             color: _isSelected[4] ? GREEN_1 : Colors.transparent,
@@ -250,78 +305,39 @@ class _CreateEventState extends State<CreateEvent> {
                   ],
                 )
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Location: '),
-                  DropdownButton(
-                      value: _location,
-                      items: locations.map((location) {
-                        return DropdownMenuItem(
-                          value: location[0],
-                          child: Text('${location[0]}'),
-                        );
-                      }).toList(),
-                      onChanged: (val) {
-                        return setState(() {
-                          _location = val.toString();
-                        });
-                      }
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text('Pax: '),
-                  DropdownButton(
-                    value: _pax,
-                    items: numbers.map((x) => x + 2).map((pax) {
-                      return DropdownMenuItem(
-                          value: pax,
-                          child: Text('$pax'),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: FloatingActionButton(
+                  backgroundColor: ORANGE_1,
+                  tooltip: 'Create Event',
+                  child: Icon(Icons.add),
+                  onPressed: () async {
+                    // TODO: Validate that date and time are set by the user
+                    if (_formKey.currentState!.validate()) {
+                      _dateTime = DateTime(_dateTime!.year, _dateTime!.month,
+                          _dateTime!.day, _time!.hour, _time!.minute);
+                      String _uid = user!.uid;
+                      DatabaseService db = DatabaseService(uid: _uid);
+                      String eventID = await db.createEventData(
+                        _location, _telegramURL,
+                        _name, _dateTime!,
+                        _pax, _description, _icon,
                       );
-                    }).toList(),
-                    onChanged: (val) {
-                      return setState(() { _pax = int.parse(val.toString()); });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: BACKGROUND_COLOR,
+                          content: Text('Successfully created an event!'),
+                          action: SnackBarAction(
+                            label: 'Undo',
+                            onPressed: () async {
+                              await db.deleteEvent(eventID);
+                            },
+                          ),
+                        )
+                      );
                     }
-                  ),
-                  SizedBox(width: 50.0),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: FloatingActionButton(
-                      backgroundColor: ORANGE_1,
-                      tooltip: 'Create Event',
-                      child: Icon(Icons.add),
-                      onPressed: () async {
-                        // TODO: Validate that date and time are set by the user
-                        if (_formKey.currentState!.validate()) {
-                          _dateTime = DateTime(_dateTime!.year, _dateTime!.month, _dateTime!.day,
-                              _time!.hour, _time!.minute);
-                          String _uid = user!.uid;
-                          DatabaseService db = DatabaseService(uid: _uid);
-                          String eventID = await db.createEventData(
-                            _location, _telegramURL,
-                            _uid, _name, _dateTime!,
-                            _pax, _description, _icon,
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: BACKGROUND_COLOR,
-                              content: Text('Successfully created an event!'),
-                              action: SnackBarAction(
-                                label: 'Undo',
-                                onPressed: () async {
-                                  await db.deleteEvent(eventID);
-                                },
-                              ),
-                            )
-                          );
-                        }
-                      }
-                    ),
-                  ),
-                ],
+                  }
+                ),
               ),
             ],
           ),
