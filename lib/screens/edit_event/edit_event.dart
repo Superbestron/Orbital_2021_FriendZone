@@ -336,10 +336,10 @@ class _EditEventState extends State<EditEvent> {
                                     onPressed: () async {},
                                   ),
                                 ));
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => (Home())));
+                                int count = 0;
+                                Navigator.popUntil(context, (route) {
+                                  return count++ == 2;
+                                });
                               }),
                         ),
                         SizedBox(width: 29.0),
@@ -396,10 +396,10 @@ class _EditEventState extends State<EditEvent> {
                                       onPressed: () async {},
                                     ),
                                   ));
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => (Home())));
+                                  int count = 0;
+                                  Navigator.popUntil(context, (route) {
+                                    return count++ == 2;
+                                  });
                                 }
                               }),
                         ),
