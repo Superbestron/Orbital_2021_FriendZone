@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/models/user.dart';
-import 'package:myapp/screens/home/home.dart';
 import 'package:myapp/services/database.dart';
 import 'package:myapp/shared/constants.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +24,7 @@ class _EditEventState extends State<EditEvent> {
   int _pax = 2;
   String _description = '';
   int _icon = 0;
+  String _location = locations[0][0];
   List<int> numbers = List.generate(25, (index) => index++);
 
   final _formKey = GlobalKey<FormState>();
@@ -88,6 +88,7 @@ class _EditEventState extends State<EditEvent> {
     _icon = event.icon;
     _isSelected[_icon] = true;
     _pax = event.pax;
+    _location = event.location;
     super.initState();
   }
 
@@ -314,6 +315,26 @@ class _EditEventState extends State<EditEvent> {
                           ],
                         )),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Location: '),
+                        DropdownButton(
+                            value: _location,
+                            items: locations.map((location) {
+                              return DropdownMenuItem(
+                                value: location[0],
+                                child: Text('${location[0]}'),
+                              );
+                            }).toList(),
+                            onChanged: (val) {
+                              return setState(() {
+                                _location = val.toString();
+                              });
+                            }
+                        ),
+                      ],
+                    ),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Padding(
@@ -377,6 +398,7 @@ class _EditEventState extends State<EditEvent> {
                                   DatabaseService db =
                                       DatabaseService(uid: _uid);
                                   db.updateEventData(
+                                      _location,
                                       _telegramURL,
                                       _uid,
                                       _name,

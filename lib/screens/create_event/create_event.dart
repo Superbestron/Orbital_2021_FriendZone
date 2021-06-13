@@ -22,6 +22,8 @@ class _CreateEventState extends State<CreateEvent> {
   int _icon = 0;
   List<int> numbers = List.generate(25, (index) => index++);
 
+  String _location = locations[0][0];
+
   final _formKey = GlobalKey<FormState>();
 
   void selectButton(int index) {
@@ -80,7 +82,6 @@ class _CreateEventState extends State<CreateEvent> {
   Widget build(BuildContext context) {
 
     final user = Provider.of<UserObj?>(context);
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Scaffold(
@@ -250,6 +251,26 @@ class _CreateEventState extends State<CreateEvent> {
                 )
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Location: '),
+                  DropdownButton(
+                      value: _location,
+                      items: locations.map((location) {
+                        return DropdownMenuItem(
+                          value: location[0],
+                          child: Text('${location[0]}'),
+                        );
+                      }).toList(),
+                      onChanged: (val) {
+                        return setState(() {
+                          _location = val.toString();
+                        });
+                      }
+                  ),
+                ],
+              ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text('Pax: '),
@@ -280,7 +301,7 @@ class _CreateEventState extends State<CreateEvent> {
                           String _uid = user!.uid;
                           DatabaseService db = DatabaseService(uid: _uid);
                           String eventID = await db.createEventData(
-                            _telegramURL,
+                            _location, _telegramURL,
                             _uid, _name, _dateTime!,
                             _pax, _description, _icon,
                           );

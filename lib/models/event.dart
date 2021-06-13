@@ -1,5 +1,6 @@
 class Event {
 
+  final String location;
   final String telegramURL;
   final String initiatorID;
   final String eventID;
@@ -11,6 +12,7 @@ class Event {
   List<dynamic> attendees;
 
   Event({
+    required this.location,
     required this.telegramURL,
     required this.initiatorID,
     required this.eventID,

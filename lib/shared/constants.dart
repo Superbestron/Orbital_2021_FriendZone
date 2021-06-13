@@ -93,3 +93,25 @@ Color? revokeAttendance = HexColor.fromHex('FED8B1');
 const TEXT_FIELD_HEADING = TextStyle(fontSize: 20);
 const BOLDED_NORMAL = TextStyle(fontWeight: FontWeight.bold, fontSize: 16);
 const NORMAL = TextStyle(fontSize: 16);
+
+// locations for selection
+List locations = [
+  ["Others", null, null],
+  ["Dean's Office, FASS", 1.294312, 103.771062],
+  ["Faculty of Engineering", 1.299187, 103.771312],
+  ["NUS Alumni Relations", 1.293312, 103.773687],
+  ["NUS Biological Sciences", 1.295562, 103.778688],
+  ["NUS Buiness School", 1.292562, 103.774187],
+  ["NUS Department of Chemistry", 1.296562, 103.778937],
+  ["NUS Department of Chinese Studies", 1.295937, 103.772063],
+  ["NUS Enterprise", 1.292438, 103.775688],
+  ["NUS Environmental Research Institute", 1.299688, 103.772063],
+  ["NUS Information Technology", 1.297563, 103.772562],
+  ["NUS Office of Student Affairs", 1.298563, 103.774812],
+  ["NUS School of Computing", 1.294812, 103.773687],
+  ["NUS Students' Science Club Secretariat", 1.297063, 103.779813],
+  ["Utown", 1.305438, 103.773062],
+  ["Utown Aud 1", 1.303937, 103.773438],
+  ["Yale-NUS college", 1.306938, 103.771812],
+  ["Yusof Ishak House", 1.298563, 103.774937]
+];
