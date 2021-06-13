@@ -114,7 +114,7 @@ class EventTile extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.all(20),
+                                        padding: const EdgeInsets.fromLTRB(30, 30, 28, 30),
                                         child: FloatingActionButton(
                                             backgroundColor: ORANGE_1,
                                             tooltip: 'Edit Event',

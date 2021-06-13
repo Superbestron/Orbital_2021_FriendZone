@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/models/user.dart';
+import 'package:myapp/screens/home/home.dart';
 import 'package:myapp/services/database.dart';
 import 'package:myapp/shared/constants.dart';
 import 'package:provider/provider.dart';
@@ -51,7 +52,7 @@ class _EditEventState extends State<EditEvent> {
   Future pickDate(BuildContext context) async {
     final newDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: _dateTime!,
       firstDate: DateTime.now(),
       lastDate: DateTime(
           DateTime.now().year + 1, DateTime.now().month, DateTime.now().day),
@@ -67,7 +68,7 @@ class _EditEventState extends State<EditEvent> {
   Future pickTime(BuildContext context) async {
     final newTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay.now(),
+      initialTime: _time!,
     );
 
     if (newTime != null) {
@@ -113,7 +114,7 @@ class _EditEventState extends State<EditEvent> {
             actions: <Widget>[
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 15, 15, 0),
-                child: imageList[event.icon],
+                child: imageList[_icon],
               ),
             ],
             toolbarHeight: 75.0,
@@ -368,6 +369,10 @@ class _EditEventState extends State<EditEvent> {
                                       onPressed: () async {},
                                     ),
                                   ));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => (Home()))
+                                  );
                                 }
                               }),
                         ),
