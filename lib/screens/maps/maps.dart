@@ -69,6 +69,15 @@ class _MapsState extends State<Maps> {
     });
   }
 
+  List getCoordinate(String location) {
+    for (List item in locations) {
+      if (item[0] == location) {
+        return [item[1], item[2]];
+      }
+    }
+    return [];
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Event> events = (Provider.of<List<Event>?>(context) ?? []);
@@ -76,6 +85,8 @@ class _MapsState extends State<Maps> {
     // Filter the events which have already happened
     events.removeWhere((event) => event.dateTime.isBefore(DateTime.now()));
 
+    // Filter events with no location defined
+    events.removeWhere((event) => event.location == "Others");
     // initialise markers
     setState(() {
       _markers = Set.of(events.map((event) => Marker(
@@ -123,7 +134,7 @@ class _MapsState extends State<Maps> {
               )
           );
         },
-        position: LatLng(37.422, -122.084), // TODO: change to get data from database
+        position: LatLng(getCoordinate(event.location)[0], getCoordinate(event.location)[1]),
       )));
     });
 
