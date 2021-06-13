@@ -115,3 +115,5 @@ List locations = [
   ["Yale-NUS college", 1.306938, 103.771812],
   ["Yusof Ishak House", 1.298563, 103.774937]
 ];
+
+const DEFAULT_PROFILE_PIC = AssetImage('assets/default-profile-pic.jpeg');

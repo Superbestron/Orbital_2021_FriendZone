@@ -26,7 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
       // if user did not upload any profile picture
       if (profileImagePath == '') {
         print('no image');
-        _profileImage = AssetImage('assets/default-profile-pic.jpeg');
+        _profileImage = DEFAULT_PROFILE_PIC;
       } else {
         dbService.getImageURLFromFirebase(profileImagePath).then((url) =>
             setState(() {
@@ -50,13 +50,13 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 ProfileWidget(
                   // While the image is loading, show a white background (or loading animation)
-                  image: _profileImage ?? AssetImage('assets/plain-white-background.jpeg'),
+                  image: _profileImage ?? DEFAULT_PROFILE_PIC,
                   onClicked: () async {
                     final _image = await Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) {
                         return EditProfilePage(
                           userData: userData,
-                          profileImage: _profileImage!
+                          profileImage: _profileImage ?? DEFAULT_PROFILE_PIC
                         );
                       })
                     );
