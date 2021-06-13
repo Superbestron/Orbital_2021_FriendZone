@@ -14,11 +14,12 @@ class _CreateEventState extends State<CreateEvent> {
   // 1st Icon is selected by default
   List<bool> _isSelected = [true, false, false, false, false];
   String _name = '';
+  String _telegramURL = '';
   DateTime? _dateTime;
   TimeOfDay? _time;
   int _pax = 2;
   String _description = '';
-  int _icon = 1;
+  int _icon = 0;
   List<int> numbers = List.generate(25, (index) => index++);
 
   final _formKey = GlobalKey<FormState>();
@@ -149,6 +150,14 @@ class _CreateEventState extends State<CreateEvent> {
                   maxLines: 4,
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: textInputDecoration.copyWith(hintText: 'Telegram chat URL'),
+                  validator: (val) => val!.isEmpty ? 'Enter a telegram chat URL' : null,
+                  onChanged: (val) => setState(() { _telegramURL = val; }),
+                ),
+              ),
               ListTile(
                 title: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -268,13 +277,16 @@ class _CreateEventState extends State<CreateEvent> {
                         if (_formKey.currentState!.validate()) {
                           _dateTime = DateTime(_dateTime!.year, _dateTime!.month, _dateTime!.day,
                               _time!.hour, _time!.minute);
-                          DatabaseService db = DatabaseService(uid: user!.uid);
+                          String _uid = user!.uid;
+                          DatabaseService db = DatabaseService(uid: _uid);
                           String eventID = await db.createEventData(
-                            _name, _dateTime!,
+                            _telegramURL,
+                            _uid, _name, _dateTime!,
                             _pax, _description, _icon,
                           );
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
+                              backgroundColor: BACKGROUND_COLOR,
                               content: Text('Successfully created an event!'),
                               action: SnackBarAction(
                                 label: 'Undo',
