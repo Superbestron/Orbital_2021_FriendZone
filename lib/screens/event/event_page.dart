@@ -88,6 +88,12 @@ class _EventPageState extends State<EventPage> {
                     style: NORMAL),
                   minLeadingWidth: 10.0,
                 ),
+                ListTile(
+                  visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                  title: Text('Location: ${event.location}',
+                    style: NORMAL),
+                  minLeadingWidth: 10.0,
+                ),
                 Row(
                   children: <Widget>[
                     Expanded(
