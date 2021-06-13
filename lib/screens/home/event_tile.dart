@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myapp/models/event.dart';
+import 'package:myapp/screens/edit_event/edit_event.dart';
 import 'package:myapp/screens/event/event_page.dart';
 import 'package:myapp/shared/constants.dart';
+import 'package:myapp/models/user.dart';
+import 'package:provider/provider.dart';
 
 class EventTile extends StatelessWidget {
   final Event event;
@@ -11,6 +14,7 @@ class EventTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserObj?>(context);
     return Padding(
       padding: EdgeInsets.only(top: 8.0),
       child: Card(
@@ -96,11 +100,57 @@ class EventTile extends StatelessWidget {
                             ],
                             toolbarHeight: 75.0,
                           ),
-                          body: Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 20.0, horizontal: 60.0),
-                            child: EventPage(eventID: event.eventID),
-                          ),
+                          body: Stack(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 20.0, horizontal: 60.0),
+                                child: EventPage(eventID: event.eventID),
+                              ),
+                              user!.uid == event.initiatorID ? Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(20),
+                                        child: FloatingActionButton(
+                                            backgroundColor: ORANGE_1,
+                                            tooltip: 'Edit Event',
+                                            child: Icon(Icons.edit_rounded),
+                                            onPressed: () {
+                                              int daysToEvent = event.dateTime
+                                                  .difference(DateTime.now())
+                                                  .inDays;
+                                              if (daysToEvent > 2) {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => (EditEvent(event: event))),
+                                                );
+                                              } else {
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                    SnackBar(
+                                                      backgroundColor: BACKGROUND_COLOR,
+                                                      content: Text('It is too late to edit event now!'),
+                                                      action: SnackBarAction(
+                                                        label: 'Dismiss',
+                                                        onPressed: () async {
+
+                                                        },
+                                                      ),
+                                                    )
+                                                );
+                                              }
+                                            }
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ) : Text(""), // empty widget
+                            ],
+                          )
                         ),
                       ],
                     ),

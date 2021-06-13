@@ -19,7 +19,7 @@ class _CreateEventState extends State<CreateEvent> {
   TimeOfDay? _time;
   int _pax = 2;
   String _description = '';
-  int _icon = 1;
+  int _icon = 0;
   List<int> numbers = List.generate(25, (index) => index++);
 
   final _formKey = GlobalKey<FormState>();
