@@ -316,6 +316,33 @@ class _EditEventState extends State<EditEvent> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: FloatingActionButton(
+                              backgroundColor: ORANGE_1,
+                              tooltip: 'Edit Event',
+                              child: Icon(Icons.delete),
+                              onPressed: () async {
+                                String _uid = user!.uid;
+                                DatabaseService db = DatabaseService(uid: _uid);
+                                await db.deleteEvent(event.eventID);
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  backgroundColor: BACKGROUND_COLOR,
+                                  content:
+                                      Text('Successfully deleted an event!'),
+                                  action: SnackBarAction(
+                                    label: 'Dismiss',
+                                    onPressed: () async {},
+                                  ),
+                                ));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => (Home())));
+                              }),
+                        ),
+                        SizedBox(width: 29.0),
                         Text('Pax: '),
                         DropdownButton(
                             value: _pax,
@@ -371,8 +398,8 @@ class _EditEventState extends State<EditEvent> {
                                   ));
                                   Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => (Home()))
-                                  );
+                                      MaterialPageRoute(
+                                          builder: (context) => (Home())));
                                 }
                               }),
                         ),
