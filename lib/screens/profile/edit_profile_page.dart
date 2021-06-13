@@ -24,7 +24,6 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
 
-  static const DEFAULT_PROFILE_PIC = AssetImage('assets/default-profile-pic.jpeg');
   bool _hasDeletedProfileImage = false;
   bool _hasChosenNewImage = false;
   late File _imageFile;

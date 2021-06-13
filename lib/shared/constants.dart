@@ -93,3 +93,5 @@ Color? revokeAttendance = HexColor.fromHex('FED8B1');
 const TEXT_FIELD_HEADING = TextStyle(fontSize: 20);
 const BOLDED_NORMAL = TextStyle(fontWeight: FontWeight.bold, fontSize: 16);
 const NORMAL = TextStyle(fontSize: 16);
+
+const DEFAULT_PROFILE_PIC = AssetImage('assets/default-profile-pic.jpeg');

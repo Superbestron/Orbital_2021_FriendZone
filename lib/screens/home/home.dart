@@ -59,6 +59,7 @@ class _HomeState extends State<Home> {
               ),
               Scaffold(
                 appBar: AppBar(
+                  centerTitle: true,
                   title: Text(_appBarTitles[_selectedIndex],
                   ),
                   toolbarHeight: 100.0,
