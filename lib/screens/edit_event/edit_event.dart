@@ -25,7 +25,7 @@ class _EditEventState extends State<EditEvent> {
   String _description = '';
   int _icon = 0;
   String _location = LOCATIONS[0][0];
-  List<int> numbers = List.generate(25, (index) => index++);
+  List<int> numbers = List.generate(9, (index) => index++);
 
   final _formKey = GlobalKey<FormState>();
 
@@ -40,13 +40,9 @@ class _EditEventState extends State<EditEvent> {
   }
 
   String _getTimeText() {
-    if (_time == null) {
-      return 'Select Time';
-    } else {
-      final hours = _time!.hour.toString().padLeft(2, '0');
-      final minutes = _time!.minute.toString().padLeft(2, '0');
-      return '$hours:$minutes';
-    }
+    final hours = _time!.hour.toString().padLeft(2, '0');
+    final minutes = _time!.minute.toString().padLeft(2, '0');
+    return '$hours:$minutes';
   }
 
   Future pickDate(BuildContext context) async {
@@ -107,6 +103,7 @@ class _EditEventState extends State<EditEvent> {
         ),
         Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             leading: BackButton(color: Colors.black),
             title: Text(
               "Edit Event",
@@ -114,7 +111,7 @@ class _EditEventState extends State<EditEvent> {
             ),
             actions: <Widget>[
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 15, 15, 0),
+                padding: const EdgeInsets.fromLTRB(0, 20, 15, 0),
                 child: IMAGE_LIST[_icon],
               ),
             ],
@@ -122,8 +119,7 @@ class _EditEventState extends State<EditEvent> {
           ),
           body: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Scaffold(
-              body: Form(
+            child: Form(
                 key: _formKey,
                 child: ListView(
                   physics: BouncingScrollPhysics(),
@@ -146,7 +142,7 @@ class _EditEventState extends State<EditEvent> {
                         Expanded(
                           child: ListTile(
                             title: Text(
-                              'Date:',
+                              'Select Date:',
                               textAlign: TextAlign.center,
                             ),
                             subtitle: Padding(
@@ -167,7 +163,7 @@ class _EditEventState extends State<EditEvent> {
                         Expanded(
                           child: ListTile(
                             title: Text(
-                              'Time:',
+                              'Select Time:',
                               textAlign: TextAlign.center,
                             ),
                             subtitle: Padding(
@@ -214,134 +210,171 @@ class _EditEventState extends State<EditEvent> {
                         }),
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 45.0),
+                            child: Text('Pax: ', style: NORMAL),
+                          ),
+                          DropdownButton(
+                              value: _pax,
+                              items: numbers.map((x) => x + 2).map((pax) {
+                                return DropdownMenuItem(
+                                  value: pax,
+                                  child: Text('$pax'),
+                                );
+                              }).toList(),
+                              onChanged: (val) {
+                                return setState(() { _pax = int.parse(val.toString()); });
+                              }
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Text('Location: ', style: NORMAL),
+                          ),
+                          DropdownButton(
+                              itemHeight: kMinInteractiveDimension,
+                              isDense: true,
+                              value: _location,
+                              items: LOCATIONS.map((location) {
+                                return DropdownMenuItem(
+                                  value: location[0],
+                                  child: SizedBox(
+                                    child: Text('${location[0]}',
+                                        overflow: TextOverflow.visible
+                                    ),
+                                    width: 230,
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (val) {
+                                return setState(() {
+                                  _location = val.toString();
+                                });
+                              }
+                          ),
+                        ],
+                      ),
+                    ),
                     ListTile(
                         title: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.fromLTRB(5, 20, 0, 8),
                           child: Text('Choose your event icon: '),
                         ),
-                        subtitle: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: TextButton(
-                                onPressed: () {
-                                  setState(() {
-                                    selectButton(0);
-                                    _icon = 0;
-                                  });
-                                },
-                                child: IMAGE_LIST[0],
-                                style: TextButton.styleFrom(
-                                  side: BorderSide(
-                                      color: _isSelected[0]
-                                          ? GREEN_1
-                                          : Colors.transparent,
-                                      width: 2),
+                        subtitle: Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      selectButton(0);
+                                      _icon = 0;
+                                    });
+                                  },
+                                  child: IMAGE_LIST[0],
+                                  style: TextButton.styleFrom(
+                                    side: BorderSide(
+                                        color: _isSelected[0]
+                                            ? GREEN_1
+                                            : Colors.transparent,
+                                        width: 2),
+                                  ),
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              child: TextButton(
-                                onPressed: () {
-                                  setState(() {
-                                    selectButton(1);
-                                    _icon = 1;
-                                  });
-                                },
-                                child: IMAGE_LIST[1],
-                                style: TextButton.styleFrom(
-                                  side: BorderSide(
-                                      color: _isSelected[1]
-                                          ? GREEN_1
-                                          : Colors.transparent,
-                                      width: 2),
+                              Expanded(
+                                child: TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      selectButton(1);
+                                      _icon = 1;
+                                    });
+                                  },
+                                  child: IMAGE_LIST[1],
+                                  style: TextButton.styleFrom(
+                                    side: BorderSide(
+                                        color: _isSelected[1]
+                                            ? GREEN_1
+                                            : Colors.transparent,
+                                        width: 2),
+                                  ),
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              child: TextButton(
-                                onPressed: () {
-                                  setState(() {
-                                    selectButton(2);
-                                    _icon = 2;
-                                  });
-                                },
-                                child: IMAGE_LIST[2],
-                                style: TextButton.styleFrom(
-                                  side: BorderSide(
-                                      color: _isSelected[2]
-                                          ? GREEN_1
-                                          : Colors.transparent,
-                                      width: 2),
+                              Expanded(
+                                child: TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      selectButton(2);
+                                      _icon = 2;
+                                    });
+                                  },
+                                  child: IMAGE_LIST[2],
+                                  style: TextButton.styleFrom(
+                                    side: BorderSide(
+                                        color: _isSelected[2]
+                                            ? GREEN_1
+                                            : Colors.transparent,
+                                        width: 2),
+                                  ),
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              child: TextButton(
-                                onPressed: () {
-                                  setState(() {
-                                    selectButton(3);
-                                    _icon = 3;
-                                  });
-                                },
-                                child: IMAGE_LIST[3],
-                                style: TextButton.styleFrom(
-                                  side: BorderSide(
-                                      color: _isSelected[3]
-                                          ? GREEN_1
-                                          : Colors.transparent,
-                                      width: 2),
+                              Expanded(
+                                child: TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      selectButton(3);
+                                      _icon = 3;
+                                    });
+                                  },
+                                  child: IMAGE_LIST[3],
+                                  style: TextButton.styleFrom(
+                                    side: BorderSide(
+                                        color: _isSelected[3]
+                                            ? GREEN_1
+                                            : Colors.transparent,
+                                        width: 2),
+                                  ),
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              child: TextButton(
-                                onPressed: () {
-                                  setState(() {
-                                    selectButton(4);
-                                    _icon = 4;
-                                  });
-                                },
-                                child: IMAGE_LIST[4],
-                                style: TextButton.styleFrom(
-                                  side: BorderSide(
-                                      color: _isSelected[4]
-                                          ? GREEN_1
-                                          : Colors.transparent,
-                                      width: 2),
+                              Expanded(
+                                child: TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      selectButton(4);
+                                      _icon = 4;
+                                    });
+                                  },
+                                  child: IMAGE_LIST[4],
+                                  style: TextButton.styleFrom(
+                                    side: BorderSide(
+                                        color: _isSelected[4]
+                                            ? GREEN_1
+                                            : Colors.transparent,
+                                        width: 2),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         )),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Location: '),
-                        DropdownButton(
-                            value: _location,
-                            items: LOCATIONS.map((location) {
-                              return DropdownMenuItem(
-                                value: location[0],
-                                child: Text('${location[0]}'),
-                              );
-                            }).toList(),
-                            onChanged: (val) {
-                              return setState(() {
-                                _location = val.toString();
-                              });
-                            }
-                        ),
-                      ],
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
+                        Expanded(
                           child: FloatingActionButton(
                               backgroundColor: ORANGE_1,
-                              tooltip: 'Edit Event',
+                              tooltip: 'Delete Event',
                               child: Icon(Icons.delete),
                               onPressed: () async {
                                 String _uid = user!.uid;
@@ -363,24 +396,7 @@ class _EditEventState extends State<EditEvent> {
                                 });
                               }),
                         ),
-                        SizedBox(width: 29.0),
-                        Text('Pax: '),
-                        DropdownButton(
-                            value: _pax,
-                            items: numbers.map((x) => x + 2).map((pax) {
-                              return DropdownMenuItem(
-                                value: pax,
-                                child: Text('$pax'),
-                              );
-                            }).toList(),
-                            onChanged: (val) {
-                              return setState(() {
-                                _pax = int.parse(val.toString());
-                              });
-                            }),
-                        SizedBox(width: 50.0),
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
+                        Expanded(
                           child: FloatingActionButton(
                               backgroundColor: ORANGE_1,
                               tooltip: 'Edit Event',
@@ -430,7 +446,6 @@ class _EditEventState extends State<EditEvent> {
                 ),
               ),
             ),
-          ),
         ),
       ],
     );

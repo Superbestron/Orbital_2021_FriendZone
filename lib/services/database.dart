@@ -76,7 +76,8 @@ class DatabaseService {
     String newDocID = eventCollection.doc().id;
     List<dynamic> attendees = [];
     attendees.add(uid);
-    updateEventData(location, telegramURL, name, dateTime, pax, description, icon, newDocID, attendees);
+    updateEventData(location, telegramURL, name, dateTime, pax, description,
+      icon, newDocID, attendees);
     return newDocID;
   }
 

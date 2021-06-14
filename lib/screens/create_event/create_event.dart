@@ -5,6 +5,7 @@ import 'package:myapp/shared/constants.dart';
 import 'package:provider/provider.dart';
 
 class CreateEvent extends StatefulWidget {
+
   @override
   _CreateEventState createState() => _CreateEventState();
 }
@@ -38,12 +39,11 @@ class _CreateEventState extends State<CreateEvent> {
 
   String _getTimeText() {
     if (_time == null) {
-      return 'Select Time';
-    } else {
-      final hours = _time!.hour.toString().padLeft(2, '0');
-      final minutes = _time!.minute.toString().padLeft(2, '0');
-      return '$hours:$minutes';
+      _time = TimeOfDay.now();
     }
+    final hours = _time!.hour.toString().padLeft(2, '0');
+    final minutes = _time!.minute.toString().padLeft(2, '0');
+    return '$hours:$minutes';
   }
 
   Future pickDate(BuildContext context) async {
@@ -102,7 +102,7 @@ class _CreateEventState extends State<CreateEvent> {
                 children: [
                   Expanded(
                     child: ListTile(
-                      title: Text('Date:',
+                      title: Text('Select Date:',
                         textAlign: TextAlign.center,
                       ),
                       subtitle: Padding(
@@ -122,7 +122,7 @@ class _CreateEventState extends State<CreateEvent> {
                   ),
                   Expanded(
                     child: ListTile(
-                      title: Text('Time:',
+                      title: Text('Select Time:',
                         textAlign: TextAlign.center,
                       ),
                       subtitle: Padding(
@@ -216,7 +216,7 @@ class _CreateEventState extends State<CreateEvent> {
               ),
               ListTile(
                 title: Padding(
-                  padding: const EdgeInsets.fromLTRB(5, 16, 6, 8),
+                  padding: const EdgeInsets.fromLTRB(5, 20, 0, 8),
                   child: Text('Choose your event icon: '),
                 ),
                 subtitle: Row(

@@ -46,9 +46,7 @@ class _EventPageState extends State<EventPage> {
             });
           }
           setInitiatorName();
-          return Scaffold(
-            backgroundColor: Colors.transparent,
-            body: ListView(
+          return ListView(
               physics: BouncingScrollPhysics(),
               children: <Widget>[
                 Align(
@@ -65,32 +63,34 @@ class _EventPageState extends State<EventPage> {
                   visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                   leading: Icon(Icons.calendar_today, size: 15),
                   title: Text('${getDateText(event.dateTime)}',
-                      style: TextStyle(fontSize: 15)),
+                    style: NORMAL),
                   minLeadingWidth: 10.0,
                 ),
                 ListTile(
                   visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                   leading: Icon(Icons.access_time, size: 15),
                   title: Text('${getTimeText(event.dateTime)}',
-                    style: TextStyle(fontSize: 15)),
+                    style: NORMAL),
                   minLeadingWidth: 10.0,
                 ),
                 ListTile(
                   visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                   leading: Icon(Icons.group_rounded, size: 15),
                   title: Text('${event.attendees.length} / ${event.pax}',
-                    style: TextStyle(fontSize: 15)),
-                  minLeadingWidth: 10.0,
-                ),
-                ListTile(
-                  visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-                  title: Text('Initiated by $_initiator',
                     style: NORMAL),
                   minLeadingWidth: 10.0,
                 ),
                 ListTile(
                   visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-                  title: Text('Location: ${event.location}',
+                  leading: Icon(Icons.location_on, size: 15),
+                  title: Text(event.location,
+                    style: NORMAL),
+                  minLeadingWidth: 10.0,
+                ),
+                ListTile(
+                  visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                  leading: Icon(Icons.person_pin_circle_rounded, size: 15),
+                  title: Text(_initiator,
                     style: NORMAL),
                   minLeadingWidth: 10.0,
                 ),
@@ -330,7 +330,7 @@ class _EventPageState extends State<EventPage> {
                   ),
                 ),
               ],
-            ));
+            );
         } else {
           return TransparentLoading();
         }

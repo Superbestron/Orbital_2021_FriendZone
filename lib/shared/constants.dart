@@ -47,10 +47,10 @@ const List<String> MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
 
 String getDateText(DateTime? dateTime) {
   if (dateTime == null) {
-    return 'Select Date';
-  } else {
-    return '${dateTime.day} ${MONTHS[dateTime.month - 1]} ${dateTime.year - 2000}';
+    // Default Date is 7 days later
+    dateTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 7);
   }
+  return '${dateTime.day} ${MONTHS[dateTime.month - 1]} ${dateTime.year - 2000}';
 }
 
 String getTimeText(DateTime dateTime) {

@@ -10,11 +10,12 @@ class Clock extends StatelessWidget {
     int totalMinutes = duration.inMinutes;
     if (totalMinutes < 0) {
       return 'Event has ended!';
+    } else {
+      int days = totalMinutes ~/ (60 * 24);
+      int hours = (totalMinutes - days * 60 * 24) ~/ 60;
+      int minutes = totalMinutes % 60;
+      return 'In $days Days $hours Hours $minutes Mins!';
     }
-    int days = totalMinutes ~/ (60 * 24);
-    int hours = (totalMinutes - days * 60 * 24) ~/ 60;
-    int minutes = totalMinutes % 60;
-    return 'In $days Days $hours Hours $minutes Mins!';
   }
 
   @override
