@@ -222,7 +222,7 @@ class _EventPageState extends State<EventPage> {
                                         title: Text('Confirm Attendance'),
                                         content: Text(
                                           'Are you sure you want to confirm attendance?\n\n'
-                                          'Note: You cannot revoke your attendance'
+                                          'Note: You cannot revoke your attendance '
                                           'if the event is less than 2 days away from now.'
                                         ),
                                         actions: <Widget>[
