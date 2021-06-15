@@ -1,11 +1,11 @@
-class Notification {
+class NotificationObj {
 
   final String title;
   final String subtitle;
   final String type;
   final Object additionalInfo;
 
-  Notification({
+  NotificationObj({
     required this.title,
     required this.subtitle,
     required this.type,

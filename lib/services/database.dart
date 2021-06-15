@@ -213,4 +213,22 @@ class DatabaseService {
       snapshot.get('name')
     );
   }
+
+  Future getUserData(String userID) async {
+    DocumentReference ref = profileCollection.doc(userID);
+    var user = await ref.get().then((snapshot) =>
+        UserData(
+          uid: uid,
+          profileImagePath: snapshot.get('profileImagePath'),
+          name: snapshot.get('name'),
+          level: snapshot.get('level'),
+          faculty: snapshot.get('faculty'),
+          points: snapshot.get('points'),
+          bio: snapshot.get('bio'),
+          events: snapshot.get('events'),
+          notifications: snapshot.get('notifications'),
+        )
+    );
+    return user;
+  }
 }
