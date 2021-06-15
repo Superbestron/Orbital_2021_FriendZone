@@ -66,7 +66,7 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
             shrinkWrap: true,
             itemCount: notifications.length,
             itemBuilder: (context, index) {
-              return NotificationTile(notificationID: notifications[index]);
+              return NotificationTile(notificationID: notifications[index], uid: user!.uid,);
             },
           ),
           Padding(
