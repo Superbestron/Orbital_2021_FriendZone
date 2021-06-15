@@ -153,7 +153,7 @@ class DatabaseService {
 
   // TODO: Decide on what info to store about user
   Future updateUserData(String profileImagePath, String name, int level, String faculty,
-      int points, String bio, List<dynamic> events) async {
+      int points, String bio, List<dynamic> events, List<dynamic> notifications) async {
     print('Updating User Data');
     return await profileCollection.doc(uid).set({
       'profileImagePath': profileImagePath,
@@ -163,6 +163,7 @@ class DatabaseService {
       'points': points,
       'bio': bio,
       'events': events,
+      'notifications': notifications,
     });
   }
 
@@ -178,6 +179,7 @@ class DatabaseService {
       points: snapshot.get('points'),
       bio: snapshot.get('bio'),
       events: snapshot.get('events'),
+      notifications: snapshot.get('notifications'),
     );
   }
 

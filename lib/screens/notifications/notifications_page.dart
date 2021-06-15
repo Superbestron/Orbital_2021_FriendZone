@@ -4,12 +4,12 @@ import 'package:myapp/models/user.dart';
 import 'package:myapp/screens/notifications/upcoming_event_tile.dart';
 import 'package:provider/provider.dart';
 
-class Notifications extends StatefulWidget {
+class NotificationsWidget extends StatefulWidget {
   @override
-  _NotificationsState createState() => _NotificationsState();
+  _NotificationsWidgetState createState() => _NotificationsWidgetState();
 }
 
-class _NotificationsState extends State<Notifications> {
+class _NotificationsWidgetState extends State<NotificationsWidget> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserObj?>(context);
@@ -28,7 +28,37 @@ class _NotificationsState extends State<Notifications> {
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Column(
-        children: <Widget>[
+        children: <Widget>[Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: RichText(
+              text: TextSpan(
+                children: <TextSpan>[
+                  TextSpan(
+                      text: 'Notifications',
+                      style: Theme.of(context).textTheme.headline6),
+                ],
+              ),
+            ),
+          ),
+        ),
+          ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: upcomingEvents.length,
+            itemBuilder: (context, index) {
+              return UpcomingEventTile(event: upcomingEvents[index]);
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            child: Divider(
+              thickness: 2.0,
+              indent: 20.0,
+              endIndent: 20.0,
+            ),
+          ),
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
