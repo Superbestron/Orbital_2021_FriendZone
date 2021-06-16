@@ -75,20 +75,68 @@ class _ProfilePageState extends State<ProfilePage> {
                 buildName(userData),
                 isSelf
                     ? SizedBox(height: 36)
-                    : Column(
-                        children: [
-                          ElevatedButton(
-                              child: Text('Add friend',
-                                  style: TextStyle(color: Colors.white)),
-                              style: ElevatedButton.styleFrom(
-                                primary: ORANGE_1,
-                              ),
-                              onPressed: () {
-                                // user send friend request to profile
-                                dbService.addRelation(userID, widget.profileID);
-                              })
-                        ],
-                      ),
+                    : StreamBuilder<UserData>(
+                        stream: DatabaseService(uid: user!.uid).userData,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            // redeclaration of all variables here for clarity
+                            String meID = user.uid;
+                            String otherID = widget.profileID;
+                            UserData me = snapshot.data!;
+                            UserData other = userData;
+                            bool isFriends = other.friends.contains(meID) && me.friends.contains(otherID);
+                            bool hasIncomingRequest = me.friends.contains(otherID);
+                            return isFriends
+                                ? Column(
+                                    children: [
+                                      ElevatedButton(
+                                          child: Text('Friends!',
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                          style: ElevatedButton.styleFrom(
+                                            primary: ORANGE_1,
+                                          ),
+                                          onPressed: () {})
+                                    ],
+                                  )
+                                : hasIncomingRequest
+                                    ? Column(
+                                        children: [
+                                          ElevatedButton(
+                                              child: Text(
+                                                  'Accept friend request',
+                                                  style: TextStyle(
+                                                      color: Colors.white)),
+                                              style: ElevatedButton.styleFrom(
+                                                primary: ORANGE_1,
+                                              ),
+                                              onPressed: () {
+                                                // user send friend request to profile
+                                                dbService.addRelation(
+                                                    user.uid, widget.profileID);
+                                              })
+                                        ],
+                                      )
+                                    : Column(
+                                        children: [
+                                          ElevatedButton(
+                                              child: Text('Add friend',
+                                                  style: TextStyle(
+                                                      color: Colors.white)),
+                                              style: ElevatedButton.styleFrom(
+                                                primary: ORANGE_1,
+                                              ),
+                                              onPressed: () {
+                                                // user send friend request to profile
+                                                dbService.addRelation(
+                                                    user.uid, widget.profileID);
+                                              })
+                                        ],
+                                      );
+                          } else {
+                            return TransparentLoading();
+                          }
+                        }),
                 NumbersWidget(points: userData.points, level: userData.level),
                 const SizedBox(height: 36),
                 buildAbout(userData),
