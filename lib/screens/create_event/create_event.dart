@@ -16,8 +16,9 @@ class _CreateEventState extends State<CreateEvent> {
   List<bool> _isSelected = [true, false, false, false, false];
   String _name = '';
   String _telegramURL = '';
-  DateTime? _dateTime;
-  TimeOfDay? _time;
+  DateTime _dateTime =
+    DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 7);
+  TimeOfDay _time = TimeOfDay.now();
   int _pax = 2;
   String _description = '';
   int _icon = 0;
@@ -38,11 +39,8 @@ class _CreateEventState extends State<CreateEvent> {
   }
 
   String _getTimeText() {
-    if (_time == null) {
-      _time = TimeOfDay.now();
-    }
-    final hours = _time!.hour.toString().padLeft(2, '0');
-    final minutes = _time!.minute.toString().padLeft(2, '0');
+    final hours = _time.hour.toString().padLeft(2, '0');
+    final minutes = _time.minute.toString().padLeft(2, '0');
     return '$hours:$minutes';
   }
 
@@ -312,15 +310,14 @@ class _CreateEventState extends State<CreateEvent> {
                   tooltip: 'Create Event',
                   child: Icon(Icons.add),
                   onPressed: () async {
-                    // TODO: Validate that date and time are set by the user
                     if (_formKey.currentState!.validate()) {
-                      _dateTime = DateTime(_dateTime!.year, _dateTime!.month,
-                          _dateTime!.day, _time!.hour, _time!.minute);
+                      _dateTime = DateTime(_dateTime.year, _dateTime.month,
+                          _dateTime.day, _time.hour, _time.minute);
                       String _uid = user!.uid;
                       DatabaseService db = DatabaseService(uid: _uid);
                       String eventID = await db.createEventData(
                         _location, _telegramURL,
-                        _name, _dateTime!,
+                        _name, _dateTime,
                         _pax, _description, _icon,
                       );
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -335,6 +332,7 @@ class _CreateEventState extends State<CreateEvent> {
                           ),
                         )
                       );
+                      Navigator.pop(context);
                     }
                   }
                 ),

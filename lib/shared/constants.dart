@@ -45,11 +45,7 @@ const List<String> FACULTIES = [
 const List<String> MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-String getDateText(DateTime? dateTime) {
-  if (dateTime == null) {
-    // Default Date is 7 days later
-    dateTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 7);
-  }
+String getDateText(DateTime dateTime) {
   return '${dateTime.day} ${MONTHS[dateTime.month - 1]} ${dateTime.year - 2000}';
 }
 

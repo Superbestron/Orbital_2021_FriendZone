@@ -227,22 +227,22 @@ class _EventPageState extends State<EventPage> {
                                         ),
                                         actions: <Widget>[
                                           TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text("Cancel",
+                                                style: TextStyle(
+                                                  color: Colors.red,
+                                                )
+                                            ),
+                                          ),
+                                          TextButton(
                                             onPressed: () async {
                                               await dbService.addUserToEvent(
                                                   widget.eventID, user.uid);
                                               Navigator.of(context).pop();
                                             },
                                             child: Text("Confirm"),
-                                          ),
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Text("Cancel",
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                              )
-                                            ),
                                           ),
                                         ],
                                       ),

@@ -33,11 +33,12 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
     UserObj? user = Provider.of<UserObj?>(context);
     Iterable<Event> events = (Provider.of<List<Event>?>(context) ?? [])
         .where((event) => event.attendees.contains(user!.uid));
-    // Filter the events which have already happened
+
     List<Event> upcomingEvents = events
         .where((event) => event.dateTime.isAfter(DateTime.now()))
         .toList();
 
+    // Filter the events which have already happened
     List<Event> pastEvents = events
         .where((event) => event.dateTime.isBefore(DateTime.now()))
         .toList();
@@ -46,6 +47,8 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
       physics: BouncingScrollPhysics(),
       child: Column(
         children: <Widget>[
+
+          // Notifications
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
@@ -77,6 +80,8 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
               endIndent: 20.0,
             ),
           ),
+
+          // Upcoming Events
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
@@ -108,6 +113,8 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
               endIndent: 20.0,
             ),
           ),
+
+          // Past Events
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
