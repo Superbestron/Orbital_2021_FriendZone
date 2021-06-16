@@ -24,7 +24,7 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('profiles');
 
   // collection reference to notifications
-  final CollectionReference notificationCollection =
+  final CollectionReference notificationsCollection =
       FirebaseFirestore.instance.collection('notifications');
 
   // storage reference to user's profile images
@@ -263,7 +263,7 @@ class DatabaseService {
   }
 
   Future getNotificationObj(String notificationID) async {
-    DocumentReference ref = notificationCollection.doc(notificationID);
+    DocumentReference ref = notificationsCollection.doc(notificationID);
     var notificationObj = await ref.get().then((snapshot) =>
         NotificationObj(
           title: snapshot.get('title'),
