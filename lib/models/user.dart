@@ -19,6 +19,7 @@ class UserData {
   String bio;
   // Just need to store eventIDs of the events the user is participating
   List<dynamic> events;
+  List<dynamic> notifications;
 
   UserData({
     required this.uid,
@@ -29,6 +30,7 @@ class UserData {
     required this.points,
     required this.bio,
     required this.events,
+    required this.notifications,
   });
 
 }

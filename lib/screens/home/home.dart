@@ -3,7 +3,7 @@ import 'package:myapp/screens/home/event_list.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myapp/screens/create_event/create_event.dart';
 import 'package:myapp/screens/profile/profile_page.dart';
-import 'package:myapp/screens/notifications/notifications.dart';
+import 'package:myapp/screens/notifications/notifications_page.dart';
 import 'package:myapp/screens/maps/maps.dart';
 import 'package:myapp/services/database.dart';
 import 'package:flutter/material.dart';
@@ -23,14 +23,14 @@ class _HomeState extends State<Home> {
     EventList(),
     Maps(),
     CreateEvent(),
-    Notifications(),
+    NotificationsWidget(),
     ProfilePage(),
   ];
   final List<String> _appBarTitles = [
     'Upcoming Events',
     'Events Near You',
     'Create New Event',
-    'Signed Up Events',
+    'Notifications',
     'My Profile',
   ];
 

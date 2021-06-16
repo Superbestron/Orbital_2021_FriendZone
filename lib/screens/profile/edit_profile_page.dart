@@ -220,7 +220,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       await dbService
                         .updateUserData(
                           userData.profileImagePath, _name, userData.level, _faculty,
-                          userData.points, _bio, userData.events,
+                          userData.points, _bio, userData.events, userData.notifications,
                       );
 
                       // Go back to the profile page screen with the selected image
