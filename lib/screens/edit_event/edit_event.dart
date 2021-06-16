@@ -423,6 +423,7 @@ class _EditEventState extends State<EditEvent> {
                                       _icon,
                                       event.eventID,
                                       event.attendees);
+                                  db.sendNotification("Event details has been changed", event.name, "event_change", {'eventID':event.eventID} ,event.attendees,);
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
                                     backgroundColor: BACKGROUND_COLOR,

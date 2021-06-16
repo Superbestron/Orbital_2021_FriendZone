@@ -3,7 +3,7 @@ class NotificationObj {
   final String title;
   final String subtitle;
   final String type;
-  final Map additionalInfo;
+  final Map<String, dynamic> additionalInfo;
 
   NotificationObj({
     required this.title,

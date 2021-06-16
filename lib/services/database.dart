@@ -264,13 +264,34 @@ class DatabaseService {
 
   Future getNotificationObj(String notificationID) async {
     DocumentReference ref = notificationsCollection.doc(notificationID);
-    var notificationObj = await ref.get().then((snapshot) =>
-        NotificationObj(
+    var notificationObj = await ref.get().then((snapshot) => NotificationObj(
           title: snapshot.get('title'),
           subtitle: snapshot.get('subtitle'),
           type: snapshot.get('type'),
           additionalInfo: snapshot.get('additionalInfo'),
         ));
     return notificationObj;
+  }
+
+  void sendNotificationToUser(String notificationID, String uid) async {
+    UserData user = await getUserData(uid);
+    List notifications = user.notifications;
+    notifications.add(notificationID);
+    updateUserData(user.profileImagePath, user.name, user.level, user.faculty,
+        user.points, user.bio, user.events, notifications);
+  }
+
+  void sendNotification(String title, String subtitle, String type,
+      Map additionalInfo, List attendees) async {
+    String newDocID = notificationsCollection.doc().id;
+    notificationsCollection.doc(newDocID).set({
+      'title': title,
+      'subtitle': subtitle,
+      'type': type,
+      'additionalInfo': additionalInfo,
+    });
+    for (String attendee in attendees) {
+      sendNotificationToUser(newDocID, attendee);
+    }
   }
 }
