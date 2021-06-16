@@ -84,8 +84,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             String otherID = widget.profileID;
                             UserData me = snapshot.data!;
                             UserData other = userData;
-                            bool isFriends = other.friends.contains(meID) && me.friends.contains(otherID);
-                            bool hasIncomingRequest = me.friends.contains(otherID);
+                            bool isFriends = other.friends.contains(meID) &&
+                                me.friends.contains(otherID);
+                            bool hasIncomingRequest =
+                                me.friends.contains(otherID);
                             return isFriends
                                 ? Column(
                                     children: [
@@ -110,10 +112,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                               style: ElevatedButton.styleFrom(
                                                 primary: ORANGE_1,
                                               ),
-                                              onPressed: () {
+                                              onPressed: () async {
                                                 // user send friend request to profile
                                                 dbService.addRelation(
                                                     user.uid, widget.profileID);
+                                                dbService.sendFriendNotification(
+                                                    "accepted your friend request!",
+                                                    user.uid,
+                                                    widget.profileID);
                                               })
                                         ],
                                       )
@@ -126,10 +132,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                               style: ElevatedButton.styleFrom(
                                                 primary: ORANGE_1,
                                               ),
-                                              onPressed: () {
+                                              onPressed: () async {
                                                 // user send friend request to profile
                                                 dbService.addRelation(
                                                     user.uid, widget.profileID);
+                                                dbService.sendFriendNotification(
+                                                    "sent a friend request!",
+                                                    user.uid,
+                                                    widget.profileID);
                                               })
                                         ],
                                       );

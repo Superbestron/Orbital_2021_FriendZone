@@ -314,4 +314,22 @@ class DatabaseService {
       sendNotificationToUser(newDocID, attendee);
     }
   }
+
+  void sendFriendNotification(String action, String from, String to) async {
+    UserData fromUser = await getUserData(from);
+    String title = "${fromUser.name} $action";
+    String subtitle = "";
+    String type = "friend_notification";
+    Map additionalInfo = {
+      'profileID': from,
+    };
+    String newDocID = notificationsCollection.doc().id;
+    notificationsCollection.doc(newDocID).set({
+      'title': title,
+      'subtitle': subtitle,
+      'type': type,
+      'additionalInfo': additionalInfo,
+    });
+    sendNotificationToUser(newDocID, to);
+  }
 }

@@ -70,7 +70,7 @@ class _AttendeeTileState extends State<AttendeeTile> {
                           appBar: AppBar(
                             leading: BackButton(color: Colors.black),
                             title: Text(
-                              "Profile page",
+                              "Profile Page",
                               style: TextStyle(color: Colors.black),
                             ),
                             toolbarHeight: 75.0,
