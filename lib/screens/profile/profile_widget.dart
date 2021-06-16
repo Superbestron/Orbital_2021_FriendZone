@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:myapp/shared/constants.dart';
 
 class ProfileWidget extends StatelessWidget {
+  final bool isSelf;
   final ImageProvider image;
   final bool isEdit;
   final VoidCallback onClicked;
 
   const ProfileWidget({
     Key? key,
+    required this.isSelf,
     required this.image,
     this.isEdit = false,
     required this.onClicked,
@@ -19,11 +21,11 @@ class ProfileWidget extends StatelessWidget {
       child: Stack(
         children: [
           buildImage(),
-          Positioned(
+          isSelf ? Positioned(
             bottom: 0,
             right: 4,
             child: buildEditIcon(ORANGE_1),
-          ),
+          ) : Text(""),
         ],
       ),
     );

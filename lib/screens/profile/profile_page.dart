@@ -9,6 +9,10 @@ import 'package:myapp/screens/profile/profile_widget.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
+  final String profileID;
+
+  ProfilePage({required this.profileID});
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -20,7 +24,9 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserObj?>(context);
-    var dbService = DatabaseService(uid: user!.uid);
+    bool isSelf = widget.profileID.isEmpty;
+    String userID = isSelf ? user!.uid : widget.profileID;
+    var dbService = DatabaseService(uid: userID);
 
     void _urlToImage(String profileImagePath) {
       // if user did not upload any profile picture
@@ -50,19 +56,22 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 ProfileWidget(
                   // While the image is loading, show a white background (or loading animation)
+                  isSelf: isSelf,
                   image: _profileImage ?? DEFAULT_PROFILE_PIC,
                   onClicked: () async {
-                    final _image = await Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) {
-                        return EditProfilePage(
-                          userData: userData,
-                          profileImage: _profileImage ?? DEFAULT_PROFILE_PIC
-                        );
-                      })
-                    );
-                    setState(() {
-                      _profileImage = _image;
-                    });
+                    if (isSelf) {
+                      final _image = await Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) {
+                            return EditProfilePage(
+                                userData: userData,
+                                profileImage: _profileImage ?? DEFAULT_PROFILE_PIC
+                            );
+                          })
+                      );
+                      setState(() {
+                        _profileImage = _image;
+                      });
+                    }
                   },
                 ),
                 const SizedBox(height: 24),

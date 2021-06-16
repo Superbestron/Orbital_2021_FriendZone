@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
     Maps(),
     CreateEvent(),
     NotificationsWidget(),
-    ProfilePage(),
+    ProfilePage(profileID: '',),
   ];
   final List<String> _appBarTitles = [
     'Upcoming Events',

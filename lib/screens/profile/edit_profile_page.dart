@@ -125,6 +125,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               physics: BouncingScrollPhysics(),
               children: [
                 ProfileWidget(
+                  isSelf: true,
                   image: _currentImage ?? DEFAULT_PROFILE_PIC,
                   isEdit: true,
                   onClicked: () async {
