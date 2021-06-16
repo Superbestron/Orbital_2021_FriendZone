@@ -20,6 +20,9 @@ class UserData {
   // Just need to store eventIDs of the events the user is participating
   List<dynamic> events;
   List<dynamic> notifications;
+  /// Not really friends. This is list of friend request received
+  /// If both parties have each other on their own respective list, then they are friends
+  List<dynamic> friends;
 
   UserData({
     required this.uid,
@@ -31,6 +34,7 @@ class UserData {
     required this.bio,
     required this.events,
     required this.notifications,
+    required this.friends,
   });
 
 }
