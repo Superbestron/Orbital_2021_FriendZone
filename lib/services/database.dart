@@ -184,7 +184,8 @@ class DatabaseService {
       int points,
       String bio,
       List<dynamic> events,
-      List<dynamic> notifications) async {
+      List<dynamic> notifications,
+      List<dynamic> friends) async {
     print('Updating User Data');
     return await profileCollection.doc(uid).set({
       'profileImagePath': profileImagePath,
@@ -195,6 +196,7 @@ class DatabaseService {
       'bio': bio,
       'events': events,
       'notifications': notifications,
+      'friends': friends,
     });
   }
 
@@ -211,6 +213,7 @@ class DatabaseService {
       bio: snapshot.get('bio'),
       events: snapshot.get('events'),
       notifications: snapshot.get('notifications'),
+      friends: snapshot.get('friends'),
     );
   }
 
@@ -258,8 +261,25 @@ class DatabaseService {
           bio: snapshot.get('bio'),
           events: snapshot.get('events'),
           notifications: snapshot.get('notifications'),
+          friends: snapshot.get('friends'),
         ));
     return user;
+  }
+
+  void addRelation(String from, String to) async {
+    UserData toUser = await getUserData(to);
+    toUser.friends.add(from);
+    updateUserData(
+        toUser.profileImagePath,
+        toUser.name,
+        toUser.level,
+        toUser.faculty,
+        toUser.points,
+        toUser.bio,
+        toUser.events,
+        toUser.notifications,
+        toUser.friends
+    );
   }
 
   Future getNotificationObj(String notificationID) async {
@@ -278,7 +298,7 @@ class DatabaseService {
     List notifications = user.notifications;
     notifications.add(notificationID);
     updateUserData(user.profileImagePath, user.name, user.level, user.faculty,
-        user.points, user.bio, user.events, notifications);
+        user.points, user.bio, user.events, notifications, user.friends);
   }
 
   void sendNotification(String title, String subtitle, String type,
@@ -293,5 +313,23 @@ class DatabaseService {
     for (String attendee in attendees) {
       sendNotificationToUser(newDocID, attendee);
     }
+  }
+
+  void sendFriendNotification(String action, String from, String to) async {
+    UserData fromUser = await getUserData(from);
+    String title = "${fromUser.name} $action";
+    String subtitle = "";
+    String type = "friend_notification";
+    Map additionalInfo = {
+      'profileID': from,
+    };
+    String newDocID = notificationsCollection.doc().id;
+    notificationsCollection.doc(newDocID).set({
+      'title': title,
+      'subtitle': subtitle,
+      'type': type,
+      'additionalInfo': additionalInfo,
+    });
+    sendNotificationToUser(newDocID, to);
   }
 }
