@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/models/event.dart';
 import 'package:myapp/models/user.dart';
-import 'package:myapp/screens/notifications/upcoming_event_tile.dart';
+import 'package:myapp/screens/home/event_tile.dart';
 import 'package:myapp/services/database.dart';
 import 'package:provider/provider.dart';
 
@@ -102,7 +102,7 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
             shrinkWrap: true,
             itemCount: upcomingEvents.length,
             itemBuilder: (context, index) {
-              return UpcomingEventTile(event: upcomingEvents[index]);
+              return EventTile(event: upcomingEvents[index], isNotiPage: true);
             },
           ),
           Padding(
@@ -135,7 +135,7 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
             shrinkWrap: true,
             itemCount: pastEvents.length,
             itemBuilder: (context, index) {
-              return UpcomingEventTile(event: pastEvents[index]);
+              return EventTile(event: pastEvents[index], isNotiPage: true);
             },
           ),
         ],

@@ -11,7 +11,9 @@ import 'package:provider/provider.dart';
 class ProfilePage extends StatefulWidget {
   final String profileID;
 
-  ProfilePage({required this.profileID});
+  ProfilePage({
+    required this.profileID,
+  });
 
   @override
   _ProfilePageState createState() => _ProfilePageState();

@@ -19,13 +19,22 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   final AuthService _auth = AuthService();
   PageController _pageController = PageController();
-  final List<Widget> _children = [
-    EventList(),
-    Maps(),
-    CreateEvent(),
-    NotificationsWidget(),
-    ProfilePage(profileID: '',),
-  ];
+  late Function jumpToPage;
+  late List<Widget> _children;
+
+  @override
+  void initState() {
+    _children = [
+      EventList(),
+      Maps(),
+      CreateEvent(jumpToPage: _onItemTapped),
+      NotificationsWidget(),
+      ProfilePage(profileID: ''),
+    ];
+    super.initState();
+  }
+
+
   final List<String> _appBarTitles = [
     'Upcoming Events',
     'Events Near You',

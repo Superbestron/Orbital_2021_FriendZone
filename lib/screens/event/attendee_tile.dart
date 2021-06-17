@@ -39,49 +39,48 @@ class _AttendeeTileState extends State<AttendeeTile> {
     final user = Provider.of<UserObj?>(context);
     String uid = user!.uid;
     return initialised
-        ? Padding(
-            padding: EdgeInsets.only(top: 8.0),
-            child: Card(
-              margin: EdgeInsets.fromLTRB(0.0, 6.0, 0.0, 0.0),
-              color: CARD_BACKGROUND,
-              child: ListTile(
-                visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-                minLeadingWidth: 10,
-                dense: true,
-                contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                title: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 8.0),
-                  child: Text(attendee.name, style: TextStyle(fontSize: 18)),
-                ),
-                subtitle:
-                    Text(attendee.faculty, style: TextStyle(fontSize: 18)),
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        Stack(fit: StackFit.expand, children: <Widget>[
-                      SvgPicture.asset(
-                        'assets/background.svg',
-                        fit: BoxFit.cover,
-                        clipBehavior: Clip.hardEdge,
+      ? Padding(
+        padding: EdgeInsets.only(top: 8.0),
+        child: Card(
+          margin: EdgeInsets.fromLTRB(0.0, 6.0, 0.0, 0.0),
+          color: CARD_BACKGROUND,
+          child: ListTile(
+            visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+            minLeadingWidth: 10,
+            dense: true,
+            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+            title: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 8.0),
+              child: Text(attendee.name, style: TextStyle(fontSize: 18)),
+            ),
+            subtitle: Text(attendee.faculty, style: TextStyle(fontSize: 18)),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                  Stack(fit: StackFit.expand, children: <Widget>[
+                    SvgPicture.asset(
+                      'assets/background.svg',
+                      fit: BoxFit.cover,
+                      clipBehavior: Clip.hardEdge,
+                    ),
+                    Scaffold(
+                      // AppBar that is shown on event_page
+                      appBar: AppBar(
+                        leading: BackButton(color: Colors.black),
+                        title: Text(
+                          "Profile page",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        toolbarHeight: 75.0,
                       ),
-                      Scaffold(
-                          // AppBar that is shown on event_page
-                          appBar: AppBar(
-                            leading: BackButton(color: Colors.black),
-                            title: Text(
-                              "Profile page",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            toolbarHeight: 75.0,
-                          ),
-                          body: ProfilePage(profileID: attendee.uid == uid ? "" : attendee.uid))
-                    ]),
-                  ),
-                ),
+                      body: ProfilePage(profileID: attendee.uid == uid ? "" : attendee.uid))
+                ]),
               ),
             ),
-          )
-        : TransparentLoading();
+          ),
+        ),
+      )
+    : TransparentLoading();
   }
 }

@@ -6,6 +6,10 @@ import 'package:provider/provider.dart';
 
 class CreateEvent extends StatefulWidget {
 
+  final Function jumpToPage;
+
+  CreateEvent({ required this.jumpToPage });
+
   @override
   _CreateEventState createState() => _CreateEventState();
 }
@@ -47,7 +51,7 @@ class _CreateEventState extends State<CreateEvent> {
   Future pickDate(BuildContext context) async {
     final newDate = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
+        initialDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 7),
         firstDate: DateTime.now(),
         lastDate: DateTime(
           DateTime.now().year + 1,
@@ -220,86 +224,11 @@ class _CreateEventState extends State<CreateEvent> {
                 subtitle: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: TextButton(
-                        onPressed:() {
-                          setState(() {
-                            selectButton(0);
-                            _icon = 0;
-                          });
-                        },
-                        child: IMAGE_LIST[0],
-                        style: TextButton.styleFrom(
-                          side: BorderSide(
-                            color: _isSelected[0] ? GREEN_1 : Colors.transparent,
-                            width: 2),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: TextButton(
-                        onPressed:() {
-                          setState(() {
-                            selectButton(1);
-                            _icon = 1;
-                          });
-                        },
-                        child: IMAGE_LIST[1],
-                        style: TextButton.styleFrom(
-                          side: BorderSide(
-                            color: _isSelected[1] ? GREEN_1 : Colors.transparent,
-                            width: 2),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: TextButton(
-                        onPressed:() {
-                          setState(() {
-                            selectButton(2);
-                            _icon = 2;
-                          });
-                        },
-                        child: IMAGE_LIST[2],
-                        style: TextButton.styleFrom(
-                          side: BorderSide(
-                            color: _isSelected[2] ? GREEN_1 : Colors.transparent,
-                            width: 2),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: TextButton(
-                        onPressed:() {
-                          setState(() {
-                            selectButton(3);
-                            _icon = 3;
-                          });
-                        },
-                        child: IMAGE_LIST[3],
-                        style: TextButton.styleFrom(
-                          side: BorderSide(
-                            color: _isSelected[3] ? GREEN_1 : Colors.transparent,
-                            width: 2),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: TextButton(
-                        onPressed:() {
-                          setState(() {
-                            selectButton(4);
-                            _icon = 4;
-                          });
-                        },
-                        child: IMAGE_LIST[4],
-                        style: TextButton.styleFrom(
-                          side: BorderSide(
-                            color: _isSelected[4] ? GREEN_1 : Colors.transparent,
-                            width: 2),
-                        ),
-                      ),
-                    ),
+                    buildExpanded(0),
+                    buildExpanded(1),
+                    buildExpanded(2),
+                    buildExpanded(3),
+                    buildExpanded(4),
                   ],
                 )
               ),
@@ -332,13 +261,33 @@ class _CreateEventState extends State<CreateEvent> {
                           ),
                         )
                       );
-                      Navigator.pop(context);
                     }
+                    // Go Back to Home Screen
+                    widget.jumpToPage(0);
                   }
                 ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Expanded buildExpanded(int number) {
+    return Expanded(
+      child: TextButton(
+        onPressed:() {
+          setState(() {
+            selectButton(number);
+            _icon = number;
+          });
+        },
+        child: IMAGE_LIST[number],
+        style: TextButton.styleFrom(
+          side: BorderSide(
+            color: _isSelected[number] ? GREEN_1 : Colors.transparent,
+            width: 2),
         ),
       ),
     );
