@@ -6,7 +6,6 @@ class UserObj {
 
 }
 
-// // TODO: See what info to store for a user like level, bio, etc.
 class UserData {
 
   final String uid;

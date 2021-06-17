@@ -22,6 +22,22 @@ SvgPicture buildBackgroundImage() {
   );
 }
 
+AppBar buildAppBar(String text) {
+  return AppBar(
+    centerTitle: true,
+    leading: BackButton(color: Colors.black),
+    title: Text(
+      text,
+      style: TextStyle(color: Colors.black),
+    ),
+    toolbarHeight: 75.0,
+    elevation: 0.0,
+    backgroundColor: Colors.transparent,
+  );
+}
+
+
+// card template
 Card buildCard(BuildContext context) {
   return Card(
     margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
