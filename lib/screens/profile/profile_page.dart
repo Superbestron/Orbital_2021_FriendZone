@@ -90,72 +90,87 @@ class _ProfilePageState extends State<ProfilePage> {
                                 me.friends.contains(otherID);
                             bool hasIncomingRequest =
                                 me.friends.contains(otherID);
-                            return isFriends
-                                ? Column(
-                                    children: [
-                                      ElevatedButton(
-                                          child: Text('Friends!',
-                                              style: TextStyle(
-                                                  color: Colors.white)),
-                                          style: ElevatedButton.styleFrom(
-                                            primary: ORANGE_1,
-                                          ),
-                                          onPressed: () {})
-                                    ],
-                                  )
-                                : hasIncomingRequest
-                                    ? Column(
-                                        children: [
-                                          ElevatedButton(
-                                              child: Text(
-                                                  'Accept friend request',
-                                                  style: TextStyle(
-                                                      color: Colors.white)),
-                                              style: ElevatedButton.styleFrom(
-                                                primary: ORANGE_1,
-                                              ),
-                                              onPressed: () async {
-                                                // user send friend request to profile
-                                                dbService.addRelation(
-                                                    user.uid, widget.profileID);
-                                                dbService.sendFriendNotification(
-                                                    "accepted your friend request!",
-                                                    user.uid,
-                                                    widget.profileID);
-                                              })
-                                        ],
-                                      )
-                                    : Column(
-                                        children: [
-                                          ElevatedButton(
-                                              child: Text('Add friend',
-                                                  style: TextStyle(
-                                                      color: Colors.white)),
-                                              style: ElevatedButton.styleFrom(
-                                                primary: ORANGE_1,
-                                              ),
-                                              onPressed: () async {
-                                                // user send friend request to profile
-                                                dbService.addRelation(
-                                                    user.uid, widget.profileID);
-                                                dbService.sendFriendNotification(
-                                                    "sent a friend request!",
-                                                    user.uid,
-                                                    widget.profileID);
-                                              })
-                                        ],
-                                      );
+                            if (isFriends) {
+                               return Padding(
+                                 padding: const EdgeInsets.all(8.0),
+                                 child: Column(
+                                   children: [
+                                     ElevatedButton(
+                                       child: Text('Friends!',
+                                         style: TextStyle(
+                                           color: Colors.white)),
+                                       style: ElevatedButton.styleFrom(
+                                         primary: ORANGE_1,
+                                       ),
+                                       onPressed: () {}),
+                                   ],
+                                 ),
+                               );
+                            } else if (hasIncomingRequest) {
+                              return Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                      child: Text(
+                                          'Accept friend request',
+                                          style: TextStyle(
+                                              color: Colors.white)),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: ORANGE_1,
+                                      ),
+                                      onPressed: () async {
+                                        // user send friend request to profile
+                                        dbService.addRelation(
+                                            user.uid, widget.profileID);
+                                        dbService.sendFriendNotification(
+                                            "Friend request accepted!",
+                                            user.uid,
+                                            widget.profileID);
+                                      }),
+                                  ),
+                                ],
+                              );
+                              } else {
+                              return Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                      child: Text('Add friend',
+                                          style: TextStyle(
+                                              color: Colors.white)),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: ORANGE_1,
+                                      ),
+                                      onPressed: () async {
+                                        // user send friend request to profile
+                                        dbService.addRelation(
+                                            user.uid, widget.profileID);
+                                        dbService.sendFriendNotification(
+                                            "Sent a friend request!",
+                                            user.uid,
+                                            widget.profileID);
+                                      }),
+                                  ),
+                                ],
+                              );
+                            }
                           } else {
                             return TransparentLoading();
                           }
                         }),
-                NumbersWidget(points: userData.points, level: userData.level),
+                NumbersWidget(
+                  points: userData.points,
+                  level: userData.level,
+                  friends: userData.friends.length
+                ),
                 const SizedBox(height: 36),
                 buildAbout(userData),
                 const SizedBox(height: 36),
                 SvgPicture.asset('assets/tree.svg',
-                    // fit: BoxFit.cover,
-                    clipBehavior: Clip.hardEdge),
+                  // fit: BoxFit.cover,
+                  clipBehavior: Clip.hardEdge),
               ],
             ),
           );
@@ -184,8 +199,14 @@ Widget buildName(UserData userData) => Column(
 class NumbersWidget extends StatelessWidget {
   final int points;
   final int level;
+  final int friends;
 
-  const NumbersWidget({Key? key, required this.points, required this.level})
+  const NumbersWidget({
+    Key? key,
+    required this.points,
+    required this.level,
+    required this.friends,
+  })
       : super(key: key);
 
   @override
@@ -206,12 +227,10 @@ class NumbersWidget extends StatelessWidget {
             ],
           ),
           buildDivider(),
-          // TODO: Possible button
-          // buildButton(context, '$friends', 'Friends'),
           Column(
             children: [
               Icon(Icons.social_distance),
-              buildButton(context, '50', 'Friends'),
+              buildButton(context, '$friends', 'Friends'),
             ],
           ),
         ],

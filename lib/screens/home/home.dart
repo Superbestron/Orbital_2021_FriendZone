@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
       EventList(),
       Maps(),
       CreateEvent(jumpToPage: _onItemTapped),
-      NotificationsWidget(),
+      NotificationsWidget(jumpToPage: _onItemTapped),
       ProfilePage(profileID: ''),
     ];
     super.initState();

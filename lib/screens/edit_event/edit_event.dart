@@ -318,7 +318,6 @@ class _EditEventState extends State<EditEvent> {
                               tooltip: 'Edit Event',
                               child: Icon(Icons.check),
                               onPressed: () async {
-                                // TODO: Validate that date and time are set by the user
                                 if (_formKey.currentState!.validate()) {
                                   _dateTime = DateTime(
                                       _dateTime.year,
@@ -339,7 +338,12 @@ class _EditEventState extends State<EditEvent> {
                                       _icon,
                                       event.eventID,
                                       event.attendees);
-                                  db.sendNotification("Event details has been changed", event.name, "event_change", {'eventID':event.eventID} ,event.attendees,);
+                                  db.sendNotification(event.name,
+                                    "Event details has been changed",
+                                     "event_change",
+                                    {'eventID':event.eventID},
+                                    event.attendees,
+                                  );
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
                                     backgroundColor: BACKGROUND_COLOR,

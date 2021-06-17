@@ -175,7 +175,6 @@ class DatabaseService {
     return profileCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
   }
 
-  // TODO: Decide on what info to store about user
   Future updateUserData(
       String profileImagePath,
       String name,
@@ -269,6 +268,7 @@ class DatabaseService {
   void addRelation(String from, String to) async {
     UserData toUser = await getUserData(to);
     toUser.friends.add(from);
+    print(toUser.friends);
     updateUserData(
         toUser.profileImagePath,
         toUser.name,
@@ -301,6 +301,7 @@ class DatabaseService {
         user.points, user.bio, user.events, notifications, user.friends);
   }
 
+  // Adds a new notification to database
   void sendNotification(String title, String subtitle, String type,
       Map additionalInfo, List attendees) async {
     String newDocID = notificationsCollection.doc().id;
@@ -317,8 +318,8 @@ class DatabaseService {
 
   void sendFriendNotification(String action, String from, String to) async {
     UserData fromUser = await getUserData(from);
-    String title = "${fromUser.name} $action";
-    String subtitle = "";
+    String title = fromUser.name;
+    String subtitle = action;
     String type = "friend_notification";
     Map additionalInfo = {
       'profileID': from,
@@ -331,5 +332,24 @@ class DatabaseService {
       'additionalInfo': additionalInfo,
     });
     sendNotificationToUser(newDocID, to);
+  }
+
+  Future updateNotification(List<dynamic> notifications) async {
+    DocumentReference ref = profileCollection.doc(uid);
+    UserData user = await ref.get().then((snapshot) => UserData(
+      uid: uid,
+      profileImagePath: snapshot.get('profileImagePath'),
+      name: snapshot.get('name'),
+      level: snapshot.get('level'),
+      faculty: snapshot.get('faculty'),
+      points: snapshot.get('points'),
+      bio: snapshot.get('bio'),
+      events: snapshot.get('events'),
+      notifications: notifications,
+      friends: snapshot.get('friends'),
+    ));
+    return await updateUserData(user.profileImagePath, user.name, user.level,
+        user.faculty, user.points, user.bio, user.events, user.notifications,
+        user.friends);
   }
 }

@@ -3,11 +3,19 @@ import 'package:myapp/models/event.dart';
 import 'package:myapp/models/user.dart';
 import 'package:myapp/screens/home/event_tile.dart';
 import 'package:myapp/services/database.dart';
+import 'package:myapp/shared/constants.dart';
 import 'package:provider/provider.dart';
 
 import 'notification_tile.dart';
 
 class NotificationsWidget extends StatefulWidget {
+
+  final Function jumpToPage;
+
+  const NotificationsWidget({
+    required this.jumpToPage
+  });
+
   @override
   _NotificationsWidgetState createState() => _NotificationsWidgetState();
 }
@@ -15,24 +23,27 @@ class NotificationsWidget extends StatefulWidget {
 class _NotificationsWidgetState extends State<NotificationsWidget> {
   List<dynamic> notifications = [];
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    getNotifications();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   getNotifications();
+  // }
 
-  void getNotifications() async {
-    UserObj? user = Provider.of<UserObj?>(context);
-    UserData userData =
-        await DatabaseService(uid: user!.uid).getUserData(user.uid);
+  // Only get user's notifications
+  void getNotifications(DatabaseService db, UserObj user) async {
+    UserData userData = await db.getUserData(user.uid);
     notifications = userData.notifications;
   }
 
   @override
   Widget build(BuildContext context) {
+
     UserObj? user = Provider.of<UserObj?>(context);
+    DatabaseService db = DatabaseService(uid: user!.uid);
+    getNotifications(db, user);
+
     Iterable<Event> events = (Provider.of<List<Event>?>(context) ?? [])
-        .where((event) => event.attendees.contains(user!.uid));
+        .where((event) => event.attendees.contains(user.uid));
 
     List<Event> upcomingEvents = events
         .where((event) => event.dateTime.isAfter(DateTime.now()))
@@ -57,8 +68,8 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                        text: 'Notifications',
-                        style: Theme.of(context).textTheme.headline6),
+                      text: 'Notifications',
+                      style: Theme.of(context).textTheme.headline6),
                   ],
                 ),
               ),
@@ -69,7 +80,35 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
             shrinkWrap: true,
             itemCount: notifications.length,
             itemBuilder: (context, index) {
-              return NotificationTile(notificationID: notifications[index], uid: user!.uid,);
+              return Dismissible(
+                  key: Key(notifications[index]),
+                  onDismissed: (direction) async {
+                    setState(() {
+                      notifications.removeAt(index);
+                    });
+                    await db.updateNotification(notifications);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: BACKGROUND_COLOR,
+                        content: Text('Successfully deleted notification!'),
+                        action: SnackBarAction(
+                          label: 'Undo',
+                          onPressed: () async {
+                            // I have no idea why notifications doesn't get
+                            // removed here so I don't have to add back the
+                            // removed notification
+                            await db.updateNotification(notifications);
+                            // Here it's just to re-render the page
+                            setState(() {
+                              notifications = notifications;
+                            });
+                          },
+                        ),
+                      )
+                    );
+                  },
+                  child: NotificationTile(notificationID: notifications[index], uid: user.uid,),
+              );
             },
           ),
           Padding(
@@ -143,3 +182,5 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
     );
   }
 }
+
+
