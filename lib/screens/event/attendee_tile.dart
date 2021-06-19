@@ -8,9 +8,9 @@ import 'package:myapp/shared/widgets.dart';
 import 'package:provider/provider.dart';
 
 class AttendeeTile extends StatefulWidget {
-  final String attendeeID;
+  final UserData attendee;
 
-  AttendeeTile({required this.attendeeID});
+  AttendeeTile({required this.attendee});
 
   @override
   _AttendeeTileState createState() => _AttendeeTileState();
@@ -18,20 +18,18 @@ class AttendeeTile extends StatefulWidget {
 
 class _AttendeeTileState extends State<AttendeeTile> {
   bool initialised = false;
-  late UserData attendee;
   late ImageProvider _profileImage;
 
   void getAttendee() async {
-    DatabaseService dbService = DatabaseService(uid: widget.attendeeID);
-    attendee = await dbService.getUserData(widget.attendeeID);
+    DatabaseService dbService = DatabaseService(uid: widget.attendee.uid);
     if (mounted) {
-      setState(() async {
-        await dbService
-            .getImageURLFromFirebase(attendee.profileImagePath)
-            .then((url) =>
-            setState(() {
-              _profileImage = NetworkImage(url);
-            }));
+      await dbService
+          .getImageURLFromFirebase(widget.attendee.profileImagePath)
+          .then((url) =>
+          setState(() {
+            _profileImage = NetworkImage(url);
+          }));
+      setState(() {
         initialised = true;
       });
     }
@@ -58,9 +56,9 @@ class _AttendeeTileState extends State<AttendeeTile> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
           title: Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
-            child: Text(attendee.name, style: TEXT_FIELD_HEADING),
+            child: Text(widget.attendee.name, style: TEXT_FIELD_HEADING),
           ),
-          subtitle: Text('Level ${attendee.level}', style: NORMAL),
+          subtitle: Text('Level ${widget.attendee.level}', style: NORMAL),
           trailing: CircleAvatar(
             backgroundImage: ResizeImage(_profileImage, width: 20),
           ),
@@ -73,7 +71,7 @@ class _AttendeeTileState extends State<AttendeeTile> {
                   Scaffold(
                     // AppBar that is shown on event_page
                     appBar: buildAppBar('User\'s Profile'),
-                    body: ProfilePage(profileID: attendee.uid == uid ? "" : attendee.uid))
+                    body: ProfilePage(profileID: widget.attendee.uid == uid ? "" : widget.attendee.uid))
               ]),
             ),
           ),

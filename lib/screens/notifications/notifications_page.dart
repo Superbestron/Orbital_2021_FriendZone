@@ -30,8 +30,8 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
   // }
 
   // Only get user's notifications
-  void getNotifications(DatabaseService db, UserObj user) async {
-    UserData userData = await db.getUserData(user.uid);
+  void getNotifications(UserObj user) async {
+    UserData userData = await DatabaseService.getUserData(user.uid);
     notifications = userData.notifications;
   }
 
@@ -40,7 +40,7 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
 
     UserObj? user = Provider.of<UserObj?>(context);
     DatabaseService db = DatabaseService(uid: user!.uid);
-    getNotifications(db, user);
+    getNotifications(user);
 
     Iterable<Event> events = (Provider.of<List<Event>?>(context) ?? [])
         .where((event) => event.attendees.contains(user.uid));

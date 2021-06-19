@@ -28,12 +28,54 @@ class _EventPageState extends State<EventPage> {
 
   String _error = '';
   String _initiator = '';
+  UserData? userData;
   late Event event;
+  bool isOver = false;
+  bool hasGotAttendees = false;
+  List<UserData> friendsAttending = [];
+  List<UserData> allAttending = [];
 
   @override
   void initState() {
     event = widget.event;
+    isOver = event.dateTime.isBefore(DateTime.now());
+    setInitiatorName();
     super.initState();
+  }
+
+  Future setInitiatorName() async {
+    String name = await DatabaseService.getNameFromUserID(event.attendees[0]);
+    if (mounted) {
+      setState(() {
+        _initiator = name;
+      });
+    }
+  }
+
+  Future getUsersAttending(bool isOver, UserObj self) async {
+    List<dynamic> eventAttendees = event.attendees;
+    eventAttendees.remove(self.uid);
+    if (isOver) {
+      eventAttendees.forEach((attendee) {
+        DatabaseService.getUserData(attendee).then((attendeeData) {
+          setState(() {
+            allAttending.add(attendeeData);
+          });
+        });
+      });
+    } else {
+      eventAttendees.forEach((attendee) {
+        DatabaseService.getUserData(attendee).then((attendeeData) {
+          bool isFriends = attendeeData.friends.contains(self.uid) &&
+              userData!.friends.contains(attendee);
+          if (isFriends) {
+            setState(() {
+              friendsAttending.add(attendeeData);
+            });
+          }
+        });
+      });
+    }
   }
 
   @override
@@ -42,16 +84,13 @@ class _EventPageState extends State<EventPage> {
     // Still need this to listen for user's uid
     final user = Provider.of<UserObj?>(context);
     var dbService = DatabaseService(uid: user!.uid);
-
-    void setInitiatorName() async {
-      String name = await dbService.getNameFromUserID(event.attendees[0]);
-      if (mounted) {
-        setState(() {
-          _initiator = name;
-        });
-      }
+    if (userData == null) {
+        DatabaseService.getUserData(user.uid).then((data) async {
+          userData = data;
+          await getUsersAttending(isOver, user);
+      });
     }
-    setInitiatorName();
+    print('here');
 
     return StreamBuilder<Event>(
       stream: dbService.getEvent(event.eventID),
@@ -79,7 +118,7 @@ class _EventPageState extends State<EventPage> {
                 ],
                 toolbarHeight: 75.0,
               ),
-              body: snapshot.hasData? Stack(
+              body: snapshot.hasData ? Stack(
                 children: [
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
@@ -370,27 +409,36 @@ class _EventPageState extends State<EventPage> {
                             ],
                           ),
                         ),
-                        event.dateTime.isBefore(DateTime.now())
-                            ? Padding(
+                        Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 8.0,
                             vertical: 8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Attendees', style: TEXT_FIELD_HEADING),
+                              Row(
+                                children: [
+                                  Text( isOver ? 'All Attendees' : 'Friends Attending', style: TEXT_FIELD_HEADING),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                    child: Icon(Icons.social_distance),
+                                  )
+                                ],
+                              ),
                               const SizedBox(height: 16),
                               ListView.builder(
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
-                                itemCount: event.attendees.length,
+                                itemCount: isOver ? allAttending.length : friendsAttending.length,
                                 itemBuilder: (context, index) {
-                                  return AttendeeTile(attendeeID: event.attendees[index]);
+                                  return AttendeeTile(attendee: isOver
+                                    ? allAttending[index]
+                                    : friendsAttending[index]);
                                 },
                               ),
                             ],
                           ),
-                        ) : Text(""), // empty widget
+                        ), // empty widget
                         user.uid == event.attendees[0] ? Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [

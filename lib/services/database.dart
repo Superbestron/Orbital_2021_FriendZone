@@ -16,19 +16,19 @@ class DatabaseService {
   });
 
   // collection reference to all events
-  final CollectionReference eventCollection =
+  static final CollectionReference eventCollection =
       FirebaseFirestore.instance.collection('events');
 
   // collection reference to all user profiles
-  final CollectionReference profileCollection =
+  static final CollectionReference profileCollection =
       FirebaseFirestore.instance.collection('profiles');
 
   // collection reference to notifications
-  final CollectionReference notificationsCollection =
+  static final CollectionReference notificationsCollection =
       FirebaseFirestore.instance.collection('notifications');
 
   // storage reference to user's profile images
-  final FirebaseStorage storage = FirebaseStorage.instance;
+  static final FirebaseStorage storage = FirebaseStorage.instance;
 
   Future uploadImage(File _image1) async {
     String url = '';
@@ -241,17 +241,18 @@ class DatabaseService {
     }
   }
 
-  Future getNameFromUserID(String userID) {
-    return profileCollection
+  static Future getNameFromUserID(String userID) async {
+    return await profileCollection
         .doc(userID)
         .get()
         .then((snapshot) => snapshot.get('name'));
   }
 
-  Future getUserData(String userID) async {
+  // Get a random user's data based on userID
+  static Future<UserData> getUserData(String userID) async {
     DocumentReference ref = profileCollection.doc(userID);
     var user = await ref.get().then((snapshot) => UserData(
-          uid: uid,
+          uid: userID,
           profileImagePath: snapshot.get('profileImagePath'),
           name: snapshot.get('name'),
           level: snapshot.get('level'),
@@ -302,10 +303,10 @@ class DatabaseService {
   }
 
   // Adds a new notification to database
-  void sendNotification(String title, String subtitle, String type,
+  Future sendNotification(String title, String subtitle, String type,
       Map additionalInfo, List attendees) async {
     String newDocID = notificationsCollection.doc().id;
-    notificationsCollection.doc(newDocID).set({
+    await notificationsCollection.doc(newDocID).set({
       'title': title,
       'subtitle': subtitle,
       'type': type,

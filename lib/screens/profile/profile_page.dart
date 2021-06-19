@@ -76,90 +76,90 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(height: 24),
                 buildName(userData),
                 isSelf
-                    ? SizedBox(height: 36)
-                    : StreamBuilder<UserData>(
-                        stream: DatabaseService(uid: user!.uid).userData,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            // redeclaration of all variables here for clarity
-                            String meID = user.uid;
-                            String otherID = widget.profileID;
-                            UserData me = snapshot.data!;
-                            UserData other = userData;
-                            bool isFriends = other.friends.contains(meID) &&
-                                me.friends.contains(otherID);
-                            bool hasIncomingRequest =
-                                me.friends.contains(otherID);
-                            if (isFriends) {
-                               return Padding(
-                                 padding: const EdgeInsets.all(8.0),
-                                 child: Column(
-                                   children: [
-                                     ElevatedButton(
-                                       child: Text('Friends!',
-                                         style: TextStyle(
-                                           color: Colors.white)),
-                                       style: ElevatedButton.styleFrom(
-                                         primary: ORANGE_1,
-                                       ),
-                                       onPressed: () {}),
-                                   ],
-                                 ),
-                               );
-                            } else if (hasIncomingRequest) {
-                              return Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ElevatedButton(
-                                      child: Text(
-                                          'Accept friend request',
-                                          style: TextStyle(
-                                              color: Colors.white)),
-                                      style: ElevatedButton.styleFrom(
-                                        primary: ORANGE_1,
-                                      ),
-                                      onPressed: () async {
-                                        // user send friend request to profile
-                                        dbService.addRelation(
-                                            user.uid, widget.profileID);
-                                        dbService.sendFriendNotification(
-                                            "Friend request accepted!",
-                                            user.uid,
-                                            widget.profileID);
-                                      }),
+                  ? SizedBox(height: 36)
+                  : StreamBuilder<UserData>(
+                    stream: DatabaseService(uid: user!.uid).userData,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        // redeclaration of all variables here for clarity
+                        String meID = user.uid;
+                        String otherID = widget.profileID;
+                        UserData me = snapshot.data!;
+                        UserData other = userData;
+                        bool isFriends = other.friends.contains(meID) &&
+                            me.friends.contains(otherID);
+                        bool hasIncomingRequest =
+                            me.friends.contains(otherID);
+                        if (isFriends) {
+                           return Padding(
+                             padding: const EdgeInsets.all(8.0),
+                             child: Column(
+                               children: [
+                                 ElevatedButton(
+                                   child: Text('Friends!',
+                                     style: TextStyle(
+                                       color: Colors.white)),
+                                   style: ElevatedButton.styleFrom(
+                                     primary: ORANGE_1,
+                                   ),
+                                   onPressed: () {}),
+                               ],
+                             ),
+                           );
+                        } else if (hasIncomingRequest) {
+                          return Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ElevatedButton(
+                                  child: Text(
+                                      'Accept friend request',
+                                      style: TextStyle(
+                                          color: Colors.white)),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: ORANGE_1,
                                   ),
-                                ],
-                              );
-                              } else {
-                              return Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ElevatedButton(
-                                      child: Text('Add friend',
-                                          style: TextStyle(
-                                              color: Colors.white)),
-                                      style: ElevatedButton.styleFrom(
-                                        primary: ORANGE_1,
-                                      ),
-                                      onPressed: () async {
-                                        // user send friend request to profile
-                                        dbService.addRelation(
-                                            user.uid, widget.profileID);
-                                        dbService.sendFriendNotification(
-                                            "Sent a friend request!",
-                                            user.uid,
-                                            widget.profileID);
-                                      }),
+                                  onPressed: () async {
+                                    // user send friend request to profile
+                                    dbService.addRelation(
+                                        user.uid, widget.profileID);
+                                    dbService.sendFriendNotification(
+                                        "Friend request accepted!",
+                                        user.uid,
+                                        widget.profileID);
+                                  }),
+                              ),
+                            ],
+                          );
+                        } else {
+                          return Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ElevatedButton(
+                                  child: Text('Add friend',
+                                      style: TextStyle(
+                                          color: Colors.white)),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: ORANGE_1,
                                   ),
-                                ],
-                              );
-                            }
-                          } else {
-                            return TransparentLoading();
-                          }
-                        }),
+                                  onPressed: () async {
+                                    // user send friend request to profile
+                                    dbService.addRelation(
+                                        user.uid, widget.profileID);
+                                    dbService.sendFriendNotification(
+                                        "Sent a friend request!",
+                                        user.uid,
+                                        widget.profileID);
+                                  }),
+                              ),
+                            ],
+                          );
+                        }
+                      } else {
+                        return TransparentLoading();
+                      }
+                    }),
                 NumbersWidget(
                   points: userData.points,
                   level: userData.level,
