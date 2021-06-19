@@ -28,4 +28,26 @@ void main() async {
     final button = find.widgetWithText(ElevatedButton, "Register");
     expect(button, findsOneWidget);
   });
+
+  testWidgets('no error message', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MyApp()
+    );
+    final msg = find.widgetWithText(Text, "Incorrect Email/Password!");
+    expect(msg, findsNothing);
+  });
+
+  testWidgets('empty sign in', (WidgetTester tester) async {
+    await tester.pumpWidget(
+        MyApp()
+    );
+    final button = find.widgetWithText(ElevatedButton, "Sign in");
+    await tester.tap(button);
+    await tester.pump();
+    final error1 = find.text("Enter an email");
+    final error2 = find.text("Enter a password 6+ chars long");
+    expect(error1, findsOneWidget);
+    expect(error2, findsOneWidget);
+  });
+
 }
