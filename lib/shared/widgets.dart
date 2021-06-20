@@ -30,7 +30,7 @@ AppBar buildAppBar(String text) {
       text,
       style: TextStyle(color: Colors.black),
     ),
-    toolbarHeight: 75.0,
+    toolbarHeight: 100.0,
     elevation: 0.0,
     backgroundColor: Colors.transparent,
   );

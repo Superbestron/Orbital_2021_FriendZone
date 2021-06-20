@@ -34,9 +34,11 @@ class _NotificationTileState extends State<NotificationTile> {
       String eventID = notification.additionalInfo['eventID'];
       event = await DatabaseService(uid: widget.uid).getEventData(eventID);
     }
-    setState(() {
-      initialised = true;
-    });
+    if (mounted) {
+      setState(() {
+        initialised = true;
+      });
+    }
   }
 
   @override
@@ -52,7 +54,7 @@ class _NotificationTileState extends State<NotificationTile> {
       if (notification.type == getEventType(0)) {
         return NotiListTile(notification: notification,
           icon: Icon(Icons.warning),
-          route: MaterialPageRoute(
+          route: () => MaterialPageRoute(
           builder: (context) => EventPage(event: event!))
         );
       } else if (notification.type == getEventType(1)) {
@@ -61,7 +63,7 @@ class _NotificationTileState extends State<NotificationTile> {
       } else if (notification.type == getEventType(2)) {
           return NotiListTile(notification: notification,
             icon: Icon(Icons.check),
-            route: MaterialPageRoute(
+            route: () => MaterialPageRoute(
               builder: (context) => Stack(
                 fit: StackFit.expand,
                 children: <Widget>[
@@ -95,7 +97,7 @@ class NotiListTile extends StatelessWidget {
 
   final NotificationObj notification;
   final Icon icon;
-  final MaterialPageRoute route;
+  final Function route;
 
   @override
   Widget build(BuildContext context) {
@@ -112,14 +114,14 @@ class NotiListTile extends StatelessWidget {
             title: Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 8.0),
               child: Text(notification.title,
-                  style: TextStyle(fontSize: 18)),
+                  style: TEXT_FIELD_HEADING),
             ),
             subtitle: Text(notification.subtitle,
-                style: TextStyle(fontSize: 18)),
+                style: NORMAL),
             trailing: icon,
             onTap: () => Navigator.push(
               context,
-              route),
+              route()),
           ),
         ),
     );

@@ -21,13 +21,18 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   ImageProvider? _profileImage;
+  String buttonText = '';
+  Color buttonColor = ORANGE_1;
+  Function onPressed = () {};
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserObj?>(context);
     bool isSelf = widget.profileID.isEmpty;
     String userID = isSelf ? user!.uid : widget.profileID;
-    var dbService = DatabaseService(uid: userID);
+    DatabaseService dbServiceUser = DatabaseService(uid: userID);
+    DatabaseService dbServiceSelf = DatabaseService(uid: user!.uid);
+
 
     void _urlToImage(String profileImagePath) {
       // if user did not upload any profile picture
@@ -35,7 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
         print('no image');
         _profileImage = DEFAULT_PROFILE_PIC;
       } else {
-        dbService
+        dbServiceUser
             .getImageURLFromFirebase(profileImagePath)
             .then((url) => setState(() {
                   _profileImage = NetworkImage(url);
@@ -44,7 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     return StreamBuilder<UserData>(
-      stream: dbService.userData,
+      stream: dbServiceUser.userData,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           UserData userData = snapshot.data!;
@@ -78,7 +83,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 isSelf
                   ? SizedBox(height: 36)
                   : StreamBuilder<UserData>(
-                    stream: DatabaseService(uid: user!.uid).userData,
+                    stream: dbServiceSelf.userData,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         // redeclaration of all variables here for clarity
@@ -86,76 +91,54 @@ class _ProfilePageState extends State<ProfilePage> {
                         String otherID = widget.profileID;
                         UserData me = snapshot.data!;
                         UserData other = userData;
-                        bool isFriends = other.friends.contains(meID) &&
-                            me.friends.contains(otherID);
-                        bool hasIncomingRequest =
-                            me.friends.contains(otherID);
+                        // If I send friend request to person A, his friendRequests
+                        // list will have my ID
+                        bool hasIncomingRequest = me.friendRequests.contains(otherID);
+                        bool hasOutgoingRequest = other.friendRequests.contains(meID);
+                        bool isFriends = me.friends.contains(otherID);
                         if (isFriends) {
-                           return Padding(
-                             padding: const EdgeInsets.all(8.0),
-                             child: Column(
-                               children: [
-                                 ElevatedButton(
-                                   child: Text('Friends!',
-                                     style: TextStyle(
-                                       color: Colors.white)),
-                                   style: ElevatedButton.styleFrom(
-                                     primary: ORANGE_1,
-                                   ),
-                                   onPressed: () {}),
-                               ],
-                             ),
-                           );
+                          buttonText = 'Friends';
+                          buttonColor = Colors.grey;
                         } else if (hasIncomingRequest) {
-                          return Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ElevatedButton(
-                                  child: Text(
-                                      'Accept friend request',
-                                      style: TextStyle(
-                                          color: Colors.white)),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: ORANGE_1,
-                                  ),
-                                  onPressed: () async {
-                                    // user send friend request to profile
-                                    dbService.addRelation(
-                                        user.uid, widget.profileID);
-                                    dbService.sendFriendNotification(
-                                        "Friend request accepted!",
-                                        user.uid,
-                                        widget.profileID);
-                                  }),
-                              ),
-                            ],
-                          );
+                          buttonText = 'Accept Friend Request';
+                          onPressed = () async {
+                            // user send friend request to profile
+                            await dbServiceSelf.acceptFriend(widget.profileID);
+                            await dbServiceSelf.sendFriendNotification(
+                                "Accepted your friend request!",
+                                user.uid,
+                                widget.profileID);
+                          };
+                        } else if (hasOutgoingRequest) {
+                          buttonText = 'Friend Request Sent';
+                          buttonColor = Colors.grey;
                         } else {
-                          return Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ElevatedButton(
-                                  child: Text('Add friend',
-                                      style: TextStyle(
-                                          color: Colors.white)),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: ORANGE_1,
-                                  ),
-                                  onPressed: () async {
-                                    // user send friend request to profile
-                                    dbService.addRelation(
-                                        user.uid, widget.profileID);
-                                    dbService.sendFriendNotification(
-                                        "Sent a friend request!",
-                                        user.uid,
-                                        widget.profileID);
-                                  }),
-                              ),
-                            ],
-                          );
+                          buttonText = 'Add Friend';
+                          onPressed = () async {
+                            // user send friend request to profile
+                           await dbServiceSelf.addFriend(widget.profileID);
+                           await dbServiceSelf.sendFriendNotification(
+                                "Sent you a friend request!",
+                                user.uid,
+                                widget.profileID);
+                          };
                         }
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ElevatedButton(
+                                child: Text(buttonText,
+                                    style: TextStyle(
+                                        color: Colors.white)),
+                                style: ElevatedButton.styleFrom(
+                                  primary: buttonColor,
+                                ),
+                                onPressed: () => onPressed(),
+                              ),
+                            ),
+                          ],
+                        );
                       } else {
                         return TransparentLoading();
                       }
