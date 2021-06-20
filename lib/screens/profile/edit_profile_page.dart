@@ -222,7 +222,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         .updateUserData(
                           userData.profileImagePath, _name, userData.level, _faculty,
                           userData.points, _bio, userData.events, userData.notifications,
-                          userData.friends
+                          userData.friends, userData.friendCount
                       );
 
                       // Go back to the profile page screen with the selected image
