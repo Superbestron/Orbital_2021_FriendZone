@@ -91,9 +91,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         String otherID = widget.profileID;
                         UserData me = snapshot.data!;
                         UserData other = userData;
-                        bool hasIncomingRequest = other.friends.contains(meID);
-                        bool hasOutgoingRequest = me.friends.contains(otherID);
-                        bool isFriends = hasIncomingRequest && hasOutgoingRequest;
+                        // If I send friend request to person A, his friendRequests
+                        // list will have my ID
+                        bool hasIncomingRequest = me.friendRequests.contains(otherID);
+                        bool hasOutgoingRequest = other.friendRequests.contains(meID);
+                        bool isFriends = me.friends.contains(otherID);
                         if (isFriends) {
                           buttonText = 'Friends';
                           buttonColor = Colors.grey;
@@ -101,8 +103,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           buttonText = 'Accept Friend Request';
                           onPressed = () async {
                             // user send friend request to profile
-                            await dbServiceSelf.addRelation(
-                                user.uid, widget.profileID);
+                            await dbServiceSelf.acceptFriend(widget.profileID);
                             await dbServiceSelf.sendFriendNotification(
                                 "Accepted your friend request!",
                                 user.uid,
@@ -115,8 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           buttonText = 'Add Friend';
                           onPressed = () async {
                             // user send friend request to profile
-                           await dbServiceSelf.addRelation(
-                                user.uid, widget.profileID);
+                           await dbServiceSelf.addFriend(widget.profileID);
                            await dbServiceSelf.sendFriendNotification(
                                 "Sent you a friend request!",
                                 user.uid,
@@ -146,7 +146,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 NumbersWidget(
                   points: userData.points,
                   level: userData.level,
-                  friends: userData.friendCount
+                  friends: userData.friends.length
                 ),
                 const SizedBox(height: 36),
                 buildAbout(userData),

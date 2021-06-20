@@ -21,8 +21,8 @@ class UserData {
   List<dynamic> notifications;
   /// Not really friends. This is list of friend request received
   /// If both parties have each other on their own respective list, then they are friends
+  List<dynamic> friendRequests;
   List<dynamic> friends;
-  int friendCount;
 
   UserData({
     required this.uid,
@@ -34,8 +34,7 @@ class UserData {
     required this.bio,
     required this.events,
     required this.notifications,
-    required this.friends,
-    required this.friendCount
+    required this.friendRequests,
+    required this.friends
   });
-
 }

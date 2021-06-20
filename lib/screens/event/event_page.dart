@@ -66,8 +66,7 @@ class _EventPageState extends State<EventPage> {
     } else {
       eventAttendees.forEach((attendee) {
         DatabaseService.getUserData(attendee).then((attendeeData) {
-          bool isFriends = attendeeData.friends.contains(self.uid) &&
-              userData!.friends.contains(attendee);
+          bool isFriends = userData!.friends.contains(attendee);
           if (isFriends) {
             setState(() {
               friendsAttending.add(attendeeData);

@@ -184,8 +184,8 @@ class DatabaseService {
       String bio,
       List<dynamic> events,
       List<dynamic> notifications,
-      List<dynamic> friends,
-      int friendCount) async {
+      List<dynamic> friendRequests,
+      List<dynamic> friends) async {
     print('Updating User Data');
     return await profileCollection.doc(uid).set({
       'profileImagePath': profileImagePath,
@@ -196,8 +196,8 @@ class DatabaseService {
       'bio': bio,
       'events': events,
       'notifications': notifications,
-      'friends': friends,
-      'friendCount': friendCount
+      'friendRequests': friendRequests,
+      'friends': friends
     });
   }
 
@@ -214,8 +214,8 @@ class DatabaseService {
       bio: snapshot.get('bio'),
       events: snapshot.get('events'),
       notifications: snapshot.get('notifications'),
-      friends: snapshot.get('friends'),
-      friendCount: snapshot.get('friendCount')
+      friendRequests: snapshot.get('friendRequests'),
+      friends: snapshot.get('friends')
     );
   }
 
@@ -264,31 +264,47 @@ class DatabaseService {
           bio: snapshot.get('bio'),
           events: snapshot.get('events'),
           notifications: snapshot.get('notifications'),
-          friends: snapshot.get('friends'),
-          friendCount: snapshot.get('friendCount')
+          friendRequests: snapshot.get('friendRequests'),
+          friends: snapshot.get('friends')
         ));
     return user;
   }
 
-  Future addRelation(String from, String to) async {
-    print(from);
-    UserData fromUser = await getUserData(from);
-    fromUser.friends.add(to);
-    print('Adding relation...');
-    print(fromUser.name);
-    print(fromUser.friends);
+  Future acceptFriend(String friendUID) async {
+    UserData myData = await getUserData(uid);
+    UserData friendData = await getUserData(friendUID);
+    myData.friends.add(friendUID);
+    myData.friendRequests.remove(friendUID);
+    friendData.friends.add(uid);
+    print('Adding friend link between $uid and $friendUID...');
     await updateUserData(
-        fromUser.profileImagePath,
-        fromUser.name,
-        fromUser.level,
-        fromUser.faculty,
-        fromUser.points,
-        fromUser.bio,
-        fromUser.events,
-        fromUser.notifications,
-        fromUser.friends,
-        fromUser.friendCount
+        myData.profileImagePath,
+        myData.name,
+        myData.level,
+        myData.faculty,
+        myData.points,
+        myData.bio,
+        myData.events,
+        myData.notifications,
+        myData.friendRequests,
+        myData.friends
     );
+    await DatabaseService(uid: friendUID)
+        .updateUserData(friendData.profileImagePath, friendData.name,
+        friendData.level, friendData.faculty, friendData.points, friendData.bio,
+        friendData.events, friendData.notifications, friendData.friendRequests,
+        friendData.friends);
+  }
+
+  Future addFriend(String friendUID) async {
+    UserData friendData = await getUserData(friendUID);
+    friendData.friendRequests.add(uid);
+    print('Adding friend $friendUID...');
+    await DatabaseService(uid: friendUID)
+        .updateUserData(friendData.profileImagePath, friendData.name,
+        friendData.level, friendData.faculty, friendData.points, friendData.bio,
+        friendData.events, friendData.notifications, friendData.friendRequests,
+        friendData.friends);
   }
 
   Future getNotificationObj(String notificationID) async {
@@ -311,14 +327,7 @@ class DatabaseService {
     await DatabaseService(uid: otherUserID)
         .updateUserData(otherUser.profileImagePath, otherUser.name, otherUser.level,
         otherUser.faculty, otherUser.points, otherUser.bio, otherUser.events,
-        notifications, otherUser.friends,
-        friendAccepted ? otherUser.friendCount + 1 : otherUser.friendCount);
-    if (friendAccepted) {
-      UserData myData = await getUserData(uid);
-      await updateUserData(myData.profileImagePath, myData.name, myData.level,
-          myData.faculty, myData.points, myData.bio, myData.events,
-          myData.notifications, myData.friends, myData.friendCount + 1);
-    }
+        notifications, otherUser.friendRequests, otherUser.friends);
   }
 
   // Adds a new notification to database
@@ -370,11 +379,11 @@ class DatabaseService {
       bio: snapshot.get('bio'),
       events: snapshot.get('events'),
       notifications: notifications,
-      friends: snapshot.get('friends'),
-      friendCount: snapshot.get('friendCount')
+      friendRequests: snapshot.get('friendRequests'),
+      friends: snapshot.get('friends')
     ));
     return await updateUserData(user.profileImagePath, user.name, user.level,
         user.faculty, user.points, user.bio, user.events, user.notifications,
-        user.friends, user.friendCount);
+        user.friendRequests, user.friends);
   }
 }

@@ -23,12 +23,16 @@ class _AttendeeTileState extends State<AttendeeTile> {
   void getAttendee() async {
     DatabaseService dbService = DatabaseService(uid: widget.attendee.uid);
     if (mounted) {
-      await dbService
-          .getImageURLFromFirebase(widget.attendee.profileImagePath)
-          .then((url) =>
-          setState(() {
-            _profileImage = NetworkImage(url);
-          }));
+      if (widget.attendee.profileImagePath == '') {
+        _profileImage = DEFAULT_PROFILE_PIC;
+      } else {
+        await dbService
+            .getImageURLFromFirebase(widget.attendee.profileImagePath)
+            .then((url) =>
+            setState(() {
+              _profileImage = NetworkImage(url);
+            }));
+      }
       setState(() {
         initialised = true;
       });

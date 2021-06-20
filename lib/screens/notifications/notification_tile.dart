@@ -34,9 +34,11 @@ class _NotificationTileState extends State<NotificationTile> {
       String eventID = notification.additionalInfo['eventID'];
       event = await DatabaseService(uid: widget.uid).getEventData(eventID);
     }
-    setState(() {
-      initialised = true;
-    });
+    if (mounted) {
+      setState(() {
+        initialised = true;
+      });
+    }
   }
 
   @override
