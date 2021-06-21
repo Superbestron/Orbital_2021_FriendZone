@@ -38,6 +38,11 @@ class _EditEventState extends State<EditEvent> {
       }
     }
   }
+  
+  List<dynamic> eventAttendeesExceptInitiator(List<dynamic> eventAttendees) {
+    eventAttendees.removeAt(0);
+    return eventAttendees;
+  }
 
   String _getTimeText() {
     final hours = _time.hour.toString().padLeft(2, '0');
@@ -342,7 +347,7 @@ class _EditEventState extends State<EditEvent> {
                                     "Event details has been changed",
                                      "event_change",
                                     {'eventID':event.eventID},
-                                    event.attendees,
+                                    eventAttendeesExceptInitiator(event.attendees),
                                   );
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(

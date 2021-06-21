@@ -51,9 +51,11 @@ class _MapsState extends State<Maps> {
     void updateLocation() async {
       _locationData = await location.getLocation();
       initialised = true;
-      setState(() {
-        _position = LatLng(_locationData.latitude!, _locationData.longitude!);
-      });
+      if (mounted) {
+        setState(() {
+          _position = LatLng(_locationData.latitude!, _locationData.longitude!);
+        });
+      }
     }
 
     location.onLocationChanged.listen((LocationData currentLocation) {
@@ -95,41 +97,7 @@ class _MapsState extends State<Maps> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Stack(
-                  fit: StackFit.expand,
-                  children: <Widget> [
-                    SvgPicture.asset(
-                      'assets/background.svg',
-                      fit: BoxFit.cover,
-                      clipBehavior: Clip.hardEdge,
-                    ),
-                    Scaffold(
-                      backgroundColor: Colors.transparent,
-                      // AppBar that is shown on event_page
-                      appBar: AppBar(
-                        leading: BackButton(color: Colors.black),
-                        title: Text(
-                          "Event Details",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        actions: <Widget> [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 15, 15, 0),
-                            child: IMAGE_LIST[event.icon],
-                          ),
-                        ],
-                        toolbarHeight: 75.0,
-                        elevation: 0.0,
-                        backgroundColor: Colors.transparent,
-                      ),
-                      body: Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 20.0, horizontal: 60.0),
-                        child: EventPage(event: event),
-                      ),
-                    ),
-                  ],
-                ),
+                builder: (context) => EventPage(event: event)
               )
           );
         },

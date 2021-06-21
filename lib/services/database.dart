@@ -332,7 +332,8 @@ class DatabaseService {
 
   // Adds a new notification to database
   Future sendNotification(String title, String subtitle, String type,
-      Map additionalInfo, List attendees) async {
+      Map additionalInfo, List<dynamic> attendees) async {
+    if (attendees.isEmpty) return;
     String newDocID = notificationsCollection.doc().id;
     await notificationsCollection.doc(newDocID).set({
       'title': title,

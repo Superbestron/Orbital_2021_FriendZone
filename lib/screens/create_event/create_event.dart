@@ -261,9 +261,9 @@ class _CreateEventState extends State<CreateEvent> {
                           ),
                         )
                       );
+                      // Go Back to Home Screen
+                      widget.jumpToPage(0);
                     }
-                    // Go Back to Home Screen
-                    widget.jumpToPage(0);
                   }
                 ),
               ),
