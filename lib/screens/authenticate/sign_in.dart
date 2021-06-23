@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:myapp/services/auth.dart';
 import 'package:myapp/shared/constants.dart';
 import 'package:myapp/shared/loading.dart';
@@ -26,109 +27,76 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     var loginWidget = <Widget>[
-      Stack(
+      Column(
         children: [
-          // Padding(
-          //   padding: EdgeInsets.fromLTRB(0, 409, 0, 0),
-          //   child: SvgPicture.asset('assets/tree.svg'),
-          // ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-            child: Center(child: SvgPicture.asset('assets/logo.svg')),
+          Center(child: SvgPicture.asset('assets/logo.svg')),
+          const SizedBox(height: 20.0),
+          TextFormField(
+            decoration:
+            textInputDecoration.copyWith(hintText: 'Email'),
+            validator: (val) =>
+            val!.isEmpty ? 'Enter an email' : null,
+            onChanged: (val) => setState(() {
+              email = val;
+            }),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 233, 0, 0),
-            child: Container(
-              height: 250,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: TextFormField(
-                      decoration:
-                          textInputDecoration.copyWith(hintText: 'Email'),
-                      validator: (val) =>
-                          val!.isEmpty ? 'Enter an email' : null,
-                      onChanged: (val) => setState(() {
-                        email = val;
-                      }),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: TextFormField(
-                      decoration:
-                          textInputDecoration.copyWith(hintText: 'Password'),
-                      validator: (val) {
-                        return val!.length < 6
-                          ? 'Enter a password 6+ chars long'
-                          : null;
-                      },
-                      obscureText: true,
-                      onChanged: (val) => setState(() {
-                        password = val;
-                      }),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(error,
-                        style: TextStyle(color: Colors.red, fontSize: 14.0)),
-                  ),
-                ],
-              ),
-            ),
+          const SizedBox(height: 20.0),
+          TextFormField(
+            decoration:
+            textInputDecoration.copyWith(hintText: 'Password'),
+            validator: (val) {
+              return val!.length < 6
+                  ? 'Enter a password 6+ chars long'
+                  : null;
+            },
+            obscureText: true,
+            onChanged: (val) => setState(() {
+              password = val;
+            }),
           ),
+          Text(error,
+              style: TextStyle(color: Colors.red, fontSize: 14.0)),
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(0, 395, 0, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    child: Text('Register',
-                        style: TextStyle(color: Colors.white)),
-                    style: ElevatedButton.styleFrom(
-                      primary: ORANGE_1,
-                    ),
-                    onPressed: () {
-                      widget.toggleView();
-                    }),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: ElevatedButton(
+                child: Text('Register',
+                    style: TextStyle(color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                  primary: ORANGE_1,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                      child: Text('Sign in',
-                          style: TextStyle(color: Colors.white)),
-                      style: ElevatedButton.styleFrom(
-                        primary: ORANGE_1,
-                      ),
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          setState(() {
-                            loading = true;
-                          });
-                          dynamic result = await _auth
-                              .signInWithEmailAndPassword(email, password);
-                          if (result == null) {
-                            setState(() {
-                              loading = false;
-                              error = 'Incorrect Email/Password!';
-                            });
-                          }
-                        }
-                      }),
-                ),
-              ],
-            ),
+                onPressed: () {
+                  widget.toggleView();
+                }),
           ),
-          // Toggle Register Page
-          // TextButton.icon(
-          //   icon: Icon(Icons.person),
-          //   label: Text('Register'),
-          //   onPressed: () { widget.toggleView(); },
-          // ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: ElevatedButton(
+                child: Text('Sign In',
+                    style: TextStyle(color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                  primary: ORANGE_1,
+                ),
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    setState(() {
+                      loading = true;
+                    });
+                    dynamic result = await _auth
+                        .signInWithEmailAndPassword(email, password);
+                    if (result == null) {
+                      setState(() {
+                        loading = false;
+                        error = 'Incorrect Email/Password!';
+                      });
+                    }
+                  }
+                }),
+          ),
         ],
       ),
       SvgPicture.asset('assets/tree.svg'),
@@ -142,10 +110,20 @@ class _SignInState extends State<SignIn> {
               SvgPicture.asset('assets/background.svg',
                   fit: BoxFit.cover, clipBehavior: Clip.hardEdge),
               Scaffold(
-                backgroundColor: Colors.transparent,
+                appBar: AppBar(
+                  centerTitle: true,
+                  title: Text('FriendZone',
+                      style: GoogleFonts.lato(
+                          textStyle: TextStyle(
+                            fontSize: 30,
+                          )
+                      )
+                  ),
+                  toolbarHeight: 100.0,
+                  elevation: 0.0,
+                ),
                 body: Container(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+                  padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
                   child: Form(
                     key: _formKey,
                     child: ListView(

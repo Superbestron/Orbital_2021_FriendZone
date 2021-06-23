@@ -91,6 +91,7 @@ Color? greyedOut = Colors.grey[400];
 Color? revokeAttendance = HexColor.fromHex('FED8B1');
 
 // Different text types
+const BOLDED_HEADING = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
 const TEXT_FIELD_HEADING = TextStyle(fontSize: 20);
 const BOLDED_NORMAL = TextStyle(fontWeight: FontWeight.bold, fontSize: 16);
 const NORMAL = TextStyle(fontSize: 16);

@@ -157,7 +157,6 @@ class _CreateEventState extends State<CreateEvent> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   decoration: textInputDecoration.copyWith(hintText: 'Telegram chat URL'),
-                  validator: (val) => val!.isEmpty ? 'Enter a telegram chat URL' : null,
                   onChanged: (val) => setState(() { _telegramURL = val; }),
                 ),
               ),

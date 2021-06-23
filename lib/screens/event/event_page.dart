@@ -177,14 +177,35 @@ class _EventPageState extends State<EventPage> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.all(6.0),
-                                child: ElevatedButton(
+                                child: event.telegramURL != ''
+                                  ? ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: ORANGE_1,
+                                        padding: EdgeInsets.all(2.0),
+                                      ),
+                                      onPressed: () async {
+                                        await launch(event.telegramURL);
+                                      }, // Link to Telegram
+                                      child: ListTile(
+                                        dense: true,
+                                        contentPadding: EdgeInsets.fromLTRB(8.0, 0, 0, 0),
+                                        leading: Icon(Icons.message, size: 15.0),
+                                        minLeadingWidth: 5.0,
+                                        title: Transform(
+                                          transform: Matrix4.translationValues(-10, 0.0, 0.0),
+                                          child: Text(
+                                            'Join Telegram',
+                                            style: TextStyle(fontSize: 12),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                    ))
+                                  : ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      primary: ORANGE_1,
+                                      primary: Colors.grey,
                                       padding: EdgeInsets.all(2.0),
                                     ),
-                                    onPressed: () async {
-                                      await launch(event.telegramURL);
-                                    }, // Link to Telegram
+                                    onPressed: () {}, // No Link Provided
                                     child: ListTile(
                                       dense: true,
                                       contentPadding: EdgeInsets.fromLTRB(8.0, 0, 0, 0),
@@ -193,12 +214,12 @@ class _EventPageState extends State<EventPage> {
                                       title: Transform(
                                         transform: Matrix4.translationValues(-10, 0.0, 0.0),
                                         child: Text(
-                                          'Join Telegram',
+                                          'No Link Provided',
                                           style: TextStyle(fontSize: 12),
                                           textAlign: TextAlign.center,
                                         ),
                                       ),
-                                    )),
+                                    ))
                               ),
                             ),
                             Expanded(
@@ -249,7 +270,7 @@ class _EventPageState extends State<EventPage> {
                                                     user.uid);
                                                 Navigator.of(context).pop();
                                               },
-                                              child: Text("Ok"),
+                                              child: Text("Confirm"),
                                             ),
                                           ],
                                         ),
@@ -265,7 +286,7 @@ class _EventPageState extends State<EventPage> {
                                             onPressed: () {
                                               Navigator.of(context).pop();
                                             },
-                                            child: Text("Ok"),
+                                            child: Text("Confirm"),
                                           ),
                                         ],
                                       ),
@@ -345,23 +366,7 @@ class _EventPageState extends State<EventPage> {
                                       primary: Colors.grey,
                                       padding: EdgeInsets.all(2.0),
                                     ),
-                                    onPressed: () async {
-                                      return showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                          title: Text('Cannot Confirm Attendance'),
-                                          content: Text('Event is full! Try other events.'),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Text("Confirm"),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
+                                    onPressed: () {},
                                     child: ListTile(
                                       dense: true,
                                       contentPadding: EdgeInsets.fromLTRB(8.0, 0, 0, 0),

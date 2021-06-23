@@ -22,10 +22,10 @@ class _EditEventState extends State<EditEvent> {
   late DateTime _dateTime;
   late TimeOfDay _time;
   int _pax = 2;
+  int _currPax = 2;
   String _description = '';
   int _icon = 0;
   String _location = LOCATIONS[0][0];
-  List<int> numbers = List.generate(9, (index) => index++);
 
   final _formKey = GlobalKey<FormState>();
 
@@ -90,6 +90,7 @@ class _EditEventState extends State<EditEvent> {
     _icon = event.icon;
     _isSelected[_icon] = true;
     _pax = event.pax;
+    _currPax = event.attendees.length == 1 ? 2 : event.attendees.length;
     _location = event.location;
     super.initState();
   }
@@ -209,8 +210,6 @@ class _EditEventState extends State<EditEvent> {
                         initialValue: _telegramURL,
                         decoration: textInputDecoration.copyWith(
                             hintText: 'Telegram chat URL'),
-                        validator: (val) =>
-                            val!.isEmpty ? 'Enter a telegram chat URL' : null,
                         onChanged: (val) => setState(() {
                           _telegramURL = val;
                         }),
@@ -226,7 +225,10 @@ class _EditEventState extends State<EditEvent> {
                           ),
                           DropdownButton(
                               value: _pax,
-                              items: numbers.map((x) => x + 2).map((pax) {
+                              // min is current pax while max is 10
+                              items: List.generate(9 - _currPax + 2, (index) => index++)
+                                  .map((x) => x + _currPax)
+                                  .map((pax) {
                                 return DropdownMenuItem(
                                   value: pax,
                                   child: Text('$pax'),
