@@ -19,7 +19,7 @@ Milestone 2 brought about many fundamental features and enabled the core functio
 Users can now create an account with their full name and email address. Afterwards, they can log in to browse, join and create events. Currently, we have only enabled signing in with email and password but we plan to have a feature to verify that the user creating an account on our app is a legitimate NUS student. This can be done via verification emails where the users will be required to verify their email address before doing anything on the app.
 
 ## Maps
-To be filled up.
+Users are now able to find events near them. When clicking on the maps tab, the application would request for the permissions required to access the user's location. If access is granted, the map would be rendered with the user's location, along with events near the user as indicated by markers on the map. The markers are determined by the location field of the events when the events are created. The user can then click on the markers of the events for further details and actions. Events with no location specified or that are past would not show up on the maps as markers.
 
 ## Joining/Creating/Editing Events
 Users can now confirm their attendance and their name will be registered in the database. They can even see their friends that are attending the event. If the current time is more than 48 hours away from the event, revoking of their attendance is made possible, to provide flexibility for users. This also gives other interested users a chance to attend instead of wasting a slot. Confirming attendance is disallowed if the event pax limit has been reached. In milestone 3, we would be looking to give the event initiator extra privileges such as seeing the attendee list for their event.
@@ -39,13 +39,6 @@ However, all these notifications are in-app, i.e. users will not know that they 
 Each user will have their very own profile page filled with their own details like name and biography which will give a chance for other users to know people better. They are able to edit their profile to change or add in details, and they can even add a profile picture to make themselves more identifiable among the FriendZone community. In the future, we will also allow users to view their own friends list via their profile page.
 
 Adding friends in FriendZone is a little different however because the ways to view other users’ profiles are more limited. Currently, users can only view other users who are planning to attend the same event if both of them are friends. So, the easiest way to add each other as friends is for both users to attend the same event together. Only after the event has ended when users can view all attendees of the event, then can they view attendees which are not their friends. Finally, users can then choose which of these people they want to add as friends. Currently, there is not a delete friend function implemented yet but we hope to do so in the future.
-
-<https://user-images.githubusercontent.com/60974969/120209975-da004880-c261-11eb-80b6-487144f7b00e.mp4>
-
-<p align="center">
-  Demonstration video
-</p>
-
 
 <p align="center">
   <a href="https://github.com/Superbestron/Orbital_2021_FriendZone/blob/master/assets/docs/milestone_2/poster.png">
@@ -157,8 +150,7 @@ If maximum capacity for a particular event is reached, you will not be able to j
 </p>
 
 ## Maps
-To be filled
-The Maps screen can be accessed via tapping on the “Maps” tab.
+The Maps screen can be accessed via tapping on the “Maps” tab. Upon clicking the tab, the user would have to authorise tha application to use their location. If access is granted, a google-maps widget would be rendered and the user's location shown. The user would be able to see events near them as indicated by markers on the map. When the markers are clicked, a detailed view of the event is shown where the user can confirm their attendnace.
 
 ## Create Event
 The Create Event screen can be accessed via tapping on the “Create Event” tab. You can create a new event by simply filling up the details of the event with its **Name**, **Date**, **Time**, **Description**, **Telegram Link** (optional), **Pax**, **Faculty**, and **Icon**. The default date, time, pax and icon are listed below respectively if you do not decide to change it. 
