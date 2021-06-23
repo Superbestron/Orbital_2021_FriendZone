@@ -17,7 +17,7 @@ void main() async {
     await tester.pumpWidget(
         MyApp()
     );
-    final button = find.widgetWithText(ElevatedButton, "Sign in");
+    final button = find.widgetWithText(ElevatedButton, "Sign In");
     expect(button, findsOneWidget);
   });
 
@@ -41,7 +41,7 @@ void main() async {
     await tester.pumpWidget(
         MyApp()
     );
-    final button = find.widgetWithText(ElevatedButton, "Sign in");
+    final button = find.widgetWithText(ElevatedButton, "Sign In");
     await tester.tap(button);
     await tester.pump();
     final error1 = find.text("Enter an email");

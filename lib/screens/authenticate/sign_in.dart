@@ -137,20 +137,3 @@ class _SignInState extends State<SignIn> {
           );
   }
 }
-
-// old app bar
-
-// flutter pub get
-// to install dependencies in flutter
-// appBar: AppBar(
-//     backgroundColor: GREEN_1,
-//     elevation: 0.0,
-//     title: Text('Sign in to FriendZone'),
-//     actions: <Widget>[
-//         TextButton.icon(
-//         icon: Icon(Icons.person),
-//         label: Text('Register'),
-//         onPressed: () { widget.toggleView(); },
-//         )
-//     ]
-// ),
