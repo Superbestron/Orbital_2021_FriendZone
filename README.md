@@ -153,7 +153,7 @@ If maximum capacity for a particular event is reached, you will not be able to j
 The Maps screen can be accessed via tapping on the “Maps” tab. Upon clicking the tab, the user would have to authorise tha application to use their location. If access is granted, a google-maps widget would be rendered and the user's location shown. The user would be able to see events near them as indicated by markers on the map. When the markers are clicked, a detailed view of the event is shown where the user can confirm their attendnace.
 
 <p align="center">
-  <img src='https://github.com/Superbestron/Orbital_2021_FriendZone/blob/maps/readme/assets/docs/milestone_2/user_guide/maps.jpg' width=300>
+  <img src='assets/docs/milestone_2/user_guide/maps.jpg' width=300>
 </p>
 
 ## Create Event
