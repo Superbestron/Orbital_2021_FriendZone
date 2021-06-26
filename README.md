@@ -61,8 +61,8 @@ FriendZone is an interactive and user-friendly platform for users to find like-m
   * **Indicate your interest:** Users can indicate interest in an event to mark their attendance before event becomes full. Initiators of events are not allowed to revoke their interests.
   * **Confirm your attendance:** After users confirm their attendance, they are not able to revoke their attendance 2 days before event starts.
   * **Join the telegram group:** Users can join the telegram group that is provided by the initiator by clicking on the "Join Telegram" button beside the attendance confirmation button to stay in touch with the organisers and other participants.
-</br></br></br></br></br></br></br>
 
+</br></br></br></br></br></br></br>
 
 <img align="right" src="assets/docs/milestone_2/create_event_demo.gif" height="400">
 
@@ -73,17 +73,22 @@ FriendZone is an interactive and user-friendly platform for users to find like-m
   * **Set the maximum number of people:** Users can set the maximum number of people in the case where the event requires a fixed number of people. An example of such a case could happen when the initiator is looking for a total of 4 players to play card games.
 
 </br></br></br></br></br></br></br>
+
 * **Get points and level up**
   * Join events to get points
   * Create events to gain points
   * Show off your levels in your profile page
 
-
 </br></br></br></br></br></br></br>
+
+<img align="right" src="assets/docs/milestone_2/profile_demo.gif" height="400">
+
 * **Let others know you better**
-  * Add profile picture
-  * Display your faculty
-  * Showcase events attended
+  * **Add profile picture:** Choose a profile picture that you love! Users can choose a picture from their gallery and upload it.
+  * **isplay your faculty:** Users can indicate their faculty when editing their profile so that other people can know them better.
+  * **Showcase events attended:** Past events will appear on user's profile page. This helps others to know what kind of events the user likes to go to and acts as a conversation starter.
+
+</br></br></br></br></br></br></br></br></br>
 
 # User's Guide
 In this guide, we will walk through the activities that you can do with FriendZone, as well as some of its core functionalities.
@@ -150,7 +155,7 @@ If maximum capacity for a particular event is reached, you will not be able to j
 </p>
 
 ## Maps
-The Maps screen can be accessed via tapping on the “Maps” tab. Upon clicking the tab, the user would have to authorise tha application to use their location. If access is granted, a google-maps widget would be rendered and the user's location shown. The user would be able to see events near them as indicated by markers on the map. When the markers are clicked, a detailed view of the event is shown where the user can confirm their attendnace.
+The Maps screen can be accessed via tapping on the “Maps” tab. Upon clicking the tab, the user would have to authorise tha application to use their location. If access is granted, a google-maps widget would be rendered and the user's location shown. The user would be able to see events near them as indicated by markers on the map. When the markers are clicked, a detailed view of the event is shown where the user can confirm their attendance.
 
 <p align="center">
   <img src='assets/docs/milestone_2/user_guide/maps.jpg' width=300>
