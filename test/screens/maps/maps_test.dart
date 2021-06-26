@@ -19,8 +19,8 @@ void main() {
     await tester.pumpWidget(MaterialApp(
       home: StreamProvider<List<Event>?>.value(
         initialData: null,
-        value: DatabaseService(uid: '').events,
-        child:Maps(),
+        value: DatabaseService.events,
+        child: Maps(),
       )
     ));
   });

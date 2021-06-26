@@ -45,6 +45,10 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
     Iterable<Event> events = (Provider.of<List<Event>?>(context) ?? [])
         .where((event) => event.attendees.contains(user.uid));
 
+    List<Event> createdEvents = events
+        .where((event) => event.attendees[0] == user.uid)
+        .toList();
+
     List<Event> upcomingEvents = events
         .where((event) => event.dateTime.isAfter(DateTime.now()))
         .toList();
@@ -120,6 +124,39 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
             ),
           ),
 
+          // My Created Events
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: RichText(
+                text: TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'My Created Events',
+                      style: Theme.of(context).textTheme.headline6),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: createdEvents.length,
+            itemBuilder: (context, index) {
+              return EventTile(event: createdEvents[index], isNotiPage: true);
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            child: Divider(
+              thickness: 2.0,
+              indent: 20.0,
+              endIndent: 20.0,
+            ),
+          ),
+
           // Upcoming Events
           Align(
             alignment: Alignment.centerLeft,
@@ -129,7 +166,7 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                        text: 'Upcoming',
+                        text: 'Upcoming Events',
                         style: Theme.of(context).textTheme.headline6),
                   ],
                 ),
@@ -162,7 +199,7 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                        text: 'Past',
+                        text: 'Past Events',
                         style: Theme.of(context).textTheme.headline6),
                   ],
                 ),

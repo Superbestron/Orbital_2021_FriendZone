@@ -89,11 +89,12 @@ class DatabaseService {
     attendees.add(uid);
     updateEventData(location, telegramURL, name, dateTime, pax, description,
         icon, newDocID, attendees);
+    print("Creating Event...");
     return newDocID;
   }
 
   // Event list from snapshot
-  List<Event> _eventListFromSnapshot(QuerySnapshot snapshot) {
+  static List<Event> _eventListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return Event(
         location: doc.get('location'),
@@ -125,7 +126,7 @@ class DatabaseService {
   }
 
   // get events stream
-  Stream<List<Event>> get events {
+  static Stream<List<Event>> get events {
     return eventCollection.snapshots().map(_eventListFromSnapshot);
   }
 

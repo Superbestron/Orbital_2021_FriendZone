@@ -28,7 +28,7 @@ void main() {
     final title2 = find.text("Maps");
     final title3 = find.text("Create");
     final title4 = find.text("Notifications");
-    final title5 = find.text("My Profile");
+    final title5 = find.text("Profile");
     expect(title1, findsOneWidget);
     expect(title2, findsOneWidget);
     expect(title3, findsOneWidget);

@@ -300,23 +300,48 @@ class _EditEventState extends State<EditEvent> {
                               tooltip: 'Delete Event',
                               child: Icon(Icons.delete),
                               onPressed: () async {
-                                String _uid = user!.uid;
-                                DatabaseService db = DatabaseService(uid: _uid);
-                                await db.deleteEvent(event.eventID);
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  backgroundColor: BACKGROUND_COLOR,
-                                  content:
-                                      Text('Successfully deleted an event!'),
-                                  action: SnackBarAction(
-                                    label: 'Dismiss',
-                                    onPressed: () async {},
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: Text("Delete Event"),
+                                    content: Text(
+                                      'Are you sure you want to delete event?\n\n'
+                                      'Warning: This action cannot be undone!'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text("Cancel",
+                                            style: TextStyle(
+                                              color: Colors.red,
+                                            )),
+                                      ),
+                                      TextButton(
+                                        onPressed: () async {
+                                          String _uid = user!.uid;
+                                          DatabaseService db = DatabaseService(uid: _uid);
+                                          await db.deleteEvent(event.eventID);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            backgroundColor: BACKGROUND_COLOR,
+                                            content:
+                                            Text('Successfully deleted an event!'),
+                                            action: SnackBarAction(
+                                              label: 'Dismiss',
+                                              onPressed: () async {},
+                                            ),
+                                          ));
+                                          int count = 0;
+                                          Navigator.popUntil(context, (route) {
+                                            return count++ == 3;
+                                          });
+                                        },
+                                        child: Text("Confirm"),
+                                      ),
+                                    ],
                                   ),
-                                ));
-                                int count = 0;
-                                Navigator.popUntil(context, (route) {
-                                  return count++ == 2;
-                                });
+                                );
                               }),
                         ),
                         Expanded(
@@ -326,47 +351,70 @@ class _EditEventState extends State<EditEvent> {
                               child: Icon(Icons.check),
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
-                                  _dateTime = DateTime(
-                                      _dateTime.year,
-                                      _dateTime.month,
-                                      _dateTime.day,
-                                      _time.hour,
-                                      _time.minute);
-                                  String _uid = user!.uid;
-                                  DatabaseService db =
-                                      DatabaseService(uid: _uid);
-                                  db.updateEventData(
-                                      _location,
-                                      _telegramURL,
-                                      _name,
-                                      _dateTime,
-                                      _pax,
-                                      _description,
-                                      _icon,
-                                      event.eventID,
-                                      event.attendees);
-                                  db.sendNotification(event.name,
-                                    "Event details has been changed",
-                                     "event_change",
-                                    {'eventID':event.eventID},
-                                    eventAttendeesExceptInitiator(event.attendees),
-                                  );
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    backgroundColor: BACKGROUND_COLOR,
-                                    content:
-                                        Text('Successfully edited an event!'),
-                                    action: SnackBarAction(
-                                      label: 'Dismiss',
-                                      onPressed: () async {},
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: Text("Edit Event"),
+                                      content: Text(
+                                          'Are you sure you want to edit event?'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text("Cancel",
+                                              style: TextStyle(
+                                                color: Colors.red,
+                                              )),
+                                        ),
+                                        TextButton(
+                                          onPressed: () async {
+                                            _dateTime = DateTime(
+                                                _dateTime.year,
+                                                _dateTime.month,
+                                                _dateTime.day,
+                                                _time.hour,
+                                                _time.minute);
+                                            String _uid = user!.uid;
+                                            DatabaseService db =
+                                            DatabaseService(uid: _uid);
+                                            db.updateEventData(
+                                                _location,
+                                                _telegramURL,
+                                                _name,
+                                                _dateTime,
+                                                _pax,
+                                                _description,
+                                                _icon,
+                                                event.eventID,
+                                                event.attendees);
+                                            db.sendNotification(event.name,
+                                              "Event details has been changed",
+                                              "event_change",
+                                              {'eventID':event.eventID},
+                                              eventAttendeesExceptInitiator(event.attendees),
+                                            );
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              backgroundColor: BACKGROUND_COLOR,
+                                              content:
+                                              Text('Successfully edited an event!'),
+                                              action: SnackBarAction(
+                                                label: 'Dismiss',
+                                                onPressed: () async {},
+                                              ),
+                                            ));
+                                            int count = 0;
+                                            Navigator.popUntil(context, (route) {
+                                              return count++ == 2;
+                                            });
+                                          },
+                                          child: Text("Confirm"),
+                                        ),
+                                      ],
                                     ),
-                                  ));
-                                  int count = 0;
-                                  Navigator.popUntil(context, (route) {
-                                    return count++ == 2;
-                                  });
-                                }
-                              }),
+                                  );
+                              }}),
                         ),
                       ],
                     ),

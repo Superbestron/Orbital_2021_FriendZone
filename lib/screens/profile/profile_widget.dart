@@ -57,7 +57,7 @@ class ProfileWidget extends StatelessWidget {
         color: Colors.white,
         size: 20,
       ),
-    ),
+    )
   );
 
   Widget buildCircle({
