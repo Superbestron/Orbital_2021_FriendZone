@@ -74,8 +74,6 @@ FriendZone is an interactive and user-friendly platform for users to find like-m
 
 </br></br></br></br></br></br></br>
 
-<img align="right" src="assets/docs/milestone_2/profile_demo.gif" height="400">
-
 * **Get points and level up**
   * Join events to get points
   * Create events to gain points
@@ -83,10 +81,14 @@ FriendZone is an interactive and user-friendly platform for users to find like-m
 
 </br></br></br></br></br></br></br>
 
+<img align="right" src="assets/docs/milestone_2/profile_demo.gif" height="400">
+
 * **Let others know you better**
-  * Add profile picture
-  * Display your faculty
-  * Showcase events attended
+  * **Add profile picture:** Choose a profile picture that you love! Users can choose a picture from their gallery and upload it.
+  * **isplay your faculty:** Users can indicate their faculty when editing their profile so that other people can know them better.
+  * **Showcase events attended:** Past events will appear on user's profile page. This helps others to know what kind of events the user likes to go to and acts as a conversation starter.
+
+</br></br></br></br></br></br></br></br></br>
 
 # User's Guide
 In this guide, we will walk through the activities that you can do with FriendZone, as well as some of its core functionalities.
