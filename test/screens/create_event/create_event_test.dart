@@ -25,7 +25,7 @@ void main() {
           child: MaterialApp(
               home: StreamProvider<List<Event>?>.value(
                 initialData: null,
-                value: DatabaseService(uid: '').events,
+                value: DatabaseService.events,
                 child: CreateEvent(jumpToPage: () {}),
               )
           )),

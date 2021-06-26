@@ -57,7 +57,7 @@ class _HomeState extends State<Home> {
 
     return StreamProvider<List<Event>?>.value(
         initialData: null,
-        value: DatabaseService(uid: '').events,
+        value: DatabaseService.events,
         child: Stack(
             fit: StackFit.expand,
             children: <Widget> [
@@ -116,7 +116,7 @@ class _HomeState extends State<Home> {
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.perm_identity),
-                      label: 'My Profile',
+                      label: 'Profile',
                     ),
                   ],
                 ),

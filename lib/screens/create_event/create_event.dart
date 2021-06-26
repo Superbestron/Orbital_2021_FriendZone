@@ -157,6 +157,9 @@ class _CreateEventState extends State<CreateEvent> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   decoration: textInputDecoration.copyWith(hintText: 'Telegram chat URL'),
+                  validator: (val) => val!.isNotEmpty && !val.startsWith('t.me/joinchat/')
+                    ? 'Link should start with t.me/joinchat/ or be blank'
+                    : null,
                   onChanged: (val) => setState(() { _telegramURL = val; }),
                 ),
               ),
@@ -248,6 +251,7 @@ class _CreateEventState extends State<CreateEvent> {
                         _name, _dateTime,
                         _pax, _description, _icon,
                       );
+                      _formKey.currentState!.reset();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           backgroundColor: BACKGROUND_COLOR,
