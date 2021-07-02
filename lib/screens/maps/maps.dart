@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:myapp/screens/event/event_page.dart';
+import 'package:myapp/services/database.dart';
+import 'package:myapp/screens/home/event_list.dart';
 import 'package:myapp/shared/loading_transparent.dart';
 import 'package:location/location.dart';
 import 'package:myapp/models/event.dart';
 import 'package:provider/provider.dart';
 import 'package:myapp/shared/constants.dart';
+import 'package:myapp/shared/widgets.dart';
 
 class Maps extends StatefulWidget {
   @override
@@ -91,18 +92,32 @@ class _MapsState extends State<Maps> {
     // initialise markers
     setState(() {
       _markers = Set.of(events.map((event) => Marker(
-        markerId: MarkerId(event.eventID),
-        onTap: () {
-          print("Hello");
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => EventPage(event: event)
-              )
-          );
-        },
-        position: LatLng(getCoordinate(event.location)[0], getCoordinate(event.location)[1]),
-      )));
+            markerId: MarkerId(event.eventID),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return StreamProvider<List<Event>?>.value(
+                    initialData: null,
+                    value: DatabaseService.events.map((events) => (events
+                        .where((element) => element.location == event.location)
+                        .toList())),
+                    child: Stack(fit: StackFit.expand, children: <Widget>[
+                      buildBackgroundImage(),
+                      Scaffold(
+                          appBar: AppBar(
+                            centerTitle: true,
+                            leading: BackButton(color: Colors.black),
+                            title: Text(
+                              "Nearby events",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                          body: EventList())
+                    ]));
+              }));
+            },
+            position: LatLng(getCoordinate(event.location)[0],
+                getCoordinate(event.location)[1]),
+          )));
     });
 
     return initialised
