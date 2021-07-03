@@ -5,8 +5,9 @@ import 'package:myapp/shared/constants.dart';
 
 class AttendanceTile extends StatefulWidget {
   final UserData attendee;
+  final bool submit;
 
-  AttendanceTile({required this.attendee});
+  AttendanceTile({required this.attendee, required this.submit});
 
   @override
   _AttendanceTileState createState() => _AttendanceTileState();
@@ -14,9 +15,12 @@ class AttendanceTile extends StatefulWidget {
 
 class _AttendanceTileState extends State<AttendanceTile> {
   bool _attendance = true;
-
   @override
   Widget build(BuildContext context) {
+    if (widget.submit) {
+      print(widget.attendee.name);
+      print("OK");
+    }
     UserData attendee = widget.attendee;
     return Card(
       margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),

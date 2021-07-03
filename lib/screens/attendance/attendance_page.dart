@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/models/user.dart';
 import 'package:myapp/services/database.dart';
-import 'package:myapp/shared/constants.dart';
 import 'package:myapp/shared/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -18,11 +17,25 @@ class AttendancePage extends StatefulWidget {
 }
 
 class _AttendancePageState extends State<AttendancePage> {
+  bool submit = false;
+  UserData mock = UserData(
+      friendRequests: [],
+      notifications: [],
+      profileImagePath: '',
+      name: '',
+      friends: [],
+      points: 0,
+      bio: '',
+      uid: '',
+      events: [],
+      level: 0,
+      faculty: ''
+  );
   @override
   Widget build(BuildContext context) {
     List attendees = widget.attendees;
     return StreamProvider<List<UserData>?>.value(
-        initialData: null,
+        initialData: List<UserData>.generate(attendees.length, (i) => mock), // prevents null ptr
         value: DatabaseService.users.map((users) =>
             (users.where((user) => attendees.contains(user.uid)).toList())),
         child: Stack(fit: StackFit.expand, children: <Widget>[
@@ -47,10 +60,25 @@ class _AttendancePageState extends State<AttendancePage> {
                         shrinkWrap: true,
                         itemCount: attendees.length,
                         itemBuilder: (context, index) {
-                          UserData attendee = (Provider.of<List<UserData>?>(context) ??
-                              [])[index];
-                          return AttendanceTile(attendee: attendee);
+                          UserData attendee =
+                              (Provider.of<List<UserData>?>(context) ??
+                                  [])[index];
+                          return AttendanceTile(attendee: attendee, submit: submit);
                         },
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            submit = true;
+                          });
+                        },
+                        child: Text(
+                          "Submit",
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.black.withOpacity(1.0)),
+                          textAlign: TextAlign.center,
+                        ),
                       )
                     ],
                   )))
