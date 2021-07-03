@@ -59,6 +59,7 @@ class _NotificationTileState extends State<NotificationTile> {
         );
       } else if (notification.type == getEventType(1)) {
         // If Event is deleted
+        // TODO: To be implemented
         return Container();
       } else if (notification.type == getEventType(2)) {
           return NotiListTile(notification: notification,

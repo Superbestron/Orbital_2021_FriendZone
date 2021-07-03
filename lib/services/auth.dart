@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:myapp/models/user.dart';
-import 'package:myapp/services/database.dart';
+
+import 'database.dart';
 
 class AuthService {
 
@@ -8,7 +9,13 @@ class AuthService {
 
   // create user obj based on FirebaseUser
   UserObj? _userFromFirebaseUser(User? user) {
-    return user != null ? UserObj(uid: user.uid) : null;
+    if (user == null) {
+      print('User is currently signed out!');
+      return null;
+    } else {
+      print('User is signed in!');
+      return UserObj(uid: user.uid);
+    }
   }
 
   // auth change user stream
@@ -32,12 +39,17 @@ class AuthService {
   // sign in with email & password
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
-      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-      User? user = result.user;
-      return _userFromFirebaseUser(user);
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      return '';
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        return 'No user found for that email.';
+      } else if (e.code == 'wrong-password') {
+        return 'Wrong password provided for that user.';
+      }
     } catch (e) {
       print(e.toString());
-      return null;
+      return 'Unknown Error';
     }
   }
 
@@ -50,12 +62,34 @@ class AuthService {
       // create a new document for the user with the uid
       await DatabaseService(uid: user.uid)
           .updateUserData('', fullName, 1, '', 0, '', [], [], [], []);
+      return '';
 
-      return _userFromFirebaseUser(user);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        return 'The password provided is too weak.';
+      } else if (e.code == 'email-already-in-use') {
+        return 'The account already exists for that email.';
+      }
     } catch (e) {
       print(e.toString());
-      return null;
+      return 'Unknown Error';
     }
+  }
+
+  Future sendEmailVerification() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    return await user!.sendEmailVerification();
+  }
+
+  // check if email is verified
+  bool checkEmailVerified() {
+    User? user = FirebaseAuth.instance.currentUser;
+    return user!.emailVerified;
+  }
+
+  String getUserEmail() {
+    User? user = FirebaseAuth.instance.currentUser;
+    return user!.email!;
   }
 
   // sign out

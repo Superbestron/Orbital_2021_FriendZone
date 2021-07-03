@@ -33,7 +33,10 @@ class _SignInState extends State<SignIn> {
           const SizedBox(height: 20.0),
           TextFormField(
             decoration:
-            textInputDecoration.copyWith(hintText: 'Email'),
+            textInputDecoration.copyWith(
+              hintText: 'Email',
+              prefixIcon: Icon(Icons.mail),
+            ),
             validator: (val) =>
             val!.isEmpty ? 'Enter an email' : null,
             onChanged: (val) => setState(() {
@@ -43,7 +46,10 @@ class _SignInState extends State<SignIn> {
           const SizedBox(height: 20.0),
           TextFormField(
             decoration:
-            textInputDecoration.copyWith(hintText: 'Password'),
+            textInputDecoration.copyWith(
+              hintText: 'Password',
+              prefixIcon: Icon(Icons.lock),
+            ),
             validator: (val) {
               return val!.length < 6
                   ? 'Enter a password 6+ chars long'
@@ -54,25 +60,7 @@ class _SignInState extends State<SignIn> {
               password = val;
             }),
           ),
-          Text(error,
-              style: TextStyle(color: Colors.red, fontSize: 14.0)),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: ElevatedButton(
-                child: Text('Register',
-                    style: TextStyle(color: Colors.white)),
-                style: ElevatedButton.styleFrom(
-                  primary: ORANGE_1,
-                ),
-                onPressed: () {
-                  widget.toggleView();
-                }),
-          ),
+          SizedBox(height: 20.0),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: ElevatedButton(
@@ -88,17 +76,35 @@ class _SignInState extends State<SignIn> {
                     });
                     dynamic result = await _auth
                         .signInWithEmailAndPassword(email, password);
-                    if (result == null) {
+                    print(result);
+                    if (result != '') {
                       setState(() {
                         loading = false;
-                        error = 'Incorrect Email/Password!';
+                        error = result;
                       });
                     }
                   }
                 }),
           ),
+          SizedBox(height: 12.0),
+          Text(error,
+            style: TextStyle(color: Colors.red, fontSize: 14.0),
+          ),
+          SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget> [
+              Text('Don\'t have an account?', style: NORMAL),
+              const SizedBox(width: 15),
+              GestureDetector(
+                child: Text('Register', style: BOLDED_NORMAL),
+                onTap: () { widget.toggleView(); }
+              )
+            ]
+          )
         ],
       ),
+      const SizedBox(height: 20),
       SvgPicture.asset('assets/tree.svg'),
     ];
 

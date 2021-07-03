@@ -46,6 +46,7 @@ dependencies:
   flutter_riverpod: ^0.14.0+3
   mockito: ^5.0.10
   google_fonts: ^2.1.0
+  firebase_dynamic_links: ^2.0.6
 
 dev_dependencies:
   flutter_test:

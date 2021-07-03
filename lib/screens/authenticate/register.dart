@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:myapp/services/auth.dart';
@@ -17,6 +19,10 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  // final nameController = TextEditingController();
+  // final textController = TextEditingController();
+  // final passwordController = TextEditingController();
+  // final verifyPasswordController = TextEditingController();
   bool loading = false;
 
   // text field state
@@ -59,7 +65,15 @@ class _RegisterState extends State<Register> {
                     ),
                     SizedBox(height: 20.0),
                     TextFormField(
-                      decoration: textInputDecoration.copyWith(hintText: 'Full Name'),
+                      // controller: nameController,
+                      decoration: textInputDecoration.copyWith(
+                        hintText: 'Full Name',
+                        prefixIcon: Icon(Icons.person),
+                        // suffixIcon: IconButton(
+                        //   icon: Icon(Icons.close),
+                        //   onPressed: () => nameController.clear()
+                        // )
+                      ),
                       validator: (val) {
                         return val!.isEmpty ? 'Enter your name' : null;
                       },
@@ -71,9 +85,16 @@ class _RegisterState extends State<Register> {
                     ),
                     SizedBox(height: 20.0),
                     TextFormField(
-                      decoration: textInputDecoration.copyWith(hintText: 'Email'),
+                      decoration: textInputDecoration.copyWith(
+                        hintText: 'Email',
+                        prefixIcon: Icon(Icons.mail),
+                      ),
                       validator: (val) {
-                        return val!.isEmpty ? 'Enter an email' : null;
+                        return val!.isEmpty
+                          ? 'Enter an email'
+                          : val.endsWith('@u.nus.edu')
+                            ? null
+                            : 'Please enter a valid NUS email';
                       },
                       onChanged: (val) {
                         setState(() {
@@ -83,7 +104,10 @@ class _RegisterState extends State<Register> {
                     ),
                     SizedBox(height: 20.0),
                     TextFormField(
-                      decoration: textInputDecoration.copyWith(hintText: 'Password'),
+                      decoration: textInputDecoration.copyWith(
+                        hintText: 'Password',
+                        prefixIcon: Icon(Icons.lock),
+                      ),
                       validator: (val) {
                         return val!.length < 6
                             ? 'Enter a password 6+ chars long'
@@ -99,7 +123,9 @@ class _RegisterState extends State<Register> {
                     SizedBox(height: 20.0),
                     TextFormField(
                       decoration: textInputDecoration.copyWith(
-                          hintText: 'Confirm Password'),
+                        hintText: 'Confirm Password',
+                        prefixIcon: Icon(Icons.lock),
+                      ),
                       validator: (val) {
                         return val!.length < 6
                             ? 'Enter a password 6+ chars long'
@@ -137,24 +163,20 @@ class _RegisterState extends State<Register> {
                                   dynamic result = await _auth
                                       .registerWithEmailAndPassword(
                                           email, password, fullName);
-                                  if (result == null) {
+                                  if (result != '') {
                                     setState(() {
                                       loading = false;
-                                      error =
-                                          'please supply a valid email';
+                                      error = result;
                                     });
                                   }
-                                  print(password);
                                 }
                               }),
                         ),
                       ],
                     ),
                     SizedBox(height: 12.0),
-                    Text(
-                      error,
-                      style:
-                          TextStyle(color: Colors.red, fontSize: 14.0),
+                    Text(error,
+                      style: TextStyle(color: Colors.red, fontSize: 14.0),
                     ),
                   ],
                 )),
