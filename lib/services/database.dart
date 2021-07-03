@@ -171,6 +171,11 @@ class DatabaseService {
         event.attendees);
   }
 
+  // user data stream
+  static Stream<List<UserData>> get users {
+    return profileCollection.snapshots().map(_mapUserDataFromSnapshot);
+  }
+
   // get profile stream
   Stream<UserData> get userData {
     return profileCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
@@ -200,6 +205,23 @@ class DatabaseService {
       'friendRequests': friendRequests,
       'friends': friends
     });
+  }
+  static List<UserData> _mapUserDataFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return UserData(
+          uid: doc.id,
+          profileImagePath: doc.get('profileImagePath'),
+          name: doc.get('name'),
+          level: doc.get('level'),
+          faculty: doc.get('faculty'),
+          points: doc.get('points'),
+          bio: doc.get('bio'),
+          events: doc.get('events'),
+          notifications: doc.get('notifications'),
+          friendRequests: doc.get('friendRequests'),
+          friends: doc.get('friends')
+      );
+    }).toList();
   }
 
   // Maps snapshot of user's data from Firebase back to UserData object

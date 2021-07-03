@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:myapp/models/event.dart';
+import 'package:myapp/screens/attendance/attendance_page.dart';
 import 'package:myapp/screens/edit_event/edit_event.dart';
 import 'package:myapp/services/database.dart';
 import 'package:myapp/shared/constants.dart';
@@ -509,8 +510,10 @@ class _EventPageState extends State<EventPage> {
                                           primary: ORANGE_1,
                                           padding: EdgeInsets.all(2.0),
                                         ),
-                                        onPressed: () async {
-                                          print("Hello");
+                                        onPressed: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                            return AttendancePage(attendees: event.attendees);
+                                          }));
                                         }, child: Padding(
                                         padding: EdgeInsets.all(8),
                                         child: Text(
