@@ -26,7 +26,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    var loginWidget = <Widget>[
+    var loginWidget = <Widget> [
       Column(
         children: [
           Center(child: SvgPicture.asset('assets/logo.svg')),
@@ -34,11 +34,11 @@ class _SignInState extends State<SignIn> {
           TextFormField(
             decoration:
             textInputDecoration.copyWith(
-              hintText: 'Email',
+              hintText: 'NUS Email',
               prefixIcon: Icon(Icons.mail),
             ),
             validator: (val) =>
-            val!.isEmpty ? 'Enter an email' : null,
+            val!.isEmpty ? 'Enter a NUS email' : null,
             onChanged: (val) => setState(() {
               email = val;
             }),
@@ -86,18 +86,21 @@ class _SignInState extends State<SignIn> {
                   }
                 }),
           ),
-          SizedBox(height: 12.0),
-          Text(error,
-            style: TextStyle(color: Colors.red, fontSize: 14.0),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Text(error,
+              style: TextStyle(color: Colors.red, fontSize: 16),
+            ),
           ),
-          SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget> [
               Text('Don\'t have an account?', style: NORMAL),
               const SizedBox(width: 15),
               GestureDetector(
-                child: Text('Register', style: BOLDED_NORMAL),
+                child: Text('Register', style: BOLDED_NORMAL.copyWith(
+                  color: ORANGE_1
+                )),
                 onTap: () { widget.toggleView(); }
               )
             ]

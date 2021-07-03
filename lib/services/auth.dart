@@ -46,6 +46,10 @@ class AuthService {
         return 'No user found for that email.';
       } else if (e.code == 'wrong-password') {
         return 'Wrong password provided for that user.';
+      } else if (e.code == 'invalid-email') {
+        return 'Email is invalid.';
+      } else {
+        return e.code;
       }
     } catch (e) {
       print(e.toString());
@@ -69,6 +73,8 @@ class AuthService {
         return 'The password provided is too weak.';
       } else if (e.code == 'email-already-in-use') {
         return 'The account already exists for that email.';
+      } else {
+        return e.code;
       }
     } catch (e) {
       print(e.toString());

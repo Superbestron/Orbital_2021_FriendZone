@@ -86,12 +86,12 @@ class _RegisterState extends State<Register> {
                     SizedBox(height: 20.0),
                     TextFormField(
                       decoration: textInputDecoration.copyWith(
-                        hintText: 'Email',
+                        hintText: 'NUS Email',
                         prefixIcon: Icon(Icons.mail),
                       ),
                       validator: (val) {
                         return val!.isEmpty
-                          ? 'Enter an email'
+                          ? 'Enter a NUS email'
                           : val.endsWith('@u.nus.edu')
                             ? null
                             : 'Please enter a valid NUS email';
@@ -136,50 +136,50 @@ class _RegisterState extends State<Register> {
                       obscureText: true,
                     ),
                     SizedBox(height: 20.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ElevatedButton(
-                              child: Text('Back to Sign In',
-                                  style:
-                                      TextStyle(color: Colors.white)),
-                              onPressed: () {
-                                widget.toggleView();
-                              }),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ElevatedButton(
-                              child: Text('Register',
-                                  style:
-                                      TextStyle(color: Colors.white)),
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  setState(() {
-                                    loading = true;
-                                  });
-                                  dynamic result = await _auth
-                                      .registerWithEmailAndPassword(
-                                          email, password, fullName);
-                                  if (result != '') {
-                                    setState(() {
-                                      loading = false;
-                                      error = result;
-                                    });
-                                  }
-                                }
-                              }),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 12.0),
-                    Text(error,
-                      style: TextStyle(color: Colors.red, fontSize: 14.0),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                          child: Text('Register',
+                              style:
+                                  TextStyle(color: Colors.white)),
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              setState(() {
+                                loading = true;
+                              });
+                              dynamic result = await _auth
+                                  .registerWithEmailAndPassword(
+                                      email, password, fullName);
+                              if (result != '') {
+                                setState(() {
+                                  loading = false;
+                                  error = result;
+                                });
+                              }
+                            }
+                          }),
                     ),
                   ],
                 )),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(error,
+                  style: TextStyle(color: Colors.red, fontSize: 16.0),
+                ),
+              ),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget> [
+                    Text('Have an account?', style: NORMAL),
+                    const SizedBox(width: 10),
+                    GestureDetector(
+                        child: Text('Sign In', style: BOLDED_NORMAL.copyWith(
+                            color: ORANGE_1
+                        )),
+                        onTap: () { widget.toggleView(); }
+                    )
+                  ]
+              ),
               SvgPicture.asset('assets/tree.svg'),
             ]
       )),
