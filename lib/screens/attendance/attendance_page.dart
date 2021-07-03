@@ -70,13 +70,18 @@ class _AttendancePageState extends State<AttendancePage> {
                         onPressed: () {
                           setState(() {
                             submit = true;
+                            int count = 0;
+                            Navigator.popUntil(context, (route) {
+                              return count++ == 1;
+                            });
                           });
                         },
                         child: Text(
                           "Submit",
                           style: TextStyle(
                               fontSize: 12,
-                              color: Colors.black.withOpacity(1.0)),
+                              color: Colors.black.withOpacity(1.0)
+                          ),
                           textAlign: TextAlign.center,
                         ),
                       )

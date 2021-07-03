@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/models/user.dart';
+import 'package:myapp/services/database.dart';
 import 'package:myapp/shared/constants.dart';
 
 class AttendanceTile extends StatefulWidget {
@@ -17,11 +18,10 @@ class _AttendanceTileState extends State<AttendanceTile> {
   bool _attendance = true;
   @override
   Widget build(BuildContext context) {
-    if (widget.submit) {
-      print(widget.attendee.name);
-      print("OK");
-    }
     UserData attendee = widget.attendee;
+    if (widget.submit) {
+      DatabaseService.addPointsToUser(attendee.uid, _attendance ? 50 : -20);
+    }
     return Card(
       margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
       color: CARD_BACKGROUND,

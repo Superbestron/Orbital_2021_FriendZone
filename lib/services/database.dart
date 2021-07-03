@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:myapp/models/event.dart';
@@ -179,6 +180,33 @@ class DatabaseService {
   // get profile stream
   Stream<UserData> get userData {
     return profileCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
+  }
+
+  static Future updateUserDataWithID(
+      String uid,
+      String profileImagePath,
+      String name,
+      int level,
+      String faculty,
+      int points,
+      String bio,
+      List<dynamic> events,
+      List<dynamic> notifications,
+      List<dynamic> friendRequests,
+      List<dynamic> friends) async {
+    print('Updating User Data');
+    return await profileCollection.doc(uid).set({
+      'profileImagePath': profileImagePath,
+      'name': name,
+      'level': level,
+      'faculty': faculty,
+      'points': points,
+      'bio': bio,
+      'events': events,
+      'notifications': notifications,
+      'friendRequests': friendRequests,
+      'friends': friends
+    });
   }
 
   Future updateUserData(
@@ -409,5 +437,31 @@ class DatabaseService {
     return await updateUserData(user.profileImagePath, user.name, user.level,
         user.faculty, user.points, user.bio, user.events, user.notifications,
         user.friendRequests, user.friends);
+  }
+
+  static Future addPointsToUser(String uid, int points) async {
+    DocumentReference ref = profileCollection.doc(uid);
+    UserData user = await ref.get().then((snapshot) => UserData(
+        uid: uid,
+        profileImagePath: snapshot.get('profileImagePath'),
+        name: snapshot.get('name'),
+        level: snapshot.get('level'),
+        faculty: snapshot.get('faculty'),
+        points: snapshot.get('points'),
+        bio: snapshot.get('bio'),
+        events: snapshot.get('events'),
+        notifications: snapshot.get('notifications'),
+        friendRequests: snapshot.get('friendRequests'),
+        friends: snapshot.get('friends')
+    ));
+    points = user.points + points;
+    return await updateUserDataWithID(user.uid, user.profileImagePath, user.name, pointsToLevel(points),
+        user.faculty,points, user.bio, user.events, user.notifications,
+        user.friendRequests, user.friends);
+  }
+
+  static int pointsToLevel(int points) {
+    // using cube root because bijectivity
+    return 1 + pow(points, 1/3).floor();
   }
 }
