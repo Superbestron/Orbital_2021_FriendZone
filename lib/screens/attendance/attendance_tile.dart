@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:myapp/models/user.dart';
 import 'package:myapp/services/database.dart';
 import 'package:myapp/shared/constants.dart';
+import 'package:provider/provider.dart';
 
 class AttendanceTile extends StatefulWidget {
   final UserData attendee;
@@ -20,7 +21,10 @@ class _AttendanceTileState extends State<AttendanceTile> {
   Widget build(BuildContext context) {
     UserData attendee = widget.attendee;
     if (widget.submit) {
-      DatabaseService.addPointsToUser(attendee.uid, _attendance ? 50 : -20);
+      final user = Provider.of<UserObj?>(context); // host
+      int add = user!.uid == attendee.uid ? 100 : 50;
+      int minus = user.uid == attendee.uid ? -20 : -40;
+      DatabaseService.addPointsToUser(attendee.uid, _attendance ? add : minus);
     }
     return Card(
       margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
