@@ -110,6 +110,8 @@ class _MapsState extends State<Maps> {
                               "Nearby events",
                               style: TextStyle(color: Colors.black),
                             ),
+                            toolbarHeight: 100.0,
+                            elevation: 0.0,
                           ),
                           body: EventList())
                     ]));
