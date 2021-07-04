@@ -10,10 +10,8 @@ class AuthService {
   // create user obj based on FirebaseUser
   UserObj? _userFromFirebaseUser(User? user) {
     if (user == null) {
-      print('User is currently signed out!');
       return null;
     } else {
-      print('User is signed in!');
       return UserObj(uid: user.uid);
     }
   }
@@ -40,6 +38,7 @@ class AuthService {
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      print('${_auth.currentUser!.displayName} has signed in!');
       return '';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -62,6 +61,7 @@ class AuthService {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User user = result.user!;
+      user.updateProfile(displayName: fullName);
 
       // create a new document for the user with the uid
       await DatabaseService(uid: user.uid)
@@ -82,9 +82,18 @@ class AuthService {
     }
   }
 
+  Future updateDisplayName(String displayName) async {
+    await _auth.currentUser!.updateProfile(displayName: displayName);
+    print(_auth.currentUser!.displayName);
+  }
+
   Future sendEmailVerification() async {
     User? user = FirebaseAuth.instance.currentUser;
-    return await user!.sendEmailVerification();
+    try {
+      return await user!.sendEmailVerification();
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   // check if email is verified
@@ -98,9 +107,18 @@ class AuthService {
     return user!.email!;
   }
 
+  Future resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   // sign out
   Future signOut() async {
     try {
+      print('${_auth.currentUser!.displayName} has signed out!');
       return await _auth.signOut();
     } catch (e) {
       print(e.toString());

@@ -16,8 +16,9 @@ class Wrapper extends StatelessWidget {
     // return either Home or Authenticate widget
     if (user == null) {
       return Authenticate();
-    } else if (!_auth.checkEmailVerified()) {
-      return VerifyEmail(auth: _auth);
+      /// Uncomment these lines to enable email verification
+    // } else if (!_auth.checkEmailVerified()) {
+    //   return VerifyEmail(auth: _auth);
     } else {
       return Home();
     }

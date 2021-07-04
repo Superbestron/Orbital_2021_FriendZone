@@ -36,7 +36,7 @@ class _EventListState extends State<EventList> {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: TextFormField(
               decoration: textInputDecoration.copyWith(
-                hintText: 'Search Event by Name',
+                hintText: 'Search Event',
                 fillColor: CARD_BACKGROUND,
                 filled: true,
                 prefixIcon: Icon(Icons.search),

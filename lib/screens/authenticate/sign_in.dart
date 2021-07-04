@@ -23,6 +23,7 @@ class _SignInState extends State<SignIn> {
   String email = '';
   String password = '';
   String error = '';
+  String resetPasswordEmail = '';
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +62,78 @@ class _SignInState extends State<SignIn> {
             }),
           ),
           SizedBox(height: 20.0),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget> [
+                Text('Forgot your password?', style: NORMAL),
+                const SizedBox(width: 15),
+                GestureDetector(
+                    child: Text('Reset', style: BOLDED_NORMAL.copyWith(
+                        color: ORANGE_1
+                    )),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text("Reset Password"),
+                          // content: Text(
+                          //     'Are you sure you want to sign out?'),
+                          content: SizedBox(
+                            child: Column(
+                              children: [
+                                Text('If the provided email was valid, a password reset email will be sent to the specified email.'),
+                                const SizedBox(height: 20),
+                                TextFormField(
+                                  decoration:
+                                  textInputDecoration.copyWith(
+                                    hintText: 'NUS Email',
+                                    prefixIcon: Icon(Icons.mail),
+                                  ),
+                                  validator: (val) =>
+                                  val!.isEmpty ? 'Enter a NUS email' : null,
+                                  onChanged: (val) => setState(() {
+                                    resetPasswordEmail = val;
+                                  }),
+                                ),
+                              ],
+                            ),
+                            height: 150
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text("Cancel",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                  )),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                await AuthService().resetPassword(resetPasswordEmail);
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  backgroundColor: BACKGROUND_COLOR,
+                                  content: Text('Email sent to $resetPasswordEmail'),
+                                  action: SnackBarAction(
+                                    label: 'Dismiss',
+                                    onPressed: () {},
+                                  ),
+                                ));
+                                Navigator.of(context).pop();
+                              },
+                              child: Text("Confirm"),
+                            ),
+                          ],
+                        ),
+                      );
+
+                    }
+                )
+              ]
+          ),
+          SizedBox(height: 15.0),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: ElevatedButton(
@@ -86,12 +159,18 @@ class _SignInState extends State<SignIn> {
                   }
                 }),
           ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Text(error,
-              style: TextStyle(color: Colors.red, fontSize: 16),
-            ),
-          ),
+          error != ''
+            ? Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Text(error,
+                style: TextStyle(color: Colors.red, fontSize: 16),
+              ),
+            )
+            : const SizedBox(height: 12),
+          error != ''
+            // to ensure text remains at same height when error text shows
+            ? const SizedBox(height: 90 - (2 * 12 + 16))
+            : const SizedBox(height: 90),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget> [

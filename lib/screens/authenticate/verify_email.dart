@@ -20,7 +20,6 @@ class _VerifyEmailState extends State<VerifyEmail> {
 
   bool buttonTappable = false;
   static const int TIME_BETWEEN_EMAILS = 30;
-  int timerCountdown = 0;
   Timer? _timer;
   int _start = TIME_BETWEEN_EMAILS;
 
@@ -46,14 +45,13 @@ class _VerifyEmailState extends State<VerifyEmail> {
   @override
   void initState() {
     buttonTappable = true;
-    timerCountdown = TIME_BETWEEN_EMAILS;
     super.initState();
   }
 
   void setButtonTappable() {
     setState(() {
       buttonTappable = true;
-      timerCountdown = 30;
+      _start = TIME_BETWEEN_EMAILS;
     });
   }
 
@@ -99,7 +97,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                 padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
                 child: TextButton.icon(
                     icon: Icon(Icons.person, color: Colors.black),
-                    label: Text('logout', style: TextStyle(color: Colors.black)),
+                    label: Text('Sign Out', style: TextStyle(color: Colors.black)),
                     onPressed: () async { await widget.auth.signOut(); }
                 ),
               ),
@@ -120,7 +118,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                 child: buttonTappable
                 ? ElevatedButton(
                   onPressed: () async {
-                    //await widget.auth.sendEmailVerification();
+                    await widget.auth.sendEmailVerification();
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       backgroundColor: BACKGROUND_COLOR,
                       content: Text('Email sent to ${widget.auth.getUserEmail()}'),
