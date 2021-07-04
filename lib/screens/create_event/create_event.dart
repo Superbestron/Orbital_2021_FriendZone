@@ -95,7 +95,10 @@ class _CreateEventState extends State<CreateEvent> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
-                  decoration: textInputDecoration.copyWith(hintText: 'Event Name'),
+                  decoration: textInputDecoration.copyWith(
+                    hintText: 'Event Name',
+                    prefixIcon: Icon(Icons.event),
+                  ),
                   validator: (val) => val!.isEmpty ? 'Enter an event name' : null,
                   onChanged: (val) => setState(() { _name = val; }),
                 ),
@@ -156,7 +159,10 @@ class _CreateEventState extends State<CreateEvent> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
-                  decoration: textInputDecoration.copyWith(hintText: 'Telegram chat URL'),
+                  decoration: textInputDecoration.copyWith(
+                    hintText: 'Telegram chat URL',
+                    prefixIcon: Icon(Icons.message)
+                  ),
                   validator: (val) => val!.isNotEmpty && !val.startsWith('t.me/joinchat/')
                     ? 'Link should start with t.me/joinchat/ or be blank'
                     : null,
@@ -239,7 +245,7 @@ class _CreateEventState extends State<CreateEvent> {
                 child: FloatingActionButton(
                   backgroundColor: ORANGE_1,
                   tooltip: 'Create Event',
-                  child: Icon(Icons.add),
+                  child: Icon(Icons.add, color: Colors.white),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _dateTime = DateTime(_dateTime.year, _dateTime.month,

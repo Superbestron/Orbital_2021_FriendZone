@@ -36,11 +36,11 @@ void main() {
     expect(title5, findsOneWidget);
   });
 
-  testWidgets('logout button render', (tester) async {
+  testWidgets('Sign Out button render', (tester) async {
     await tester.pumpWidget(MaterialApp(
       home: Home(),
     ));
-    final button = find.text("logout");
+    final button = find.text("Sign Out");
     expect(button, findsOneWidget);
   });
 }

@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
               ))
             )
           ),
+          accentColor: ORANGE_1,
           iconTheme: IconThemeData(
             color: ORANGE_1
           ),

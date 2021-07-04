@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:myapp/models/user.dart';
 import 'package:myapp/screens/profile/profile_widget.dart';
+import 'package:myapp/services/auth.dart';
 import 'package:myapp/services/database.dart';
 import 'package:myapp/shared/constants.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -113,6 +114,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           Scaffold(
             appBar: AppBar(
+              centerTitle: true,
               leading: BackButton(color: Colors.black,),
               title: Text(
                 "Edit Profile",
@@ -153,7 +155,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       ),
                       TextFormField(
                         initialValue: userData.name,
-                        decoration: textInputDecoration.copyWith(hintText: 'Full Name'),
+                        decoration: textInputDecoration.copyWith(
+                          hintText: 'Full Name',
+                          prefixIcon: Icon(Icons.person),
+                        ),
                         validator: (val) => val!.isEmpty ? 'Name cannot be blank' : null,
                         onChanged: (val) => setState(() { _name = val; }),
                       ),
@@ -225,6 +230,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           userData.friendRequests, userData.friends
                       );
 
+                      // update in firebase profile authentication
+                      await AuthService().updateDisplayName(_name);
+
                       // Go back to the profile page screen with the selected image
                       // (or default image if the user decides not to put an image)
                       Navigator.pop(context, _hasDeletedProfileImage
@@ -233,8 +241,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          backgroundColor: GREEN_1,
-                          content: Text('Successfully edited your profile!')
+                          backgroundColor: BACKGROUND_COLOR,
+                          content: Text('Successfully edited your profile!'),
+                          action: SnackBarAction(
+                            label: 'Dismiss',
+                            onPressed: () {},
+                          ),
                         )
                       );
                     }

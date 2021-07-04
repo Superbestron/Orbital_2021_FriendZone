@@ -24,7 +24,7 @@ void main() {
               home: StreamProvider<List<Event>?>.value(
                 initialData: null,
                 value: DatabaseService.events,
-                child: ProfilePage(profileID: '0',),
+                child: ProfilePage(profileID: '0'),
               )
           )),
     );

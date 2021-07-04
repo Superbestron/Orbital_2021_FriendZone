@@ -8,6 +8,7 @@ import 'package:myapp/screens/maps/maps.dart';
 import 'package:myapp/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/services/auth.dart';
+import 'package:myapp/shared/constants.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
@@ -77,8 +78,44 @@ class _HomeState extends State<Home> {
                       padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
                       child: TextButton.icon(
                         icon: Icon(Icons.person, color: Colors.black),
-                        label: Text('logout', style: TextStyle(color: Colors.black)),
-                        onPressed: () async { await _auth.signOut(); }
+                        label: Text('Sign Out', style: TextStyle(color: Colors.black)),
+                        onPressed: () async {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text("Sign out"),
+                              content: Text(
+                                  'Are you sure you want to sign out?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("Cancel",
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                      )),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    await _auth.signOut();
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      backgroundColor: BACKGROUND_COLOR,
+                                      content: Text('Successfully signed out!'),
+                                      action: SnackBarAction(
+                                        label: 'Dismiss',
+                                        onPressed: () {},
+                                      ),
+                                    ));
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Confirm"),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
                       ),
                     ),
                   ],
