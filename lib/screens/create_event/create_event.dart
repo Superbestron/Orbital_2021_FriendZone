@@ -211,7 +211,7 @@ class _CreateEventState extends State<CreateEvent> {
                               child: Text('${location[0]}',
                                   overflow: TextOverflow.visible
                               ),
-                              width: 230,
+                              width: 210,
                             ),
                           );
                         }).toList(),

@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:myapp/models/event.dart';
 import 'package:myapp/screens/home/event_list.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,6 +9,7 @@ import 'package:myapp/screens/maps/maps.dart';
 import 'package:myapp/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/services/auth.dart';
+import 'package:myapp/services/local_notification_service.dart';
 import 'package:myapp/shared/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +22,6 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   final AuthService _auth = AuthService();
   PageController _pageController = PageController();
-  late Function jumpToPage;
   late List<Widget> _children;
 
   @override
@@ -33,6 +34,36 @@ class _HomeState extends State<Home> {
       ProfilePage(profileID: ''),
     ];
     super.initState();
+
+    LocalNotificationService.initialize(_onItemTapped);
+
+    // gives you the message on which user taps
+    // and it opened the app from terminated state
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      // if (message != null) {
+      //   final routeFromMessage = message.data["route"];
+      //   _onItemTapped(int.parse(routeFromMessage));
+      // }
+    });
+
+    // foreground
+    FirebaseMessaging.onMessage.listen((message) {
+      if (message.notification != null) {
+        print(message.notification!.body);
+        print(message.notification!.title);
+      }
+
+      LocalNotificationService.display(message);
+    });
+
+    // when the app is in background but opened and user taps
+    // on the notification
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      // final routeFromMessage = message.data["route"];
+      // _onItemTapped(int.parse(routeFromMessage));
+    });
+
+    DatabaseService(uid: AuthService().userUid).saveDeviceToken();
   }
 
 

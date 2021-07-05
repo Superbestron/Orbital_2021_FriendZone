@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:myapp/models/event.dart';
 import 'package:myapp/models/notifications.dart';
 import 'package:myapp/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DatabaseService {
   final String uid;
@@ -463,5 +465,22 @@ class DatabaseService {
   static int pointsToLevel(int points) {
     // using cube root because bijectivity
     return 1 + pow(points, 1/3).floor();
+  }
+
+  Future saveDeviceToken() async {
+    // Get the token for this device
+    String? fcmToken = await FirebaseMessaging.instance.getToken();
+
+    // Save it to Firestore
+    if (fcmToken != null) {
+      DocumentReference tokenRef = profileCollection
+        .doc(uid)
+        .collection('tokens')
+        .doc(fcmToken);
+
+      await tokenRef.set({
+        'token': fcmToken
+      });
+    }
   }
 }
