@@ -37,12 +37,9 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.transparent,
           buttonColor: ORANGE_1,
           elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ButtonStyle(
-              elevation: MaterialStateProperty.all(5.0),
-              backgroundColor: MaterialStateProperty.all(ORANGE_1),
-              textStyle: MaterialStateProperty.all(TextStyle(
-                color: Colors.black,
-              ))
+            style: ElevatedButton.styleFrom(
+              primary: ORANGE_1,
+              onPrimary: Colors.white,
             )
           ),
           floatingActionButtonTheme: FloatingActionButtonThemeData(

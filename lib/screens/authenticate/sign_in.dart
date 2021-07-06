@@ -137,33 +137,32 @@ class _SignInState extends State<SignIn> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: ElevatedButton(
-                child: Text('Sign In',
-                    style: TextStyle(color: Colors.white)),
-                style: ElevatedButton.styleFrom(
-                  primary: ORANGE_1,
-                ),
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
+              child: Text('Sign In', style: TextStyle(color: Colors.white)),
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  setState(() {
+                    loading = true;
+                  });
+                  dynamic result = await _auth
+                      .signInWithEmailAndPassword(email, password);
+                  print(result);
+                  if (result != '') {
                     setState(() {
-                      loading = true;
+                      loading = false;
+                      error = result;
                     });
-                    dynamic result = await _auth
-                        .signInWithEmailAndPassword(email, password);
-                    print(result);
-                    if (result != '') {
-                      setState(() {
-                        loading = false;
-                        error = result;
-                      });
-                    }
                   }
-                }),
+                }
+              }),
           ),
           error != ''
-            ? Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text(error,
-                style: TextStyle(color: Colors.red, fontSize: 16),
+            ? Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(error,
+                  style: TextStyle(color: Colors.red, fontSize: 16),
+                ),
               ),
             )
             : const SizedBox(height: 12),

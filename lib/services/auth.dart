@@ -51,6 +51,8 @@ class AuthService {
         return 'Wrong password provided for that user.';
       } else if (e.code == 'invalid-email') {
         return 'Email is invalid.';
+      } else if (e.code == 'network-request-failed') {
+        return 'Could not connect to server.';
       } else {
         return e.code;
       }
@@ -77,6 +79,8 @@ class AuthService {
         return 'The password provided is too weak.';
       } else if (e.code == 'email-already-in-use') {
         return 'The account already exists for that email.';
+      } else if (e.code == 'network-request-failed') {
+        return 'Could not connect to server.';
       } else {
         return e.code;
       }

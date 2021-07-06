@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:myapp/models/event.dart';
@@ -125,7 +123,7 @@ class _EventPageState extends State<EventPage> {
               body: snapshot.hasData && event.attendees.isNotEmpty ? Stack(
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+                    padding: EdgeInsets.symmetric(horizontal: 30.0),
                     child: ListView(
                       physics: BouncingScrollPhysics(),
                       children: <Widget>[
@@ -230,7 +228,7 @@ class _EventPageState extends State<EventPage> {
                                 // If User has confirmed attendance
                                   ? ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    primary: revokeAttendance,
+                                    primary: selectedColor,
                                     padding: EdgeInsets.all(2.0),
                                   ),
                                   onPressed: () async {
