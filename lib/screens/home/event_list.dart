@@ -16,6 +16,7 @@ class _EventListState extends State<EventList> {
   int categoryIndex = -1;
   // all icons are not selected by default
   List<bool> _isSelected = [false, false, false, false];
+  List<Event> events = [];
 
   void selectButton(int index) {
     if (categoryIndex != index) {
@@ -39,9 +40,12 @@ class _EventListState extends State<EventList> {
     }
   }
 
+  Tween<Offset> _offset = Tween(begin: Offset(1, 0), end: Offset(0, 0));
+
   @override
   Widget build(BuildContext context) {
-    List<Event> events = (Provider.of<List<Event>?>(context) ?? []);
+    final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+    events = (Provider.of<List<Event>?>(context) ?? []);
 
     // Filter the events which have already happened
     events.removeWhere((event) => event.dateTime.isBefore(DateTime.now()));
@@ -60,6 +64,19 @@ class _EventListState extends State<EventList> {
       event.description.toLowerCase().contains(query.toLowerCase()))
           .toList();
 
+
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        Future delay = Future((){});
+        for (int i = 0; i < events.length; i++) {
+          delay = delay.then((_) {
+            // delay per list animation
+            return Future.delayed(const Duration(milliseconds: 100), () {
+              _listKey.currentState?.insertItem(i);
+            });
+          });
+        }
+      });
+
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Container(
@@ -74,7 +91,7 @@ class _EventListState extends State<EventList> {
                 prefixIcon: Icon(Icons.search),
               ),
               onChanged: (val) async {
-                await Future.delayed(Duration(seconds: 1));
+                await Future.delayed(Duration(milliseconds: 500));
                 setState(() {
                   query = val;
                 });
@@ -89,14 +106,25 @@ class _EventListState extends State<EventList> {
                 buildElevatedButton(3),
               ],
             ),
-            ListView.builder(
+            // ListView.builder(
+            //   physics: BouncingScrollPhysics(),
+            //   shrinkWrap: true,
+            //   itemCount: events.length,
+            //   itemBuilder: (context, index) {
+            //     return EventTile(event: events[index]);
+            //   },
+            // ),
+            AnimatedList(
+              key: _listKey,
               physics: BouncingScrollPhysics(),
               shrinkWrap: true,
-              itemCount: events.length,
-              itemBuilder: (context, index) {
-                return EventTile(event: events[index]);
-              },
-            ),
+              itemBuilder: (context, index, animation) {
+                return SlideTransition(
+                  child: EventTile(event: events[index]),
+                  position: animation.drive(_offset)
+                );
+              }
+            )
           ],
         ),
       ),

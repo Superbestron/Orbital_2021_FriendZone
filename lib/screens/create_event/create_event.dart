@@ -237,6 +237,7 @@ class _CreateEventState extends State<CreateEvent> {
                   padding: const EdgeInsets.all(50.0),
                   child: FloatingActionButton(
                     backgroundColor: ORANGE_1,
+                    focusColor: selectedColor,
                     tooltip: 'Create Event',
                     child: Icon(Icons.add, color: Colors.white),
                     onPressed: () async {

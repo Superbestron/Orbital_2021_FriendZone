@@ -46,6 +46,9 @@ class MyApp extends StatelessWidget {
             backgroundColor: ORANGE_1,
             foregroundColor: Colors.white
           ),
+          timePickerTheme: TimePickerThemeData(
+            backgroundColor: GREEN_1
+          ),
           accentColor: ORANGE_1,
           iconTheme: IconThemeData(
             color: ORANGE_1
