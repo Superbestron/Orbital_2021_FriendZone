@@ -34,7 +34,7 @@ void main() {
     final text2 = find.text("Select Time:");
     final text3 = find.text("Pax: ");
     final text4 = find.text("Location: ");
-    final text5 = find.text("Choose your event icon: ");
+    final text5 = find.text("Choose your event category: ");
     expect(text1, findsOneWidget);
     expect(text2, findsOneWidget);
     expect(text3, findsOneWidget);

@@ -23,7 +23,7 @@ class AuthService {
   }
 
   String get userUid {
-    return _auth.currentUser!.uid;
+    return _auth.currentUser != null ? _auth.currentUser!.uid : "";
   }
 
   // sign in anon

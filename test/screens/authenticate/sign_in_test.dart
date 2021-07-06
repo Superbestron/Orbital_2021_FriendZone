@@ -25,7 +25,7 @@ void main() async {
     await tester.pumpWidget(
         MyApp()
     );
-    final button = find.widgetWithText(ElevatedButton, "Register");
+    final button = find.widgetWithText(GestureDetector, "Register");
     expect(button, findsOneWidget);
   });
 
@@ -44,7 +44,7 @@ void main() async {
     final button = find.widgetWithText(ElevatedButton, "Sign In");
     await tester.tap(button);
     await tester.pump();
-    final error1 = find.text("Enter an email");
+    final error1 = find.text("Enter a NUS email");
     final error2 = find.text("Enter a password 6+ chars long");
     expect(error1, findsOneWidget);
     expect(error2, findsOneWidget);
