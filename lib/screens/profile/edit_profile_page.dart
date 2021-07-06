@@ -122,143 +122,146 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
               toolbarHeight: 100,
             ),
-            body: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 32),
-              physics: BouncingScrollPhysics(),
-              children: [
-                ProfileWidget(
-                  isSelf: true,
-                  image: _currentImage ?? DEFAULT_PROFILE_PIC,
-                  isEdit: true,
-                  onClicked: () async {
-                    _getImageFromGallery();
-                  }
-                ),
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() { _currentImage = DEFAULT_PROFILE_PIC; });
-                    _hasDeletedProfileImage = true;
-                    _hasChosenNewImage = false;
-                  },
-                  child: Text('Remove Profile Image'),
-                ),
-                const SizedBox(height: 24),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text('Full Name', style: BOLDED_NORMAL),
-                      ),
-                      TextFormField(
-                        initialValue: userData.name,
-                        decoration: textInputDecoration.copyWith(
-                          hintText: 'Full Name',
-                          prefixIcon: Icon(Icons.person),
-                        ),
-                        validator: (val) => val!.isEmpty ? 'Name cannot be blank' : null,
-                        onChanged: (val) => setState(() { _name = val; }),
-                      ),
-                    ]
-                  )
-                ),
-                const SizedBox(height: 24),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text('Faculty', style: BOLDED_NORMAL),
-                ),
-                Container(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: 50,
-                      minWidth: 300,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: DropdownButton(
-                        isExpanded: true,
-                        items: _faculties
-                            .map((faculty) {
-                              print(_faculties.length);
-                          return DropdownMenuItem(
-                            value: faculty,
-                            child: Text(faculty),
-                          );
-                        }).toList(),
-                        menuMaxHeight: 300,
-                        onChanged: (val) {
-                          return setState(() { _faculty = val.toString(); });
-                        },
-                        value: _faculty,
-                      ),
-                    ),
-                  ),
-                  decoration: boxDecoration.copyWith(borderRadius: BorderRadius.all(Radius.circular(5))),
-                ),
-                const SizedBox(height: 24),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text('About', style: BOLDED_NORMAL),
-                ),
-                TextFormField(
-                  initialValue: userData.bio,
-                  decoration: textInputDecoration.copyWith(hintText: 'Say something about yourself!'),
-                  onChanged: (val) => setState(() { _bio = val; }),
-                  maxLines: 4,
-                ),
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  child: Text('Save'),
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      if (_hasDeletedProfileImage) {
-                        // If user clicks on remove image button
-                        await dbService.deleteImageFromFirebase(userData.profileImagePath);
-                        userData.profileImagePath = '';
-                      } else if (_hasChosenNewImage) {
-                        // Else upload selected image
-                        userData.profileImagePath =
-                        await dbService.uploadImageToFirebase(_imageFile, userData);
-                      }
-                      await dbService
-                        .updateUserData(
-                          userData.profileImagePath, _name, userData.level, _faculty,
-                          userData.points, _bio, userData.events, userData.notifications,
-                          userData.friendRequests, userData.friends
-                      );
-
-                      // update in firebase profile authentication
-                      await AuthService().updateDisplayName(_name);
-
-                      // Go back to the profile page screen with the selected image
-                      // (or default image if the user decides not to put an image)
-                      Navigator.pop(context, _hasDeletedProfileImage
-                          ? DEFAULT_PROFILE_PIC
-                          : _currentImage);
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          backgroundColor: BACKGROUND_COLOR,
-                          content: Text('Successfully edited your profile!'),
-                          action: SnackBarAction(
-                            label: 'Dismiss',
-                            onPressed: () {},
-                          ),
-                        )
-                      );
+            body: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: ListView(
+                padding: EdgeInsets.symmetric(horizontal: 32),
+                physics: BouncingScrollPhysics(),
+                children: [
+                  ProfileWidget(
+                    isSelf: true,
+                    image: _currentImage ?? DEFAULT_PROFILE_PIC,
+                    isEdit: true,
+                    onClicked: () async {
+                      _getImageFromGallery();
                     }
-                  },
-                ),
-                const SizedBox(height: 60),
-                SvgPicture.asset(
-                  'assets/tree.svg',
-                  // fit: BoxFit.cover,
-                  clipBehavior: Clip.hardEdge
-                ),
-              ]
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() { _currentImage = DEFAULT_PROFILE_PIC; });
+                      _hasDeletedProfileImage = true;
+                      _hasChosenNewImage = false;
+                    },
+                    child: Text('Remove Profile Image'),
+                  ),
+                  const SizedBox(height: 24),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Text('Full Name', style: BOLDED_NORMAL),
+                        ),
+                        TextFormField(
+                          initialValue: userData.name,
+                          decoration: textInputDecoration.copyWith(
+                            hintText: 'Full Name',
+                            prefixIcon: Icon(Icons.person),
+                          ),
+                          validator: (val) => val!.isEmpty ? 'Name cannot be blank' : null,
+                          onChanged: (val) => setState(() { _name = val; }),
+                        ),
+                      ]
+                    )
+                  ),
+                  const SizedBox(height: 24),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text('Faculty', style: BOLDED_NORMAL),
+                  ),
+                  Container(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: 50,
+                        minWidth: 300,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DropdownButton(
+                          isExpanded: true,
+                          items: _faculties
+                              .map((faculty) {
+                                print(_faculties.length);
+                            return DropdownMenuItem(
+                              value: faculty,
+                              child: Text(faculty),
+                            );
+                          }).toList(),
+                          menuMaxHeight: 300,
+                          onChanged: (val) {
+                            return setState(() { _faculty = val.toString(); });
+                          },
+                          value: _faculty,
+                        ),
+                      ),
+                    ),
+                    decoration: boxDecoration.copyWith(borderRadius: BorderRadius.all(Radius.circular(5))),
+                  ),
+                  const SizedBox(height: 24),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text('About', style: BOLDED_NORMAL),
+                  ),
+                  TextFormField(
+                    initialValue: userData.bio,
+                    decoration: textInputDecoration.copyWith(hintText: 'Say something about yourself!'),
+                    onChanged: (val) => setState(() { _bio = val; }),
+                    maxLines: 4,
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    child: Text('Save'),
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        if (_hasDeletedProfileImage) {
+                          // If user clicks on remove image button
+                          await dbService.deleteImageFromFirebase(userData.profileImagePath);
+                          userData.profileImagePath = '';
+                        } else if (_hasChosenNewImage) {
+                          // Else upload selected image
+                          userData.profileImagePath =
+                          await dbService.uploadImageToFirebase(_imageFile, userData);
+                        }
+                        await dbService
+                          .updateUserData(
+                            userData.profileImagePath, _name, userData.level, _faculty,
+                            userData.points, _bio, userData.events, userData.notifications,
+                            userData.friendRequests, userData.friends
+                        );
+
+                        // update in firebase profile authentication
+                        await AuthService().updateDisplayName(_name);
+
+                        // Go back to the profile page screen with the selected image
+                        // (or default image if the user decides not to put an image)
+                        Navigator.pop(context, _hasDeletedProfileImage
+                            ? DEFAULT_PROFILE_PIC
+                            : _currentImage);
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: BACKGROUND_COLOR,
+                            content: Text('Successfully edited your profile!'),
+                            action: SnackBarAction(
+                              label: 'Dismiss',
+                              onPressed: () {},
+                            ),
+                          )
+                        );
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 60),
+                  SvgPicture.asset(
+                    'assets/tree.svg',
+                    // fit: BoxFit.cover,
+                    clipBehavior: Clip.hardEdge
+                  ),
+                ]
+              ),
             )
           ),
         ]

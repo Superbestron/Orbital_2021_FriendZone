@@ -23,12 +23,18 @@ var boxDecoration = BoxDecoration(
 // TODO: Update Icons here
 // List of icons
 const List<Image> IMAGE_LIST = [
-  Image(image: AssetImage('assets/event_icons/Friends.png'),),
-  Image(image: AssetImage('assets/event_icons/Sports.png'),),
-  Image(image: AssetImage('assets/event_icons/Study.png'),),
-  Image(image: AssetImage('assets/event_icons/food.png'),),
-  Image(image: AssetImage('assets/event_icons/Cocktail Glass.png'),),
+  Image(image: AssetImage('assets/event_icons/Friends.png')),
+  Image(image: AssetImage('assets/event_icons/Sports.png')),
+  Image(image: AssetImage('assets/event_icons/Study.png')),
+  Image(image: AssetImage('assets/event_icons/food.png')),
+  // Image(image: AssetImage('assets/event_icons/Cocktail Glass.png')),
 ];
+
+const List<String> CATEGORIES = [
+  'Social', 'Sports', 'Study', 'Food'
+  // , 'Others'
+];
+
 
 // List of Faculties
 const List<String> FACULTIES = [
@@ -88,7 +94,7 @@ Color ORANGE_1 = HexColor.fromHex('E1B58F');
 // ignore: non_constant_identifier_names
 Color CARD_BACKGROUND = HexColor.fromHex('F8F8F8');
 Color? greyedOut = Colors.grey[400];
-Color? revokeAttendance = HexColor.fromHex('FED8B1');
+Color? selectedColor = HexColor.fromHex('E08956');
 
 // Different text types
 const BOLDED_HEADING = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);

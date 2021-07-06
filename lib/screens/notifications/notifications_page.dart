@@ -60,161 +60,148 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
 
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
-      child: Column(
-        children: <Widget>[
-
-          // Notifications
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: RichText(
-                text: TextSpan(
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: 'Notifications',
-                      style: Theme.of(context).textTheme.headline6),
-                  ],
-                ),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(
+          children: <Widget>[
+            // Notifications
+            ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: notifications.length,
+              itemBuilder: (context, index) {
+                return Dismissible(
+                    key: Key(notifications[index]),
+                    onDismissed: (direction) async {
+                      setState(() {
+                        notifications.removeAt(index);
+                      });
+                      await db.updateNotification(notifications);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: BACKGROUND_COLOR,
+                          content: Text('Successfully deleted notification!'),
+                          action: SnackBarAction(
+                            label: 'Undo',
+                            onPressed: () async {
+                              // I have no idea why notifications doesn't get
+                              // removed here so I don't have to add back the
+                              // removed notification
+                              await db.updateNotification(notifications);
+                              // Here it's just to re-render the page
+                              setState(() {
+                                notifications = notifications;
+                              });
+                            },
+                          ),
+                        )
+                      );
+                    },
+                    child: NotificationTile(notificationID: notifications[index], uid: user.uid,),
+                );
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              child: Divider(
+                thickness: 2.0,
+                indent: 20.0,
+                endIndent: 20.0,
               ),
             ),
-          ),
-          ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: notifications.length,
-            itemBuilder: (context, index) {
-              return Dismissible(
-                  key: Key(notifications[index]),
-                  onDismissed: (direction) async {
-                    setState(() {
-                      notifications.removeAt(index);
-                    });
-                    await db.updateNotification(notifications);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        backgroundColor: BACKGROUND_COLOR,
-                        content: Text('Successfully deleted notification!'),
-                        action: SnackBarAction(
-                          label: 'Undo',
-                          onPressed: () async {
-                            // I have no idea why notifications doesn't get
-                            // removed here so I don't have to add back the
-                            // removed notification
-                            await db.updateNotification(notifications);
-                            // Here it's just to re-render the page
-                            setState(() {
-                              notifications = notifications;
-                            });
-                          },
-                        ),
-                      )
-                    );
-                  },
-                  child: NotificationTile(notificationID: notifications[index], uid: user.uid,),
-              );
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20.0),
-            child: Divider(
-              thickness: 2.0,
-              indent: 20.0,
-              endIndent: 20.0,
-            ),
-          ),
 
-          // My Created Events
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: RichText(
-                text: TextSpan(
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: 'My Created Events',
-                      style: Theme.of(context).textTheme.headline6),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: createdEvents.length,
-            itemBuilder: (context, index) {
-              return EventTile(event: createdEvents[index], isNotiPage: true);
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20.0),
-            child: Divider(
-              thickness: 2.0,
-              indent: 20.0,
-              endIndent: 20.0,
-            ),
-          ),
-
-          // Upcoming Events
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: RichText(
-                text: TextSpan(
-                  children: <TextSpan>[
-                    TextSpan(
-                        text: 'Upcoming Events',
+            // My Created Events
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: RichText(
+                  text: TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'My Created Events',
                         style: Theme.of(context).textTheme.headline6),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: upcomingEvents.length,
-            itemBuilder: (context, index) {
-              return EventTile(event: upcomingEvents[index], isNotiPage: true);
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20.0),
-            child: Divider(
-              thickness: 2.0,
-              indent: 20.0,
-              endIndent: 20.0,
+            ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: createdEvents.length,
+              itemBuilder: (context, index) {
+                return EventTile(event: createdEvents[index], isNotiPage: true);
+              },
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              child: Divider(
+                thickness: 2.0,
+                indent: 20.0,
+                endIndent: 20.0,
+              ),
+            ),
 
-          // Past Events
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: RichText(
-                text: TextSpan(
-                  children: <TextSpan>[
-                    TextSpan(
-                        text: 'Past Events',
-                        style: Theme.of(context).textTheme.headline6),
-                  ],
+            // Upcoming Events
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: RichText(
+                  text: TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                          text: 'Upcoming Events',
+                          style: Theme.of(context).textTheme.headline6),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: pastEvents.length,
-            itemBuilder: (context, index) {
-              return EventTile(event: pastEvents[index], isNotiPage: true);
-            },
-          ),
-        ],
+            ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: upcomingEvents.length,
+              itemBuilder: (context, index) {
+                return EventTile(event: upcomingEvents[index], isNotiPage: true);
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              child: Divider(
+                thickness: 2.0,
+                indent: 20.0,
+                endIndent: 20.0,
+              ),
+            ),
+
+            // Past Events
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: RichText(
+                  text: TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                          text: 'Past Events',
+                          style: Theme.of(context).textTheme.headline6),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: pastEvents.length,
+              itemBuilder: (context, index) {
+                return EventTile(event: pastEvents[index], isNotiPage: true);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

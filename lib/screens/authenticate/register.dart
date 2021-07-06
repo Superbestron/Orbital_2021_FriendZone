@@ -160,17 +160,26 @@ class _RegisterState extends State<Register> {
                     ),
                   ],
                 )),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Text(error,
-                  style: TextStyle(color: Colors.red, fontSize: 16.0),
-                ),
-              ),
+              error != ''
+                ? Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Text(error,
+                      style: TextStyle(color: Colors.red, fontSize: 16.0),
+                    ),
+                  ),
+                )
+                : const SizedBox(height: 12),
+              error != ''
+              // to ensure text remains at same height when error text shows
+                  ? const SizedBox(height: 130 - (2 * 12 + 16))
+                  : const SizedBox(height: 130),
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget> [
                     Text('Have an account?', style: NORMAL),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 15),
                     GestureDetector(
                         child: Text('Sign In', style: BOLDED_NORMAL.copyWith(
                             color: ORANGE_1
@@ -179,6 +188,7 @@ class _RegisterState extends State<Register> {
                     )
                   ]
               ),
+              const SizedBox(height: 20),
               SvgPicture.asset('assets/tree.svg'),
             ]
       )),
