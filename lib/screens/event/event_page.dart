@@ -115,7 +115,7 @@ class _EventPageState extends State<EventPage> {
                 actions: <Widget>[
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
-                    child: IMAGE_LIST[1],
+                    child: IMAGE_LIST[event.icon],
                   ),
                 ],
                 toolbarHeight: 100.0,

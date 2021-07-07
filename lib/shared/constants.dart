@@ -117,7 +117,6 @@ const List LOCATIONS = [
   ["NUS Information Technology", 1.297563, 103.772562],
   ["NUS Office of Student Affairs", 1.298563, 103.774812],
   ["NUS School of Computing", 1.294812, 103.773687],
-  ["NUS Students' Science Club Secretariat", 1.297063, 103.779813],
   ["Utown", 1.305438, 103.773062],
   ["Utown Aud 1", 1.303937, 103.773438],
   ["Yale-NUS college", 1.306938, 103.771812],

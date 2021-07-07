@@ -10,12 +10,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class DatabaseService {
   final String uid;
-
-  //final String eventID;
+  static const MAX_DAY_FOR_PASTS_EVENTS = 30;
 
   DatabaseService({
     required this.uid,
-    // required this.eventID
   });
 
   // collection reference to all events
@@ -155,8 +153,40 @@ class DatabaseService {
         newAttendees);
   }
 
-  Future deleteEvent(String eventID) async {
+  static Future deleteEvent(String eventID) async {
+    print('Deleting event: $eventID');
     await eventCollection.doc(eventID).delete();
+  }
+
+  // Delete past events which are more than 30 days old
+  static Future deleteOldEvents(List<Event> pastEvents) async {
+    List<Event> list = pastEvents;
+    if (list.isNotEmpty) {
+      while (DateTime
+          .now()
+          .difference(list[list.length - 1].dateTime)
+          .inDays > MAX_DAY_FOR_PASTS_EVENTS) {
+        Event event = list[list.length - 1];
+        list.removeLast();
+        deleteEvent(event.eventID);
+        event.attendees.forEach((attendee) async {
+          UserData user = await getUserData(attendee);
+          user.events.removeWhere((eventID) => eventID == event.eventID);
+          updateUserDataWithID(
+              user.uid,
+              user.profileImagePath,
+              user.name,
+              user.level,
+              user.faculty,
+              user.points,
+              user.bio,
+              user.events,
+              user.notifications,
+              user.friendRequests,
+              user.friends);
+        });
+      }
+    }
   }
 
   Future removeUserFromEvent(String eventID, String uid) async {
