@@ -153,6 +153,7 @@ class _HomeState extends State<Home> {
                 ),
 
                 body: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
                   child: PageView(
                     physics: NeverScrollableScrollPhysics(),
                     controller: _pageController,

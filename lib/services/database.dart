@@ -10,12 +10,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class DatabaseService {
   final String uid;
-
-  //final String eventID;
+  static const MAX_DAY_FOR_PASTS_EVENTS = 30;
+  static const MAX_DAY_FOR_NOTIFICATIONS = 30;
 
   DatabaseService({
     required this.uid,
-    // required this.eventID
   });
 
   // collection reference to all events
@@ -46,7 +45,7 @@ class DatabaseService {
   }
 
   // EVENTS
-  Future getEventData(String eventID) async {
+  static Future getEventData(String eventID) async {
     DocumentReference ref = eventCollection.doc(eventID);
     var event = await ref.get().then((snapshot) => Event(
           location: snapshot.get('location'),
@@ -130,7 +129,7 @@ class DatabaseService {
 
   // get events stream
   static Stream<List<Event>> get events {
-    return eventCollection.snapshots().map(_eventListFromSnapshot);
+    return eventCollection.orderBy('dateTime').snapshots().map(_eventListFromSnapshot);
   }
 
   // get event doc stream
@@ -155,8 +154,38 @@ class DatabaseService {
         newAttendees);
   }
 
-  Future deleteEvent(String eventID) async {
+  static Future deleteEvent(String eventID) async {
+    print('Deleting event: $eventID');
     await eventCollection.doc(eventID).delete();
+  }
+
+  // Delete past events which are more than 30 days old
+  static Future deleteOldEvents(List<Event> pastEvents) async {
+    List<Event> list = pastEvents;
+    while (list.isNotEmpty && DateTime
+        .now()
+        .difference(list[list.length - 1].dateTime)
+        .inDays > MAX_DAY_FOR_PASTS_EVENTS) {
+      Event event = list[list.length - 1];
+      list.removeLast();
+      deleteEvent(event.eventID);
+      event.attendees.forEach((attendee) async {
+        UserData user = await getUserData(attendee);
+        user.events.removeWhere((eventID) => eventID == event.eventID);
+        updateUserDataWithID(
+            user.uid,
+            user.profileImagePath,
+            user.name,
+            user.level,
+            user.faculty,
+            user.points,
+            user.bio,
+            user.events,
+            user.notifications,
+            user.friendRequests,
+            user.friends);
+      });
+    }
   }
 
   Future removeUserFromEvent(String eventID, String uid) async {
@@ -360,17 +389,22 @@ class DatabaseService {
         friendData.friends);
   }
 
-  Future getNotificationObj(String notificationID) async {
+
+  /// Notifications
+  static Future getNotificationObj(String notificationID) async {
     DocumentReference ref = notificationsCollection.doc(notificationID);
     var notificationObj = await ref.get().then((snapshot) => NotificationObj(
           title: snapshot.get('title'),
           subtitle: snapshot.get('subtitle'),
           type: snapshot.get('type'),
           additionalInfo: snapshot.get('additionalInfo'),
+          expireAt: snapshot.get('expireAt').toDate(),
+          subscribed: snapshot.get('subscribed')
         ));
     return notificationObj;
   }
 
+  // Main mechanism to send notification to user
   Future sendNotificationToUser(String notificationID, String otherUserID,
       bool friendAccepted) async {
     print('Sending Notification to: $otherUserID');
@@ -383,9 +417,9 @@ class DatabaseService {
         notifications, otherUser.friendRequests, otherUser.friends);
   }
 
-  // Adds a new notification to database
-  Future sendNotification(String title, String subtitle, String type,
-      Map additionalInfo, List<dynamic> attendees) async {
+  // Adds a new event notification to database
+  Future sendEventNotification(String title, String subtitle, String type,
+      DateTime eventTime, Map additionalInfo, List<dynamic> attendees) async {
     if (attendees.isEmpty) return;
     String newDocID = notificationsCollection.doc().id;
     await notificationsCollection.doc(newDocID).set({
@@ -393,12 +427,15 @@ class DatabaseService {
       'subtitle': subtitle,
       'type': type,
       'additionalInfo': additionalInfo,
+      'expireAt': eventTime,
+      'subscribed': attendees
     });
     for (String attendee in attendees) {
       sendNotificationToUser(newDocID, attendee, false);
     }
   }
 
+  // Adds a new friend notification to database
   Future sendFriendNotification(String action, String from, String to) async {
     UserData fromUser = await getUserData(from);
     bool friendAccepted = false;
@@ -417,10 +454,13 @@ class DatabaseService {
       'subtitle': subtitle,
       'type': type,
       'additionalInfo': additionalInfo,
+      'expireAt': DateTime(2025), // WILL NOT EXPIRE
+      'subscribed': [to]
     });
     sendNotificationToUser(newDocID, to, friendAccepted);
   }
 
+  // Update notification settings on user's side only
   Future updateNotification(List<dynamic> notifications) async {
     DocumentReference ref = profileCollection.doc(uid);
     UserData user = await ref.get().then((snapshot) => UserData(
@@ -436,9 +476,58 @@ class DatabaseService {
       friendRequests: snapshot.get('friendRequests'),
       friends: snapshot.get('friends')
     ));
-    return await updateUserData(user.profileImagePath, user.name, user.level,
+    await updateUserData(user.profileImagePath, user.name, user.level,
         user.faculty, user.points, user.bio, user.events, user.notifications,
         user.friendRequests, user.friends);
+  }
+
+  static Future deleteNotifications(List<dynamic> notificationIDs) async {
+    List<dynamic> list = notificationIDs;
+    while (list.isNotEmpty) {
+      dynamic notificationID = list[list.length - 1];
+      NotificationObj notification = await getNotificationObj(notificationID);
+       if (notification.expireAt.isBefore(DateTime.now())) {
+         print('Deleting notification: $notificationID');
+         await notificationsCollection.doc(notificationID).delete();
+         notification.subscribed.forEach((subscriber) async {
+            UserData user = await getUserData(subscriber);
+            user.notifications.removeWhere((id) => id == notificationID);
+            await updateUserDataWithID(
+                user.uid,
+                user.profileImagePath,
+                user.name,
+                user.level,
+                user.faculty,
+                user.points,
+                user.bio,
+                user.events,
+                user.notifications,
+                user.friendRequests,
+                user.friends);
+         });
+         list.removeLast();
+      }
+    }
+  }
+
+  // ONLY for notifications of type 'friend_notification'
+  static Future makeNotificationExpire(dynamic notificationID, bool toExpire) async {
+    NotificationObj notification = await getNotificationObj(notificationID);
+    if (notification.type != 'friend_notification') {
+      return;
+    }
+    print('here');
+    notificationsCollection.doc(notificationID).set({
+      'title': notification.title,
+      'subtitle': notification.subtitle,
+      'type': notification.type,
+      'additionalInfo': notification.additionalInfo,
+      'expireAt': toExpire
+        ? DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, DateTime.now().hour + 1) // Give 1h buffer before being deleted
+        : DateTime(2025),
+      'subscribed': notification.subscribed
+    });
   }
 
   static Future addPointsToUser(String uid, int points) async {

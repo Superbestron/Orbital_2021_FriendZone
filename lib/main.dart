@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:myapp/screens/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:myapp/services/auth.dart';
-import 'package:myapp/services/local_notification_service.dart';
 import 'package:myapp/shared/constants.dart';
+import 'package:myapp/startup_view.dart';
 import 'package:provider/provider.dart';
 import 'package:myapp/models/user.dart';
 
@@ -46,9 +46,6 @@ class MyApp extends StatelessWidget {
             backgroundColor: ORANGE_1,
             foregroundColor: Colors.white
           ),
-          timePickerTheme: TimePickerThemeData(
-            backgroundColor: GREEN_1
-          ),
           accentColor: ORANGE_1,
           iconTheme: IconThemeData(
             color: ORANGE_1
@@ -59,7 +56,8 @@ class MyApp extends StatelessWidget {
             ),
           )
         ),
-        home: Wrapper(),
+        debugShowCheckedModeBanner: false, // uncomment this to resume debug mode
+        home: StartupView(), // replace with Wrapper() to not see startup animation
       ),
     );
   }

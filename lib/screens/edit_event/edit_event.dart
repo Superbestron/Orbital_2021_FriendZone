@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:myapp/models/event.dart';
 
+/// UI for this page follows that of create_event.dart almost exactly
+
 class EditEvent extends StatefulWidget {
   final Event event;
 
@@ -108,122 +110,117 @@ class _EditEventState extends State<EditEvent> {
           fit: BoxFit.cover,
           clipBehavior: Clip.hardEdge,
         ),
-        Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            leading: BackButton(color: Colors.black),
-            title: Text(
-              "Edit Event",
-              style: TextStyle(color: Colors.black),
-            ),
-            actions: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 15, 0),
-                child: IMAGE_LIST[_icon],
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              leading: BackButton(color: Colors.black),
+              title: Text(
+                "Edit Event",
+                style: TextStyle(color: Colors.black),
               ),
-            ],
-            toolbarHeight: 75.0,
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Form(
-                key: _formKey,
-                child: ListView(
-                  physics: BouncingScrollPhysics(),
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        initialValue: _name,
-                        decoration: textInputDecoration.copyWith(
-                            hintText: 'Event Name'),
-                        validator: (val) =>
-                            val!.isEmpty ? 'Enter an event name' : null,
-                        onChanged: (val) => setState(() {
-                          _name = val;
-                        }),
+              actions: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 15, 0),
+                  child: IMAGE_LIST[_icon],
+                ),
+              ],
+              toolbarHeight: 100.0,
+            ),
+            body: Form(
+              key: _formKey,
+              child: ListView(
+                physics: BouncingScrollPhysics(),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      initialValue: _name,
+                      decoration: textInputDecoration.copyWith(
+                        hintText: 'Event Name',
+                        prefixIcon: Icon(Icons.event),
                       ),
+                      validator: (val) =>
+                          val!.isEmpty ? 'Enter an event name' : null,
+                      onChanged: (val) => setState(() {
+                        _name = val;
+                      }),
                     ),
-                    Row(
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ListTile(
+                          title: Text('Select Date:',
+                              textAlign: TextAlign.center,
+                              style: BOLDED_NORMAL
+                          ),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                                child: Text(getDateText(_dateTime)),
+                                onPressed: () { pickDate(context); },
+                                style: ElevatedButton.styleFrom(
+                                  primary: ORANGE_1,
+                                  elevation: 10.0,
+                                )),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: ListTile(
+                          title: Text(
+                            'Select Time:',
+                            textAlign: TextAlign.center,
+                            style: BOLDED_NORMAL
+                          ),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              child: Text(_getTimeText()),
+                              onPressed: () { pickTime(context); },
+                              style: ElevatedButton.styleFrom(
+                                primary: ORANGE_1,
+                                elevation: 10.0,
+                              )),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      initialValue: _description,
+                      decoration: textInputDecoration.copyWith(hintText: 'Event Description'),
+                      validator: (val) => val!.isEmpty ? 'Enter an event description' : null,
+                      onChanged: (val) => setState(() { _description = val; }),
+                      maxLines: 4,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      initialValue: _telegramURL,
+                      decoration: textInputDecoration.copyWith(
+                        hintText: 'Telegram chat URL',
+                        prefixIcon: Icon(Icons.message)
+                      ),
+                      validator: (val) => val!.isNotEmpty && !val.startsWith('t.me/joinchat/')
+                          ? 'Link should start with t.me/joinchat/ or be blank'
+                          : null,
+                      onChanged: (val) => setState(() { _telegramURL = val; }),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.5),
+                    child: Row(
                       children: [
-                        Expanded(
-                          child: ListTile(
-                            title: Text(
-                              'Select Date:',
-                              textAlign: TextAlign.center,
-                            ),
-                            subtitle: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ElevatedButton(
-                                  child: Text(getDateText(_dateTime),
-                                      style: TextStyle(color: Colors.black)),
-                                  onPressed: () {
-                                    pickDate(context);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: ORANGE_1,
-                                    elevation: 10.0,
-                                  )),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: ListTile(
-                            title: Text(
-                              'Select Time:',
-                              textAlign: TextAlign.center,
-                            ),
-                            subtitle: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ElevatedButton(
-                                  child: Text(_getTimeText(),
-                                      style: TextStyle(color: Colors.black)),
-                                  onPressed: () {
-                                    pickTime(context);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: ORANGE_1,
-                                    elevation: 10.0,
-                                  )),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        initialValue: _description,
-                        decoration: textInputDecoration.copyWith(
-                            hintText: 'Event Description'),
-                        validator: (val) =>
-                            val!.isEmpty ? 'Enter an event description' : null,
-                        onChanged: (val) => setState(() {
-                          _description = val;
-                        }),
-                        maxLines: 4,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        initialValue: _telegramURL,
-                        decoration: textInputDecoration.copyWith(
-                            hintText: 'Telegram chat URL'),
-                        onChanged: (val) => setState(() {
-                          _telegramURL = val;
-                        }),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 45.0),
-                            child: Text('Pax: ', style: NORMAL),
-                          ),
-                          DropdownButton(
+                        Text('Pax: ', style: BOLDED_NORMAL),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: DropdownButton(
                               value: _pax,
                               // min is current pax while max is 10
                               items: List.generate(9 - _currPax + 2, (index) => index++)
@@ -238,60 +235,54 @@ class _EditEventState extends State<EditEvent> {
                                 return setState(() { _pax = int.parse(val.toString()); });
                               }
                           ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Text('Location: ', style: NORMAL),
-                          ),
-                          DropdownButton(
-                              itemHeight: kMinInteractiveDimension,
-                              isDense: true,
-                              value: _location,
-                              items: LOCATIONS.map((location) {
-                                return DropdownMenuItem(
-                                  value: location[0],
-                                  child: SizedBox(
-                                    child: Text('${location[0]}',
-                                        overflow: TextOverflow.visible
-                                    ),
-                                    width: 230,
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (val) {
-                                return setState(() {
-                                  _location = val.toString();
-                                });
-                              }
-                          ),
-                        ],
-                      ),
-                    ),
-                    ListTile(
-                        title: Padding(
-                          padding: const EdgeInsets.fromLTRB(5, 20, 0, 8),
-                          child: Text('Choose your event icon: '),
                         ),
-                        subtitle: Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              buildExpanded(0),
-                              buildExpanded(1),
-                              buildExpanded(2),
-                              buildExpanded(3),
-                              buildExpanded(4),
-                            ],
-                          ),
-                        )),
-                    Row(
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 7.5, 10, 2.5),
+                    child: Text('Location: ', style: BOLDED_NORMAL),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 2.5, 10, 20),
+                    child: DropdownButton(
+                        itemHeight: kMinInteractiveDimension,
+                        isDense: true,
+                        value: _location,
+                        items: LOCATIONS.map((location) {
+                          return DropdownMenuItem(
+                            value: location[0],
+                            child: SizedBox(
+                              child: Text('${location[0]}',
+                                  overflow: TextOverflow.visible
+                              ),
+                              width: 270,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (val) {
+                          return setState(() {
+                            _location = val.toString();
+                          });
+                        }
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.5),
+                    child: Text('Choose your event category: ', style: BOLDED_NORMAL),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      buildExpanded(0),
+                      buildExpanded(1),
+                      buildExpanded(2),
+                      buildExpanded(3),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(50.0),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Expanded(
@@ -321,7 +312,7 @@ class _EditEventState extends State<EditEvent> {
                                         onPressed: () async {
                                           String _uid = user!.uid;
                                           DatabaseService db = DatabaseService(uid: _uid);
-                                          await db.deleteEvent(event.eventID);
+                                          await DatabaseService.deleteEvent(event.eventID);
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
                                             backgroundColor: BACKGROUND_COLOR,
@@ -388,9 +379,10 @@ class _EditEventState extends State<EditEvent> {
                                                 _icon,
                                                 event.eventID,
                                                 event.attendees);
-                                            db.sendNotification(event.name,
+                                            db.sendEventNotification(event.name,
                                               "Event details has been changed",
                                               "event_change",
+                                              _dateTime,
                                               {'eventID':event.eventID},
                                               eventAttendeesExceptInitiator(event.attendees),
                                             );
@@ -418,10 +410,11 @@ class _EditEventState extends State<EditEvent> {
                         ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
+          ),
         ),
       ],
     );
@@ -429,19 +422,24 @@ class _EditEventState extends State<EditEvent> {
 
   Expanded buildExpanded(int number) {
     return Expanded(
-      child: TextButton(
-        onPressed:() {
-          setState(() {
-            selectButton(number);
-            _icon = number;
-          });
-        },
-        child: IMAGE_LIST[number],
-        style: TextButton.styleFrom(
-          side: BorderSide(
-              color: _isSelected[number] ? GREEN_1 : Colors.transparent,
-              width: 2),
-        ),
+      child: Column(
+        children: [
+          TextButton(
+            onPressed:() {
+              setState(() {
+                selectButton(number);
+                _icon = number;
+              });
+            },
+            child: IMAGE_LIST[number],
+            style: TextButton.styleFrom(
+              side: BorderSide(
+                  color: _isSelected[number] ? GREEN_1 : Colors.transparent,
+                  width: 2),
+            ),
+          ),
+          Text(CATEGORIES[number], style: BOLDED_NORMAL)
+        ],
       ),
     );
   }

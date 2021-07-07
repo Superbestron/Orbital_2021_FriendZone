@@ -91,7 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         String otherID = widget.profileID;
                         UserData me = snapshot.data!;
                         UserData other = userData;
-                        // If I send friend request to person A, his friendRequests
+                        // If I send friend request to person A, A's friendRequests
                         // list will have my ID
                         bool hasIncomingRequest = me.friendRequests.contains(otherID);
                         bool hasOutgoingRequest = other.friendRequests.contains(meID);

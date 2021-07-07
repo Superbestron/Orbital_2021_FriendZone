@@ -32,6 +32,7 @@ class _EventPageState extends State<EventPage> {
   UserData? userData;
   late Event event;
   bool isOver = false;
+  bool isInitiator = false;
   bool hasGotAttendees = false;
   List<UserData> friendsAttending = [];
   List<UserData> allAttending = [];
@@ -55,7 +56,7 @@ class _EventPageState extends State<EventPage> {
   Future getUsersAttending(bool isOver, UserObj self) async {
     List<dynamic> eventAttendees = event.attendees;
     eventAttendees.remove(self.uid);
-    if (isOver) {
+    if (isOver || isInitiator) {
       eventAttendees.forEach((attendee) {
         DatabaseService.getUserData(attendee).then((attendeeData) {
           setState(() {
@@ -83,6 +84,7 @@ class _EventPageState extends State<EventPage> {
     // Still need this to listen for user's uid
     final user = Provider.of<UserObj?>(context);
     var dbService = DatabaseService(uid: user!.uid);
+
     if (userData == null) {
         DatabaseService.getUserData(user.uid).then((data) async {
           userData = data;
@@ -99,6 +101,7 @@ class _EventPageState extends State<EventPage> {
         if (event.attendees.isNotEmpty) {
           setInitiatorName(event.attendees[0]);
         }
+        isInitiator = user.uid == event.attendees[0];
         return Stack(
           fit: StackFit.expand,
           children: <Widget>[
@@ -115,7 +118,7 @@ class _EventPageState extends State<EventPage> {
                 actions: <Widget>[
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
-                    child: IMAGE_LIST[1],
+                    child: IMAGE_LIST[event.icon],
                   ),
                 ],
                 toolbarHeight: 100.0,
@@ -425,7 +428,9 @@ class _EventPageState extends State<EventPage> {
                             children: [
                               Row(
                                 children: [
-                                  Text( isOver ? 'All Attendees' : 'Friends Attending', style: TEXT_FIELD_HEADING),
+                                  Text( isOver || isInitiator
+                                    ? 'All Attendees'
+                                    : 'Friends Attending', style: TEXT_FIELD_HEADING),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                     child: Icon(Icons.social_distance),
@@ -436,9 +441,12 @@ class _EventPageState extends State<EventPage> {
                               ListView.builder(
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
-                                itemCount: isOver ? allAttending.length : friendsAttending.length,
+                                itemCount: isOver || isInitiator
+                                  ? allAttending.length
+                                  : friendsAttending.length,
                                 itemBuilder: (context, index) {
-                                  return AttendeeTile(attendee: isOver
+                                  return AttendeeTile(attendee:
+                                    isOver || isInitiator
                                     ? allAttending[index]
                                     : friendsAttending[index]);
                                 },

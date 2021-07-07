@@ -64,13 +64,15 @@ class _EventListState extends State<EventList> {
       event.description.toLowerCase().contains(query.toLowerCase()))
           .toList();
 
-
+      // Make sure callback function runs only once but after build()
+      // has been called once
       WidgetsBinding.instance!.addPostFrameCallback((_) {
+        // Add stagger effect animation to events
         Future delay = Future((){});
         for (int i = 0; i < events.length; i++) {
           delay = delay.then((_) {
             // delay per list animation
-            return Future.delayed(const Duration(milliseconds: 100), () {
+            return Future.delayed(const Duration(milliseconds: 200), () {
               _listKey.currentState?.insertItem(i);
             });
           });
@@ -79,54 +81,43 @@ class _EventListState extends State<EventList> {
 
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          children: <Widget>[
-            TextFormField(
-              decoration: textInputDecoration.copyWith(
-                hintText: 'Search Event',
-                fillColor: CARD_BACKGROUND,
-                filled: true,
-                prefixIcon: Icon(Icons.search),
-              ),
-              onChanged: (val) async {
-                await Future.delayed(Duration(milliseconds: 500));
-                setState(() {
-                  query = val;
-                });
-              }
+      child: Column(
+        children: <Widget>[
+          TextFormField(
+            decoration: textInputDecoration.copyWith(
+              hintText: 'Search Event',
+              fillColor: CARD_BACKGROUND,
+              filled: true,
+              prefixIcon: Icon(Icons.search),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                buildElevatedButton(0),
-                buildElevatedButton(1),
-                buildElevatedButton(2),
-                buildElevatedButton(3),
-              ],
-            ),
-            // ListView.builder(
-            //   physics: BouncingScrollPhysics(),
-            //   shrinkWrap: true,
-            //   itemCount: events.length,
-            //   itemBuilder: (context, index) {
-            //     return EventTile(event: events[index]);
-            //   },
-            // ),
-            AnimatedList(
-              key: _listKey,
-              physics: BouncingScrollPhysics(),
-              shrinkWrap: true,
-              itemBuilder: (context, index, animation) {
-                return SlideTransition(
-                  child: EventTile(event: events[index]),
-                  position: animation.drive(_offset)
-                );
-              }
-            )
-          ],
-        ),
+            onChanged: (val) async {
+              await Future.delayed(Duration(milliseconds: 500));
+              setState(() {
+                query = val;
+              });
+            }
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              buildElevatedButton(0),
+              buildElevatedButton(1),
+              buildElevatedButton(2),
+              buildElevatedButton(3),
+            ],
+          ),
+          AnimatedList(
+            key: _listKey,
+            physics: BouncingScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (context, index, animation) {
+              return SlideTransition(
+                child: EventTile(event: events[index]),
+                position: animation.drive(_offset)
+              );
+            }
+          )
+        ],
       ),
     );
   }

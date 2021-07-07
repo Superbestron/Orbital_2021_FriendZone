@@ -23,16 +23,11 @@ class _NotificationTileState extends State<NotificationTile> {
   late NotificationObj notification;
   Event? event;
 
-  String getEventType(int index) {
-    return EVENT_TYPES.keys.elementAt(index);
-  }
-
   void getNotification() async {
-    notification = await DatabaseService(uid: widget.uid)
-        .getNotificationObj(widget.notificationID);
-    if (notification.type == getEventType(0)) {
+    notification = await DatabaseService.getNotificationObj(widget.notificationID);
+    if (notification.type == getNotificationType(0)) {
       String eventID = notification.additionalInfo['eventID'];
-      event = await DatabaseService(uid: widget.uid).getEventData(eventID);
+      event = await DatabaseService.getEventData(eventID);
     }
     if (mounted) {
       setState(() {
@@ -51,17 +46,17 @@ class _NotificationTileState extends State<NotificationTile> {
   Widget build(BuildContext context) {
     // final user = Provider.of<UserObj?>(context);
     if (initialised) {
-      if (notification.type == getEventType(0)) {
+      if (notification.type == getNotificationType(0)) {
         return NotiListTile(notification: notification,
           icon: Icon(Icons.warning),
           route: () => MaterialPageRoute(
           builder: (context) => EventPage(event: event!))
         );
-      } else if (notification.type == getEventType(1)) {
+      } else if (notification.type == getNotificationType(1)) {
         // If Event is deleted
         // TODO: To be implemented
         return Container();
-      } else if (notification.type == getEventType(2)) {
+      } else if (notification.type == getNotificationType(2)) {
           return NotiListTile(notification: notification,
             icon: Icon(Icons.check),
             route: () => MaterialPageRoute(
@@ -106,7 +101,7 @@ class NotiListTile extends StatelessWidget {
         padding: EdgeInsets.only(top: 8.0),
         child: Card(
           margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
-          color: EVENT_TYPES[notification.type],
+          color: NOTIFICATION_TYPES[notification.type],
           child: ListTile(
             visualDensity: VisualDensity(horizontal: 0, vertical: -4),
             minLeadingWidth: 10,
