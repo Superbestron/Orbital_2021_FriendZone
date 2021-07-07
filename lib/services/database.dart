@@ -130,7 +130,7 @@ class DatabaseService {
 
   // get events stream
   static Stream<List<Event>> get events {
-    return eventCollection.snapshots().map(_eventListFromSnapshot);
+    return eventCollection.orderBy('dateTime').snapshots().map(_eventListFromSnapshot);
   }
 
   // get event doc stream

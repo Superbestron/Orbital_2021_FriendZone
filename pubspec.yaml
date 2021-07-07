@@ -49,11 +49,19 @@ dependencies:
   firebase_dynamic_links: ^2.0.6
   firebase_messaging: ^10.0.3
   flutter_local_notifications: ^6.0.0
+  animated_splash_screen: ^1.1.0
+  flutter_launcher_icons: ^0.9.0
+  lottie: ^1.0.1
+  animated_text_kit: ^4.2.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_svg: ^0.22.0
+
+flutter_icons:
+  android: launcher_icon
+  ios: true
+  image_path: "assets/ic_launcher.png" # run 'flutter pub run flutter_launcher_icons:main'
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -71,6 +79,7 @@ flutter:
   #   - images/a_dot_burr.jpeg
     - assets/
     - assets/event_icons/
+    - assets/lottie/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

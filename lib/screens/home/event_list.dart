@@ -70,7 +70,7 @@ class _EventListState extends State<EventList> {
         for (int i = 0; i < events.length; i++) {
           delay = delay.then((_) {
             // delay per list animation
-            return Future.delayed(const Duration(milliseconds: 100), () {
+            return Future.delayed(const Duration(milliseconds: 200), () {
               _listKey.currentState?.insertItem(i);
             });
           });
@@ -106,14 +106,6 @@ class _EventListState extends State<EventList> {
                 buildElevatedButton(3),
               ],
             ),
-            // ListView.builder(
-            //   physics: BouncingScrollPhysics(),
-            //   shrinkWrap: true,
-            //   itemCount: events.length,
-            //   itemBuilder: (context, index) {
-            //     return EventTile(event: events[index]);
-            //   },
-            // ),
             AnimatedList(
               key: _listKey,
               physics: BouncingScrollPhysics(),
