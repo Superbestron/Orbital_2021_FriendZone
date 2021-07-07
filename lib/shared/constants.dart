@@ -51,10 +51,15 @@ const List<String> FACULTIES = [
 const List<String> MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-const Map<String, Color> EVENT_TYPES =
+// TYPES OF NOTIFICATIONS
+const Map<String, Color> NOTIFICATION_TYPES =
   {'event_change': Colors.amber,
   'event_deleted': Colors.redAccent,
   'friend_notification': Colors.greenAccent};
+
+String getNotificationType(int index) {
+  return NOTIFICATION_TYPES.keys.elementAt(index);
+}
 
 String getDateText(DateTime dateTime) {
   return '${dateTime.day} ${MONTHS[dateTime.month - 1]} ${dateTime.year - 2000}';

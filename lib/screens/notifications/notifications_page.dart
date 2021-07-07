@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/models/event.dart';
+import 'package:myapp/models/notifications.dart';
 import 'package:myapp/models/user.dart';
 import 'package:myapp/screens/home/event_tile.dart';
 import 'package:myapp/services/database.dart';
@@ -21,12 +22,12 @@ class NotificationsWidget extends StatefulWidget {
 }
 
 class _NotificationsWidgetState extends State<NotificationsWidget> {
-  List<dynamic> notifications = [];
+  List<dynamic> notificationIDs = [];
 
   // Only get user's notifications
   void getNotifications(UserObj user) async {
     UserData userData = await DatabaseService.getUserData(user.uid);
-    notifications = userData.notifications;
+    notificationIDs = userData.notifications;
   }
 
   @override
@@ -56,10 +57,14 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
     // Make sure callback function runs only once but after build()
     // has been called once
     WidgetsBinding.instance!.addPostFrameCallback((_) {
+      // Delete old events
       List<Event> pastEventsToBeDeleted = allEvents
           .where((event) => event.dateTime.isBefore(DateTime.now()))
           .toList().reversed.toList();
       DatabaseService.deleteOldEvents(pastEventsToBeDeleted);
+
+      // Delete old notifications
+      DatabaseService.deleteNotifications(notificationIDs);
     });
 
     return SingleChildScrollView(
@@ -70,36 +75,39 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
           ListView.builder(
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: notifications.length,
+            itemCount: notificationIDs.length,
             itemBuilder: (context, index) {
               return Dismissible(
-                  key: Key(notifications[index]),
-                  onDismissed: (direction) async {
-                    setState(() {
-                      notifications.removeAt(index);
-                    });
-                    await db.updateNotification(notifications);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        backgroundColor: BACKGROUND_COLOR,
-                        content: Text('Successfully deleted notification!'),
-                        action: SnackBarAction(
-                          label: 'Undo',
-                          onPressed: () async {
-                            // I have no idea why notifications doesn't get
-                            // removed here so I don't have to add back the
-                            // removed notification
-                            await db.updateNotification(notifications);
-                            // Here it's just to re-render the page
-                            setState(() {
-                              notifications = notifications;
-                            });
-                          },
-                        ),
-                      )
-                    );
-                  },
-                  child: NotificationTile(notificationID: notifications[index], uid: user.uid,),
+                key: Key(notificationIDs[index]),
+                onDismissed: (direction) async {
+                  // ONLY for notifications of type 'friend_notification'
+                  await DatabaseService.makeNotificationExpire(notificationIDs[index], true);
+                  setState(() {
+                    notificationIDs.removeAt(index);
+                  });
+                  await db.updateNotification(notificationIDs);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: BACKGROUND_COLOR,
+                      content: Text('Successfully deleted notification!'),
+                      action: SnackBarAction(
+                        label: 'Undo',
+                        onPressed: () async {
+                          // I have no idea why notifications doesn't get
+                          // removed here so I don't have to add back the
+                          // removed notification
+                          await db.updateNotification(notificationIDs);
+                          await DatabaseService.makeNotificationExpire(notificationIDs[index], false);
+                          // Here it's just to re-render the page
+                          setState(() {
+                            notificationIDs = notificationIDs;
+                          });
+                        },
+                      ),
+                    )
+                  );
+                },
+                child: NotificationTile(notificationID: notificationIDs[index], uid: user.uid),
               );
             },
           ),

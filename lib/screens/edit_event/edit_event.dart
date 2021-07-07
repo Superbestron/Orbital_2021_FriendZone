@@ -379,9 +379,10 @@ class _EditEventState extends State<EditEvent> {
                                                 _icon,
                                                 event.eventID,
                                                 event.attendees);
-                                            db.sendNotification(event.name,
+                                            db.sendEventNotification(event.name,
                                               "Event details has been changed",
                                               "event_change",
+                                              _dateTime,
                                               {'eventID':event.eventID},
                                               eventAttendeesExceptInitiator(event.attendees),
                                             );
