@@ -577,7 +577,6 @@ class DatabaseService {
   }
 
   static void markAttendance(String uid, String eventID, bool attendance, int add, int minus) async {
-    print("mark");
     if (await isAttendanceMarked(eventID)) {
       if (await userDidAttend(uid, eventID) && !attendance) {
         // recorded as attended initially but now absent
@@ -601,7 +600,6 @@ class DatabaseService {
   }
 
   static Future addPointsToUser(String uid, int points) async {
-    print(points);
     DocumentReference ref = profileCollection.doc(uid);
     UserData user = await ref.get().then((snapshot) => UserData(
         uid: uid,

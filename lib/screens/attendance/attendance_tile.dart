@@ -17,17 +17,23 @@ class AttendanceTile extends StatefulWidget {
 }
 
 class _AttendanceTileState extends State<AttendanceTile> {
-  bool _attendance = true;
   @override
-  Widget build(BuildContext context) {
-    UserData attendee = widget.attendee;
-    if (widget.submit) {
+  void didUpdateWidget(AttendanceTile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.submit != oldWidget.submit && widget.submit) {
+      UserData attendee = widget.attendee;
       final user = Provider.of<UserObj?>(context); // host
       bool isHost = user!.uid == attendee.uid;
       int add = isHost ? 100 : 50;
       int minus = isHost ? -40 : -20;
       DatabaseService.markAttendance(attendee.uid, widget.eventID, _attendance, add, minus);
     }
+  }
+
+  bool _attendance = true;
+  @override
+  Widget build(BuildContext context) {
+    UserData attendee = widget.attendee;
     return Card(
       margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
       color: CARD_BACKGROUND,
