@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:myapp/models/user.dart';
+import 'package:myapp/models/event.dart';
+import 'package:myapp/screens/event/event_page.dart';
+import 'package:myapp/screens/home/event_tile.dart';
 import 'package:myapp/screens/profile/edit_profile_page.dart';
 import 'package:myapp/services/database.dart';
 import 'package:myapp/shared/constants.dart';
@@ -32,6 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
     String userID = isSelf ? user!.uid : widget.profileID;
     DatabaseService dbServiceUser = DatabaseService(uid: userID);
     DatabaseService dbServiceSelf = DatabaseService(uid: user!.uid);
+    List events = Provider.of<List<Event>?>(context) ?? [];
 
 
     void _urlToImage(String profileImagePath) {
@@ -150,6 +154,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 const SizedBox(height: 36),
                 buildAbout(userData),
+                const SizedBox(height: 36),
+                buildEventsAttended(events, userID),
                 const SizedBox(height: 36),
                 SvgPicture.asset('assets/tree.svg',
                   // fit: BoxFit.cover,
@@ -276,3 +282,66 @@ Widget buildAbout(UserData userData) => Container(
         ],
       ),
     );
+
+Widget buildEventsAttended(List events, String uid) =>
+
+    StreamBuilder<UserData>(
+      stream: DatabaseService(uid: uid).userData,
+      builder: (context, snapshot) {
+        UserData userdata = UserData(
+            uid: '', profileImagePath: '', name: '', level: 0, faculty: '',
+            points: 0, bio: '', events: [], notifications: [], friendRequests: [],
+            friends: []);
+        if (snapshot.hasData) {
+          userdata = snapshot.data!;
+        }
+        // filter for events attended
+        events = events.where((event) => userdata.events.contains(event.eventID)).toList();
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 48),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text('Events Attended', style: TEXT_FIELD_HEADING),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Icon(Icons.calendar_today),
+                  )
+                ],
+              ),
+              const SizedBox(height: 16),
+              ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: events.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+                    color: CARD_BACKGROUND,
+                    child: ListTile(
+                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                      minLeadingWidth: 10,
+                      // dense: true,
+                      contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                      title: Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(events[index].name, style: TEXT_FIELD_HEADING),
+                      ),
+                      subtitle: Text(events[index].location, style: NORMAL),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EventPage(event: events[index]),
+                        ),
+                      )
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      }
+);
