@@ -577,17 +577,16 @@ class DatabaseService {
   }
 
   static void markAttendance(String uid, String eventID, bool attendance, int add, int minus) async {
+    print("mark");
     if (await isAttendanceMarked(eventID)) {
       if (await userDidAttend(uid, eventID) && !attendance) {
         // recorded as attended initially but now absent
-        addPointsToUser(uid, -add);
-        addPointsToUser(uid, minus);
+        addPointsToUser(uid, minus-add);
         removeEventFromProfile(uid, eventID);
       }
       if (!await userDidAttend(uid, eventID) && attendance) {
         // recorded as absent initially but now attended
-        addPointsToUser(uid, -minus);
-        addPointsToUser(uid, add);
+        addPointsToUser(uid, add-minus);
         addEventToProfile(uid, eventID);
       }
     } else {

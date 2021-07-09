@@ -71,10 +71,7 @@ class _AttendancePageState extends State<AttendancePage> {
                           setState(() {
                             submit = true;
                           });
-                          int count = 0;
-                          Navigator.popUntil(context, (route) {
-                            return count++ == 1;
-                          });
+                          Navigator.pop(context);
                         },
                         child: Text(
                           "Submit",
