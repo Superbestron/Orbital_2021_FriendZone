@@ -369,7 +369,7 @@ class _EditEventState extends State<EditEvent> {
                                             String _uid = user!.uid;
                                             DatabaseService db =
                                             DatabaseService(uid: _uid);
-                                            db.updateEventData(
+                                            DatabaseService.updateEventData(
                                                 _location,
                                                 _telegramURL,
                                                 _name,
@@ -378,7 +378,9 @@ class _EditEventState extends State<EditEvent> {
                                                 _description,
                                                 _icon,
                                                 event.eventID,
-                                                event.attendees);
+                                                event.attendees,
+                                                event.eventMarked
+                                            );
                                             db.sendEventNotification(event.name,
                                               "Event details has been changed",
                                               "event_change",

@@ -454,6 +454,43 @@ class _EventPageState extends State<EventPage> {
                             ],
                           ),
                         ), // empty widget
+                        event.dateTime.isBefore(DateTime.now()) && event.attendees[0] == user.uid
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text('Mark Attendance', style: TEXT_FIELD_HEADING),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                          child: Icon(Icons.check),
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Center(child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          primary: ORANGE_1,
+                                          padding: EdgeInsets.all(2.0),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                            return AttendancePage(attendees: event.attendees, eventID: event.eventID);
+                                          }));
+                                        }, child: Padding(
+                                        padding: EdgeInsets.all(8),
+                                        child: Text(
+                                          "Mark Attendance",
+                                          style: TextStyle(fontSize: 12, color: Colors.black.withOpacity(1.0)),
+                                          textAlign: TextAlign.center,
+                                        ))
+                                    ))
+                                  ],
+                                ),
+                              )
+                            : Text(""),
                         user.uid == event.attendees[0] ? Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -495,43 +532,6 @@ class _EventPageState extends State<EventPage> {
                             )
                           ],
                         ) : Text(""),
-                        event.dateTime.isBefore(DateTime.now()) && event.attendees[0] == user.uid
-                            ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text('Mark Attendance', style: TEXT_FIELD_HEADING),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                          child: Icon(Icons.check),
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(height: 16),
-                                    Center(child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          primary: ORANGE_1,
-                                          padding: EdgeInsets.all(2.0),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                            return AttendancePage(attendees: event.attendees);
-                                          }));
-                                        }, child: Padding(
-                                        padding: EdgeInsets.all(8),
-                                        child: Text(
-                                          "Mark Attendance",
-                                          style: TextStyle(fontSize: 12, color: Colors.black.withOpacity(1.0)),
-                                          textAlign: TextAlign.center,
-                                        ))
-                                    ))
-                                  ],
-                                ),
-                              )
-                            : Text(""),
                         SvgPicture.asset('assets/tree.svg',
                             // fit: BoxFit.cover,
                             clipBehavior: Clip.hardEdge),
