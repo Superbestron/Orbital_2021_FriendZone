@@ -23,8 +23,9 @@ class _AttendanceTileState extends State<AttendanceTile> {
     UserData attendee = widget.attendee;
     if (widget.submit) {
       final user = Provider.of<UserObj?>(context); // host
-      int add = user!.uid == attendee.uid ? 100 : 50;
-      int minus = user.uid == attendee.uid ? -20 : -40;
+      bool isHost = user!.uid == attendee.uid;
+      int add = isHost ? 100 : 50;
+      int minus = isHost ? -40 : -20;
       DatabaseService.markAttendance(attendee.uid, widget.eventID, _attendance, add, minus);
     }
     return Card(

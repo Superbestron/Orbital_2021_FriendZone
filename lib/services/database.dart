@@ -602,6 +602,7 @@ class DatabaseService {
   }
 
   static Future addPointsToUser(String uid, int points) async {
+    print(points);
     DocumentReference ref = profileCollection.doc(uid);
     UserData user = await ref.get().then((snapshot) => UserData(
         uid: uid,

@@ -70,10 +70,10 @@ class _AttendancePageState extends State<AttendancePage> {
                         onPressed: () {
                           setState(() {
                             submit = true;
-                            int count = 0;
-                            Navigator.popUntil(context, (route) {
-                              return count++ == 1;
-                            });
+                          });
+                          int count = 0;
+                          Navigator.popUntil(context, (route) {
+                            return count++ == 1;
                           });
                         },
                         child: Text(
