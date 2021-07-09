@@ -9,6 +9,7 @@ class Event {
   String description;
   int icon; // probably should change this to enum in the future
   List<dynamic> attendees;
+  bool eventMarked;
 
   Event({
     required this.location,
@@ -20,6 +21,7 @@ class Event {
     required this.description,
     required this.icon,
     required this.attendees,
+    required this.eventMarked,
   });
 
 }

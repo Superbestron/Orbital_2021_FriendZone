@@ -57,11 +57,12 @@ class DatabaseService {
           description: snapshot.get('description'),
           icon: snapshot.get('icon'),
           attendees: snapshot.get('attendees'),
+          eventMarked: snapshot.get('eventMarked'),
         ));
     return event;
   }
 
-  Future updateEventData(
+  static Future updateEventData(
       String location,
       String telegramURL,
       String name,
@@ -70,7 +71,8 @@ class DatabaseService {
       String description,
       int icon,
       String eventID,
-      List<dynamic> attendees) async {
+      List<dynamic> attendees,
+      bool eventMarked) async {
     return await eventCollection.doc(eventID).set({
       'location': location,
       'telegramURL': telegramURL,
@@ -81,6 +83,7 @@ class DatabaseService {
       'icon': icon,
       'eventID': eventID,
       'attendees': attendees,
+      'eventMarked': eventMarked,
     });
   }
 
@@ -90,7 +93,7 @@ class DatabaseService {
     List<dynamic> attendees = [];
     attendees.add(uid);
     updateEventData(location, telegramURL, name, dateTime, pax, description,
-        icon, newDocID, attendees);
+        icon, newDocID, attendees, false);
     print("Creating Event...");
     return newDocID;
   }
@@ -108,6 +111,7 @@ class DatabaseService {
         description: doc.get('description') ?? '',
         icon: doc.get('icon') ?? 0,
         attendees: doc.get('attendees') ?? [],
+        eventMarked: doc.get('eventMarked') ?? false,
       );
     }).toList();
   }
@@ -124,6 +128,7 @@ class DatabaseService {
       description: snapshot.get('description'),
       icon: snapshot.get('icon'),
       attendees: snapshot.get('attendees'),
+      eventMarked: snapshot.get('eventMarked'),
     );
   }
 
@@ -151,7 +156,9 @@ class DatabaseService {
         event.description,
         event.icon,
         eventID,
-        newAttendees);
+        newAttendees,
+        event.eventMarked,
+    );
   }
 
   static Future deleteEvent(String eventID) async {
@@ -200,7 +207,8 @@ class DatabaseService {
         event.description,
         event.icon,
         eventID,
-        event.attendees);
+        event.attendees,
+        event.eventMarked);
   }
 
   // user data stream
@@ -528,6 +536,69 @@ class DatabaseService {
         : DateTime(2025),
       'subscribed': notification.subscribed
     });
+  }
+
+  static Future<bool> isAttendanceMarked(String eventID) async {
+    return getEventData(eventID).then((event) => event.eventMarked);
+  }
+
+  static Future<bool> userDidAttend(String uid, String eventID) async {
+    UserData user = await getUserData(uid);
+    return user.events.contains(eventID);
+  }
+
+  static void addEventToProfile(String uid, String eventID) async {
+    UserData user = await getUserData(uid);
+    if (!await userDidAttend(uid, eventID)) {
+      List events = user.events;
+      events.add(eventID);
+      updateUserDataWithID(uid, user.profileImagePath, user.name,
+          user.level, user.faculty, user.points, user.bio, events,
+          user.notifications, user.friendRequests, user.friends);
+    }
+  }
+
+  static void removeEventFromProfile(String uid, String eventID) async {
+    UserData user = await getUserData(uid);
+    if (await userDidAttend(uid, eventID)) {
+      List events = user.events;
+      events.remove(eventID);
+      updateUserDataWithID(uid, user.profileImagePath, user.name,
+      user.level, user.faculty, user.points, user.bio, events,
+      user.notifications, user.friendRequests, user.friends);
+    }
+  }
+
+  static void setEventAttendanceMarked(String eventID) async {
+    Event event = await getEventData(eventID);
+    updateEventData(event.location, event.telegramURL, event.name,
+        event.dateTime, event.pax, event.description, event.icon,
+        eventID, event.attendees, true);
+  }
+
+  static void markAttendance(String uid, String eventID, bool attendance, int add, int minus) async {
+    if (await isAttendanceMarked(eventID)) {
+      if (await userDidAttend(uid, eventID) && !attendance) {
+        // recorded as attended initially but now absent
+        addPointsToUser(uid, -add);
+        addPointsToUser(uid, minus);
+        removeEventFromProfile(uid, eventID);
+      }
+      if (!await userDidAttend(uid, eventID) && attendance) {
+        // recorded as absent initially but now attended
+        addPointsToUser(uid, -minus);
+        addPointsToUser(uid, add);
+        addEventToProfile(uid, eventID);
+      }
+    } else {
+      setEventAttendanceMarked(eventID);
+      // first time marking attendance
+      addPointsToUser(uid, attendance ? add : minus);
+      // set attendance to marked
+      if (attendance) {
+        addEventToProfile(uid, eventID);
+      }
+    }
   }
 
   static Future addPointsToUser(String uid, int points) async {

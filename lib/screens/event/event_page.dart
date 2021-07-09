@@ -518,7 +518,7 @@ class _EventPageState extends State<EventPage> {
                                         ),
                                         onPressed: () {
                                           Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                            return AttendancePage(attendees: event.attendees);
+                                            return AttendancePage(attendees: event.attendees, eventID: event.eventID);
                                           }));
                                         }, child: Padding(
                                         padding: EdgeInsets.all(8),

@@ -9,8 +9,8 @@ import 'attendance_tile.dart';
 
 class AttendancePage extends StatefulWidget {
   final List attendees;
-
-  AttendancePage({required this.attendees});
+  final String eventID;
+  AttendancePage({required this.attendees, required this.eventID});
 
   @override
   _AttendancePageState createState() => _AttendancePageState();
@@ -63,7 +63,7 @@ class _AttendancePageState extends State<AttendancePage> {
                           UserData attendee =
                               (Provider.of<List<UserData>?>(context) ??
                                   [])[index];
-                          return AttendanceTile(attendee: attendee, submit: submit);
+                          return AttendanceTile(attendee: attendee, submit: submit, eventID: widget.eventID);
                         },
                       ),
                       ElevatedButton(

@@ -8,8 +8,9 @@ import 'package:provider/provider.dart';
 class AttendanceTile extends StatefulWidget {
   final UserData attendee;
   final bool submit;
+  final String eventID;
 
-  AttendanceTile({required this.attendee, required this.submit});
+  AttendanceTile({required this.attendee, required this.submit, required this.eventID});
 
   @override
   _AttendanceTileState createState() => _AttendanceTileState();
@@ -24,7 +25,7 @@ class _AttendanceTileState extends State<AttendanceTile> {
       final user = Provider.of<UserObj?>(context); // host
       int add = user!.uid == attendee.uid ? 100 : 50;
       int minus = user.uid == attendee.uid ? -20 : -40;
-      DatabaseService.addPointsToUser(attendee.uid, _attendance ? add : minus);
+      DatabaseService.markAttendance(attendee.uid, widget.eventID, _attendance, add, minus);
     }
     return Card(
       margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
