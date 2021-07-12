@@ -337,7 +337,7 @@ class _EventPageState extends State<EventPage> {
                                               },
                                               child: Text("Cancel",
                                                   style: TextStyle(
-                                                    color: Colors.red,g
+                                                    color: Colors.red,
                                                   )),
                                             ),
                                             TextButton(
