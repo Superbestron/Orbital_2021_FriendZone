@@ -322,7 +322,7 @@ class _EventPageState extends State<EventPage> {
                                         context: context,
                                         builder: (context) => AlertDialog(
                                           title: Text('Confirm Attendance'),
-                                          content: event.dateTime.isBefore(DateTime.now())
+                                          content: event.dateTime.isAfter(DateTime.now())
                                               ?  Text(
                                               'Are you sure you want to confirm attendance?\n\n'
                                                   'Note: You cannot revoke your attendance '
@@ -342,7 +342,7 @@ class _EventPageState extends State<EventPage> {
                                             ),
                                             TextButton(
                                               onPressed: () async {
-                                                if (event.dateTime.isBefore(DateTime.now())) {
+                                                if (event.dateTime.isAfter(DateTime.now())) {
                                                   await dbService
                                                       .addUserToEvent(
                                                       event.eventID,
