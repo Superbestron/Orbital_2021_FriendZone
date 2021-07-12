@@ -322,10 +322,14 @@ class _EventPageState extends State<EventPage> {
                                         context: context,
                                         builder: (context) => AlertDialog(
                                           title: Text('Confirm Attendance'),
-                                          content: Text(
+                                          content: event.dateTime.isBefore(DateTime.now())
+                                              ?  Text(
                                               'Are you sure you want to confirm attendance?\n\n'
                                                   'Note: You cannot revoke your attendance '
-                                                  'if the event is less than 2 days away from now.'),
+                                                  'if the event is less than 2 days away from now.')
+                                              : Text(
+                                            'Event has passed!'
+                                          ),
                                           actions: <Widget>[
                                             TextButton(
                                               onPressed: () {
@@ -333,14 +337,17 @@ class _EventPageState extends State<EventPage> {
                                               },
                                               child: Text("Cancel",
                                                   style: TextStyle(
-                                                    color: Colors.red,
+                                                    color: Colors.red,g
                                                   )),
                                             ),
                                             TextButton(
                                               onPressed: () async {
-                                                await dbService.addUserToEvent(
-                                                    event.eventID,
-                                                    user.uid);
+                                                if (event.dateTime.isBefore(DateTime.now())) {
+                                                  await dbService
+                                                      .addUserToEvent(
+                                                      event.eventID,
+                                                      user.uid);
+                                                }
                                                 Navigator.of(context).pop();
                                               },
                                               child: Text("Confirm"),
