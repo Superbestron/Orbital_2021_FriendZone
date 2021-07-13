@@ -22,12 +22,11 @@ class _AttendeeTileState extends State<AttendeeTile> {
   late ImageProvider _profileImage;
 
   void getAttendee() async {
-    DatabaseService dbService = DatabaseService(uid: widget.attendee.uid);
     if (mounted) {
       if (widget.attendee.profileImagePath == '') {
         _profileImage = DEFAULT_PROFILE_PIC;
       } else {
-        await dbService
+        await DatabaseService
             .getImageURLFromFirebase(widget.attendee.profileImagePath)
             .then((url) =>
             setState(() {
@@ -65,7 +64,7 @@ class _AttendeeTileState extends State<AttendeeTile> {
           ),
           subtitle: Text('Level ${widget.attendee.level}', style: NORMAL),
           trailing: CircleAvatar(
-            backgroundImage: ResizeImage(_profileImage, width: 20),
+            backgroundImage: ResizeImage(_profileImage, width: 25),
           ),
           onTap: () => Navigator.push(
             context,
@@ -79,7 +78,7 @@ class _AttendeeTileState extends State<AttendeeTile> {
                     body: StreamProvider<List<Event>?>.value(
                         initialData: null,
                         value: DatabaseService.events,
-                        child:ProfilePage(profileID: widget.attendee.uid == uid ? "" : widget.attendee.uid))
+                        child: ProfilePage(profileID: widget.attendee.uid == uid ? "" : widget.attendee.uid))
                   )
               ]),
             ),

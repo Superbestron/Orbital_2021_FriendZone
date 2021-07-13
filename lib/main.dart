@@ -4,7 +4,7 @@ import 'package:myapp/screens/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:myapp/services/auth.dart';
 import 'package:myapp/shared/constants.dart';
-import 'package:myapp/startup_view.dart';
+import 'package:myapp/screens/startup/startup_view.dart';
 import 'package:provider/provider.dart';
 import 'package:myapp/models/user.dart';
 
@@ -54,6 +54,7 @@ class MyApp extends StatelessWidget {
             contentTextStyle: TextStyle(
               color: Colors.black
             ),
+            backgroundColor: BACKGROUND_COLOR,
           )
         ),
         debugShowCheckedModeBanner: false, // uncomment this to resume debug mode
