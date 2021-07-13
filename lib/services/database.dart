@@ -384,6 +384,9 @@ class DatabaseService {
         friendData.level, friendData.faculty, friendData.points, friendData.bio,
         friendData.events, friendData.notifications, friendData.friendRequests,
         friendData.friends);
+    // award both 200 points
+    await addPointsToUser(uid, 200);
+    await addPointsToUser(friendUID, 200);
   }
 
   Future addFriend(String friendUID) async {
