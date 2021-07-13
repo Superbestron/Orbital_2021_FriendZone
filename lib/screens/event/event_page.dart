@@ -100,8 +100,9 @@ class _EventPageState extends State<EventPage> {
         }
         if (event.attendees.isNotEmpty) {
           setInitiatorName(event.attendees[0]);
+          isInitiator = user.uid == event.attendees[0];
         }
-        isInitiator = user.uid == event.attendees[0];
+
         return Stack(
           fit: StackFit.expand,
           children: <Widget>[

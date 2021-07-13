@@ -218,7 +218,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       if (_formKey.currentState!.validate()) {
                         if (_hasDeletedProfileImage) {
                           // If user clicks on remove image button
-                          await dbService.deleteImageFromFirebase(userData.profileImagePath);
+                          await DatabaseService.deleteImageFromFirebase(userData.profileImagePath);
                           userData.profileImagePath = '';
                         } else if (_hasChosenNewImage) {
                           // Else upload selected image

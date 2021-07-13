@@ -310,11 +310,11 @@ class DatabaseService {
   }
 
   // assuming all profile images stored in images directory
-  Future getImageURLFromFirebase(String profileImagePath) async {
+  static Future getImageURLFromFirebase(String profileImagePath) async {
     return await storage.ref(profileImagePath).getDownloadURL();
   }
 
-  Future deleteImageFromFirebase(String profileImagePath) async {
+  static Future deleteImageFromFirebase(String profileImagePath) async {
     return await storage.ref().child(profileImagePath).delete();
   }
 
@@ -395,6 +395,26 @@ class DatabaseService {
         friendData.level, friendData.faculty, friendData.points, friendData.bio,
         friendData.events, friendData.notifications, friendData.friendRequests,
         friendData.friends);
+  }
+
+  Future deleteFriend(String friendUID) async {
+    UserData friendData = await getUserData(friendUID);
+    friendData.friends.remove(uid);
+    print(friendData.friends);
+    print('Deleting friend $friendUID...');
+    await DatabaseService(uid: friendUID)
+        .updateUserData(friendData.profileImagePath, friendData.name,
+        friendData.level, friendData.faculty, friendData.points, friendData.bio,
+        friendData.events, friendData.notifications, friendData.friendRequests,
+        friendData.friends);
+    UserData myData = await getUserData(uid);
+    myData.friends.remove(friendUID);
+    print(myData.friends);
+    await DatabaseService(uid: uid)
+        .updateUserData(myData.profileImagePath, myData.name,
+        myData.level, myData.faculty, myData.points, myData.bio,
+        myData.events, myData.notifications, myData.friendRequests,
+        myData.friends);
   }
 
 

@@ -3,13 +3,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:myapp/models/user.dart';
 import 'package:myapp/models/event.dart';
 import 'package:myapp/screens/event/event_page.dart';
-import 'package:myapp/screens/home/event_tile.dart';
 import 'package:myapp/screens/profile/edit_profile_page.dart';
 import 'package:myapp/services/database.dart';
 import 'package:myapp/shared/constants.dart';
 import 'package:myapp/shared/loading_transparent.dart';
 import 'package:myapp/screens/profile/profile_widget.dart';
 import 'package:provider/provider.dart';
+import 'friend_list.dart';
 
 class ProfilePage extends StatefulWidget {
   final String profileID;
@@ -44,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
         print('no image');
         _profileImage = DEFAULT_PROFILE_PIC;
       } else {
-        dbServiceUser
+        DatabaseService
             .getImageURLFromFirebase(profileImagePath)
             .then((url) => setState(() {
                   _profileImage = NetworkImage(url);
@@ -101,10 +101,39 @@ class _ProfilePageState extends State<ProfilePage> {
                         bool hasOutgoingRequest = other.friendRequests.contains(meID);
                         bool isFriends = me.friends.contains(otherID);
                         if (isFriends) {
-                          buttonText = 'Friends';
-                          buttonColor = Colors.grey;
+                          buttonText = 'Delete Friend';
+                          buttonColor = selectedColor!;
+                          onPressed = () async {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text("Delete Friend"),
+                                content: Text(
+                                    'Are you sure you want to delete \n${other.name} as friend?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text("Cancel",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                        )),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      await DatabaseService(uid: meID).deleteFriend(other.uid);
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text("Confirm"),
+                                  ),
+                                ],
+                              ),
+                            );
+                          };
                         } else if (hasIncomingRequest) {
                           buttonText = 'Accept Friend Request';
+                          buttonColor = ORANGE_1;
                           onPressed = () async {
                             // user send friend request to profile
                             await dbServiceSelf.acceptFriend(widget.profileID);
@@ -118,6 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           buttonColor = Colors.grey;
                         } else {
                           buttonText = 'Add Friend';
+                          buttonColor = ORANGE_1;
                           onPressed = () async {
                             // user send friend request to profile
                            await dbServiceSelf.addFriend(widget.profileID);
@@ -150,12 +180,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 NumbersWidget(
                   points: userData.points,
                   level: userData.level,
-                  friends: userData.friends.length
+                  friends: userData.friends
                 ),
                 const SizedBox(height: 36),
-                buildAbout(userData),
+                buildAbout(userData, isSelf),
                 const SizedBox(height: 36),
-                buildEventsAttended(events, userID),
+                buildEventsAttended(events, userID, isSelf),
                 const SizedBox(height: 36),
                 SvgPicture.asset('assets/tree.svg',
                   // fit: BoxFit.cover,
@@ -188,7 +218,7 @@ Widget buildName(UserData userData) => Column(
 class NumbersWidget extends StatelessWidget {
   final int points;
   final int level;
-  final int friends;
+  final List<dynamic> friends;
 
   const NumbersWidget({
     Key? key,
@@ -205,21 +235,23 @@ class NumbersWidget extends StatelessWidget {
           Column(
             children: [
               Icon(Icons.star),
-              buildButton(context, '$points', 'Points'),
+              buildButton(context, '$points', 'Points', () {}),
             ],
           ),
           buildDivider(),
           Column(
             children: [
               Icon(Icons.trending_up),
-              buildButton(context, '$level', 'Level'),
+              buildButton(context, '$level', 'Level', () {}),
             ],
           ),
           buildDivider(),
           Column(
             children: [
               Icon(Icons.social_distance),
-              buildButton(context, '$friends', 'Friends'),
+              buildButton(context, '${friends.length}', 'Friends', () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => FriendList(friendsID: friends)));
+              },),
             ],
           ),
         ],
@@ -230,10 +262,10 @@ class NumbersWidget extends StatelessWidget {
         child: VerticalDivider(color: Colors.grey),
       );
 
-  Widget buildButton(BuildContext context, String value, String text) =>
+  Widget buildButton(BuildContext context, String value, String text, Function() onPressed) =>
       MaterialButton(
         padding: EdgeInsets.symmetric(vertical: 4),
-        onPressed: () {},
+        onPressed: onPressed,
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -253,8 +285,8 @@ class NumbersWidget extends StatelessWidget {
       );
 }
 
-Widget buildAbout(UserData userData) => Container(
-      padding: EdgeInsets.symmetric(horizontal: 48),
+Widget buildAbout(UserData userData, bool isSelf) => Container(
+      padding: EdgeInsets.symmetric(horizontal: isSelf ? 30 : 50),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -274,7 +306,7 @@ Widget buildAbout(UserData userData) => Container(
                 minHeight: 100,
                 minWidth: 500,
               ),
-              child: Text(userData.bio),
+              child: Text(userData.bio, style: NORMAL),
             ),
             decoration: boxDecoration,
             padding: const EdgeInsets.all(15.0),
@@ -283,36 +315,36 @@ Widget buildAbout(UserData userData) => Container(
       ),
     );
 
-Widget buildEventsAttended(List events, String uid) =>
-
+Widget buildEventsAttended(List events, String uid, bool isSelf) =>
     StreamBuilder<UserData>(
       stream: DatabaseService(uid: uid).userData,
       builder: (context, snapshot) {
-        UserData userdata = UserData(
-            uid: '', profileImagePath: '', name: '', level: 0, faculty: '',
-            points: 0, bio: '', events: [], notifications: [], friendRequests: [],
-            friends: []);
+        UserData? userdata;
         if (snapshot.hasData) {
           userdata = snapshot.data!;
+          // filter for events attended
+          events = events.where((event) => userdata!.events.contains(event.eventID)).toList();
         }
-        // filter for events attended
-        events = events.where((event) => userdata.events.contains(event.eventID)).toList();
-        return Container(
-          padding: EdgeInsets.symmetric(horizontal: 48),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: isSelf ? 30 : 50),
+              child: Row(
                 children: [
-                  Text('Events Attended', style: TEXT_FIELD_HEADING),
+                  Text('Recent Events Attended', style: TEXT_FIELD_HEADING),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Icon(Icons.calendar_today),
                   )
                 ],
               ),
-              const SizedBox(height: 16),
-              ListView.builder(
+            ),
+            const SizedBox(height: 16),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: isSelf ? 0 : 20),
+              child: ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: events.length,
@@ -330,6 +362,7 @@ Widget buildEventsAttended(List events, String uid) =>
                         child: Text(events[index].name, style: TEXT_FIELD_HEADING),
                       ),
                       subtitle: Text(events[index].location, style: NORMAL),
+                      trailing: IMAGE_LIST[events[index].icon],
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -340,8 +373,8 @@ Widget buildEventsAttended(List events, String uid) =>
                   );
                 },
               ),
-            ],
-          ),
+            ),
+          ],
         );
       }
 );
