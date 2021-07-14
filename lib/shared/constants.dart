@@ -62,7 +62,7 @@ String getNotificationType(int index) {
 }
 
 String getDateText(DateTime dateTime) {
-  return '${dateTime.day} ${MONTHS[dateTime.month - 1]} ${dateTime.year - 2000}';
+  return '${dateTime.day}/${dateTime.month}/${dateTime.year - 2000}';
 }
 
 String getTimeText(DateTime dateTime) {

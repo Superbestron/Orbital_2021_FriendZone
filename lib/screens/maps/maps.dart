@@ -102,18 +102,21 @@ class _MapsState extends State<Maps> {
                         .toList())),
                     child: Stack(fit: StackFit.expand, children: <Widget>[
                       buildBackgroundImage(),
-                      Scaffold(
-                          appBar: AppBar(
-                            centerTitle: true,
-                            leading: BackButton(color: Colors.black),
-                            title: Text(
-                              "Nearby events",
-                              style: TextStyle(color: Colors.black),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Scaffold(
+                            appBar: AppBar(
+                              centerTitle: true,
+                              leading: BackButton(color: Colors.black),
+                              title: Text(
+                                "Nearby events",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              toolbarHeight: 100.0,
+                              elevation: 0.0,
                             ),
-                            toolbarHeight: 100.0,
-                            elevation: 0.0,
-                          ),
-                          body: EventList())
+                            body: EventList()),
+                      )
                     ]));
               }));
             },

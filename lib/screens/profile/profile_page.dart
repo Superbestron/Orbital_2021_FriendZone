@@ -286,7 +286,7 @@ class NumbersWidget extends StatelessWidget {
 }
 
 Widget buildAbout(UserData userData, bool isSelf) => Container(
-      padding: EdgeInsets.symmetric(horizontal: isSelf ? 30 : 50),
+      padding: EdgeInsets.symmetric(horizontal: isSelf ? 25 : 45),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -330,7 +330,7 @@ Widget buildEventsAttended(List events, String uid, bool isSelf) =>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: isSelf ? 30 : 50),
+              padding: EdgeInsets.symmetric(horizontal: isSelf ? 25 : 45),
               child: Row(
                 children: [
                   Text('Recent Events Attended', style: TEXT_FIELD_HEADING),

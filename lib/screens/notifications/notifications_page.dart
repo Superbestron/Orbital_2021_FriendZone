@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/models/event.dart';
-import 'package:myapp/models/notifications.dart';
 import 'package:myapp/models/user.dart';
 import 'package:myapp/screens/home/event_tile.dart';
 import 'package:myapp/services/database.dart';
 import 'package:myapp/shared/constants.dart';
 import 'package:provider/provider.dart';
-
 import 'notification_tile.dart';
 
 class NotificationsWidget extends StatefulWidget {
@@ -32,7 +30,6 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     UserObj? user = Provider.of<UserObj?>(context);
     DatabaseService db = DatabaseService(uid: user!.uid);
     getNotifications(user);
@@ -73,11 +70,23 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
         children: <Widget>[
           // Notifications
           ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             shrinkWrap: true,
             itemCount: notificationIDs.length,
             itemBuilder: (context, index) {
               return Dismissible(
+                background: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    color: Colors.red,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(Icons.delete),
+                    )
+                  ),
+                ),
+                direction: DismissDirection.endToStart,
                 key: Key(notificationIDs[index]),
                 onDismissed: (direction) async {
                   // ONLY for notifications of type 'friend_notification'
@@ -87,24 +96,24 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
                   });
                   await db.updateNotification(notificationIDs);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: BACKGROUND_COLOR,
-                      content: Text('Successfully deleted notification!'),
-                      action: SnackBarAction(
-                        label: 'Undo',
-                        onPressed: () async {
-                          // I have no idea why notifications doesn't get
-                          // removed here so I don't have to add back the
-                          // removed notification
-                          await db.updateNotification(notificationIDs);
-                          await DatabaseService.makeNotificationExpire(notificationIDs[index], false);
-                          // Here it's just to re-render the page
-                          setState(() {
-                            notificationIDs = notificationIDs;
-                          });
-                        },
-                      ),
-                    )
+                      SnackBar(
+                        backgroundColor: BACKGROUND_COLOR,
+                        content: Text('Successfully deleted notification!'),
+                        action: SnackBarAction(
+                          label: 'Undo',
+                          onPressed: () async {
+                            // I have no idea why notifications doesn't get
+                            // removed here so I don't have to add back the
+                            // removed notification
+                            await db.updateNotification(notificationIDs);
+                            await DatabaseService.makeNotificationExpire(notificationIDs[index], false);
+                            // Here it's just to re-render the page
+                            setState(() {
+                              notificationIDs = notificationIDs;
+                            });
+                          },
+                        ),
+                      )
                   );
                 },
                 child: NotificationTile(notificationID: notificationIDs[index], uid: user.uid),
