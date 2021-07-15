@@ -4,7 +4,9 @@ import 'database.dart';
 
 class AuthService {
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth auth;
+
+  AuthService({ required this.auth });
 
   // create user obj based on FirebaseUser
   UserObj? _userFromFirebaseUser(User? user) {
@@ -17,18 +19,18 @@ class AuthService {
 
   // auth change user stream
   Stream<UserObj?> get user {
-    return _auth.authStateChanges()
+    return auth.authStateChanges()
       .map(_userFromFirebaseUser);
   }
 
   String get userUid {
-    return _auth.currentUser != null ? _auth.currentUser!.uid : "";
+    return auth.currentUser != null ? auth.currentUser!.uid : "";
   }
 
   // sign in anon
   Future signInAnon() async {
     try {
-      UserCredential result = await _auth.signInAnonymously();
+      UserCredential result = await auth.signInAnonymously();
       User? user = result.user;
       return _userFromFirebaseUser(user);
     } catch (e) {
@@ -40,8 +42,8 @@ class AuthService {
   // sign in with email & password
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      print('${_auth.currentUser!.displayName} has signed in!');
+      await auth.signInWithEmailAndPassword(email: email, password: password);
+      print('${auth.currentUser!.displayName} has signed in!');
       return '';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -64,7 +66,7 @@ class AuthService {
   // register with email & password
   Future registerWithEmailAndPassword(String email, String password, String fullName) async {
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential result = await auth.createUserWithEmailAndPassword(email: email, password: password);
       User user = result.user!;
       user.updateProfile(displayName: fullName);
 
@@ -90,8 +92,8 @@ class AuthService {
   }
 
   Future updateDisplayName(String displayName) async {
-    await _auth.currentUser!.updateProfile(displayName: displayName);
-    print(_auth.currentUser!.displayName);
+    await auth.currentUser!.updateProfile(displayName: displayName);
+    print(auth.currentUser!.displayName);
   }
 
   Future sendEmailVerification() async {
@@ -116,7 +118,7 @@ class AuthService {
 
   Future resetPassword(String email) async {
     try {
-      await _auth.sendPasswordResetEmail(email: email);
+      await auth.sendPasswordResetEmail(email: email);
     } catch (e) {
       print(e.toString());
     }
@@ -125,8 +127,9 @@ class AuthService {
   // sign out
   Future signOut() async {
     try {
-      print('${_auth.currentUser!.displayName} has signed out!');
-      return await _auth.signOut();
+      print('${auth.currentUser!.displayName} has signed out!');
+      await auth.signOut();
+      return 'Success';
     } catch (e) {
       print(e.toString());
       return null;

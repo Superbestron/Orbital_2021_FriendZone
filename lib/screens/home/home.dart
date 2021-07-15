@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:myapp/models/event.dart';
 import 'package:myapp/screens/home/event_list.dart';
@@ -14,13 +16,19 @@ import 'package:myapp/shared/constants.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
+
+  static FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  static setFirebaseFirestore(FirebaseFirestore store) async {
+    firebaseFirestore = store;
+  }
+
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
-  final AuthService _auth = AuthService();
+  final AuthService _auth = AuthService(auth: FirebaseAuth.instance);
   PageController _pageController = PageController();
   late List<Widget> _children;
 
@@ -35,7 +43,7 @@ class _HomeState extends State<Home> {
     ];
     super.initState();
 
-    LocalNotificationService.initialize(_onItemTapped);
+    // LocalNotificationService.initialize(_onItemTapped);
 
     // gives you the message on which user taps
     // and it opened the app from terminated state
@@ -63,7 +71,7 @@ class _HomeState extends State<Home> {
       // _onItemTapped(int.parse(routeFromMessage));
     });
 
-    DatabaseService(uid: AuthService().userUid).saveDeviceToken();
+    DatabaseService(uid: _auth.userUid).saveDeviceToken();
   }
 
 
@@ -162,6 +170,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 bottomNavigationBar: BottomNavigationBar(
+                  key: Key('bottom'),
                   currentIndex: _selectedIndex,
                   unselectedItemColor: Colors.black,
                   selectedItemColor: Colors.cyan,

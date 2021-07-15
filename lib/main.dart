@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/wrapper.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamProvider<UserObj?>.value(
       initialData: null,
-      value: AuthService().user,
+      value: AuthService(auth: FirebaseAuth.instance).user,
       child: MaterialApp(
         theme: ThemeData(
           appBarTheme: AppBarTheme(

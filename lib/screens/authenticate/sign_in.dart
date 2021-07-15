@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myapp/services/auth.dart';
@@ -15,7 +16,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  final AuthService _auth = AuthService();
+  final AuthService _auth = AuthService(auth: FirebaseAuth.instance);
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
@@ -111,7 +112,7 @@ class _SignInState extends State<SignIn> {
                             ),
                             TextButton(
                               onPressed: () async {
-                                await AuthService().resetPassword(resetPasswordEmail);
+                                await _auth.resetPassword(resetPasswordEmail);
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(
                                   backgroundColor: BACKGROUND_COLOR,

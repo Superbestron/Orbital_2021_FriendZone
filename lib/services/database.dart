@@ -7,27 +7,26 @@ import 'package:myapp/models/event.dart';
 import 'package:myapp/models/notifications.dart';
 import 'package:myapp/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:myapp/screens/home/home.dart';
 
 class DatabaseService {
   final String uid;
   static const MAX_DAY_FOR_PASTS_EVENTS = 30;
   static const MAX_DAY_FOR_NOTIFICATIONS = 30;
 
-  DatabaseService({
-    required this.uid,
-  });
+  DatabaseService({ required this.uid });
 
   // collection reference to all events
   static final CollectionReference eventCollection =
-      FirebaseFirestore.instance.collection('events');
+      Home.firebaseFirestore.collection('events');
 
   // collection reference to all user profiles
   static final CollectionReference profileCollection =
-      FirebaseFirestore.instance.collection('profiles');
+      Home.firebaseFirestore.collection('profiles');
 
   // collection reference to notifications
   static final CollectionReference notificationsCollection =
-      FirebaseFirestore.instance.collection('notifications');
+      Home.firebaseFirestore.collection('notifications');
 
   // storage reference to user's profile images
   static final FirebaseStorage storage = FirebaseStorage.instance;

@@ -16,7 +16,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  final AuthService _auth = AuthService();
+  final AuthService _auth = AuthService(auth: FirebaseAuth.instance);
   final _formKey = GlobalKey<FormState>();
   // final nameController = TextEditingController();
   // final textController = TextEditingController();

@@ -218,7 +218,7 @@ class _CreateEventState extends State<CreateEvent> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.5),
-              child: Text('Choose your event category: ', style: BOLDED_NORMAL),
+              child: Text('Choose your event category:', style: BOLDED_NORMAL),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

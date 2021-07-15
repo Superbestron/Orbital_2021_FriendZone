@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/authenticate/authenticate.dart';
 import 'package:myapp/screens/authenticate/verify_email.dart';
@@ -11,7 +12,7 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final UserObj? user = Provider.of<UserObj?>(context);
-    final AuthService _auth = AuthService();
+    final AuthService _auth = AuthService(auth: FirebaseAuth.instance);
 
     // return either Home or Authenticate widget
     if (user == null) {
