@@ -27,14 +27,17 @@ void main() {
       'icon': 3,
       'eventID': 'AGjugV0E0fb7xrlP3MUA', // Random eventID
       // my accounts Tze Henn and james
-      'attendees': ['buFK2djrl7TNbK1SBz4uRsoITKG2', 'VYfDfuEAdHOJJvbGG6lRi4CrjiW2'],
+      'attendees': [
+        'buFK2djrl7TNbK1SBz4uRsoITKG2',
+        'VYfDfuEAdHOJJvbGG6lRi4CrjiW2'
+      ],
       'eventMarked': false,
     });
 
     Home.setFirebaseFirestore(firestore);
     // Render the widget.
-    await tester.pumpWidget(MaterialApp(
-        title: 'Firestore Example', home: Home()));
+    await tester
+        .pumpWidget(MaterialApp(title: 'Firestore Example', home: Home()));
 
     // Let the snapshots stream fire a snapshot.
     await tester.idle();
@@ -54,11 +57,12 @@ void main() {
   });
 
   testWidgets('titles', (tester) async {
-    await tester.pumpWidget(MaterialApp(
-      home: Home(),
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Home(),
       ),
     );
-    await tester.pumpAndSettle(); // Use this when there are timers
+    await tester.pumpAndSettle(Duration(seconds: 5));
     final title = find.text("Upcoming Events");
     final title1 = find.text("Home");
     final title2 = find.text("Maps");
@@ -73,12 +77,11 @@ void main() {
     expect(title4, findsOneWidget);
     expect(title5, findsOneWidget);
     expect(button, findsOneWidget);
+    await tester.pumpAndSettle(Duration(seconds: 5));
   });
 
   testWidgets('search', (tester) async {
-    await tester.pumpWidget(MaterialApp(
-        home: Home())
-    );
+    await tester.pumpWidget(MaterialApp(home: Home()));
 
     await tester.pumpAndSettle();
     final textField = find.byType(TextField);
@@ -92,7 +95,5 @@ void main() {
     expect(find.text('Hello'), findsOneWidget);
 
     // TODO: Test if search function is working correctly
-
   });
-
 }
