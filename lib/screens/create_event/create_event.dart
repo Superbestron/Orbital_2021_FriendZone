@@ -232,6 +232,7 @@ class _CreateEventState extends State<CreateEvent> {
             Padding(
               padding: const EdgeInsets.all(50.0),
               child: FloatingActionButton(
+                key: Key('floatingActionButton'),
                 backgroundColor: ORANGE_1,
                 focusColor: selectedColor,
                 tooltip: 'Create Event',
@@ -247,6 +248,7 @@ class _CreateEventState extends State<CreateEvent> {
                       _name, _dateTime,
                       _pax, _description, _icon,
                     );
+                    print('Creating event...');
                     _formKey.currentState!.reset();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

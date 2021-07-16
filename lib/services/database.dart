@@ -93,7 +93,6 @@ class DatabaseService {
     attendees.add(uid);
     updateEventData(location, telegramURL, name, dateTime, pax, description,
         icon, newDocID, attendees, false);
-    print("Creating Event...");
     return newDocID;
   }
 

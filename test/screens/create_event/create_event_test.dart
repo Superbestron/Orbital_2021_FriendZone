@@ -1,9 +1,11 @@
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:myapp/models/user.dart';
 import 'package:myapp/screens/create_event/create_event.dart';
+import 'package:myapp/screens/home/home.dart';
 import 'package:myapp/services/auth.dart';
 import 'package:myapp/shared/constants.dart';
 import '../../mock.dart'; // from: https://github.com/FirebaseExtended/flutterfire/blob/master/packages/firebase_auth/firebase_auth/test/mock.dart
@@ -65,6 +67,10 @@ void main() {
   });
 
   testWidgets('create event', (tester) async {
+    final firestore = FakeFirebaseFirestore();
+    Home.setFirebaseFirestore(firestore);
+    UserObj user = UserObj(uid: '123456');
+
     await tester.pumpWidget(
       StreamProvider<UserObj?>.value(
           initialData: null,
@@ -73,24 +79,17 @@ void main() {
               home: StreamProvider<List<Event>?>.value(
                 initialData: null,
                 value: DatabaseService.events,
-                child: CreateEvent(jumpToPage: () {}),
+                child: Provider<UserObj?>(
+                  create: (context) => user,
+                  child: CreateEvent(jumpToPage: (_) {})
+                ),
               )
           )),
     );
 
-    // 1st Icon is selected by default
-    List<bool> _isSelected = [true, false, false, false, false];
     String _name = 'eventName';
-    String _telegramURL = 'telegramURL';
-    DateTime _dateTime =
-    DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 7);
-    TimeOfDay _time = TimeOfDay.now();
-    int _pax = 2;
+    String _telegramURL = 't.me/joinchat/test';
     String _description = 'descriptionName';
-    int _icon = 0;
-    List<int> numbers = List.generate(9, (index) => index++);
-
-    String _location = LOCATIONS[0][0];
 
     final textFields = find.byType(TextField);
     final nameField = textFields.at(0);
@@ -105,5 +104,33 @@ void main() {
 
     await tester.tap(telegramField);
     await tester.enterText(telegramField, _telegramURL);
+
+    final icon = find.byWidget(IMAGE_LIST[2]);
+    await tester.dragUntilVisible(icon, find.byType(BouncingScrollPhysics), const Offset(500.0, 404.0));
+    await tester.pump();
+    await tester.tap(icon);
+
+    final addButton = find.byKey(Key('floatingActionButton'));
+    await tester.dragUntilVisible(addButton, find.byType(BouncingScrollPhysics), const Offset(400.0, 660.5));
+    await tester.pump();
+    await tester.tap(addButton);
+
+    DateTime _dateTime = DateTime.now();
+    TimeOfDay _time = TimeOfDay.now();
+    _dateTime = DateTime(_dateTime.year, _dateTime.month,
+        _dateTime.day, _time.hour, _time.minute);
+
+    Stream<List<Event>> stream = DatabaseService.events;
+    List<Event> list = await stream.elementAt(0);
+    Event event = list.first;
+
+    assert(event.name == _name);
+    assert(_dateTime.difference(event.dateTime) < Duration(minutes: 1));
+    assert(event.description == _description);
+    assert(event.telegramURL == _telegramURL);
+    assert(event.pax == 2);
+    assert(event.icon == 2);
+    assert(event.eventMarked == false);
+
   });
 }
