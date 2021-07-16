@@ -41,7 +41,7 @@ void main() {
     final text3 = find.text("Select Time:");
     final text4 = find.text("Event Description");
     final descriptionField = textFields.at(1);
-    final text5 = find.text("Telegram chat URL");
+    final text5 = find.text("Telegram Chat URL");
     final telegramField = textFields.at(2);
     final text6 = find.text("Pax: ");
     final text7 = find.text("Location: ");
@@ -114,6 +114,9 @@ void main() {
     await tester.dragUntilVisible(addButton, find.byType(BouncingScrollPhysics), const Offset(400.0, 660.5));
     await tester.pump();
     await tester.tap(addButton);
+    await tester.pump(const Duration(seconds: 1));
+    final confirmButton = find.byKey(Key('confirmButton'));
+    await tester.tap(confirmButton);
 
     DateTime _dateTime = DateTime.now();
     TimeOfDay _time = TimeOfDay.now();

@@ -156,7 +156,7 @@ class _CreateEventState extends State<CreateEvent> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 decoration: textInputDecoration.copyWith(
-                  hintText: 'Telegram chat URL',
+                  hintText: 'Telegram Chat URL',
                   prefixIcon: Icon(Icons.message)
                 ),
                 validator: (val) => val!.isNotEmpty && !val.startsWith('t.me/joinchat/')
@@ -239,31 +239,94 @@ class _CreateEventState extends State<CreateEvent> {
                 child: Icon(Icons.add, color: Colors.white),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    _dateTime = DateTime(_dateTime.year, _dateTime.month,
-                        _dateTime.day, _time.hour, _time.minute);
-                    String _uid = user!.uid;
-                    DatabaseService db = DatabaseService(uid: _uid);
-                    String eventID = await db.createEventData(
-                      _location, _telegramURL,
-                      _name, _dateTime,
-                      _pax, _description, _icon,
-                    );
-                    print('Creating event...');
-                    _formKey.currentState!.reset();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        backgroundColor: BACKGROUND_COLOR,
-                        content: Text('Successfully created an event!'),
-                        action: SnackBarAction(
-                          label: 'Undo',
-                          onPressed: () async {
-                            await DatabaseService.deleteEvent(eventID);
-                          },
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Row(
+                          children: [
+                            Text("Create Event"),
+                            const SizedBox(width: 10),
+                            Icon(Icons.create)
+                          ],
                         ),
-                      )
+                        content: RichText(
+                          text: TextSpan(
+                            style: NORMAL,
+                            // ''
+                            // 'Date: ${getDateText(_dateTime)}\n'
+                            // 'Time: '
+                            // 'Event Description: '
+                            // 'Telegram Chat URL: $_telegramURL\n'
+                            // 'Pax: $_pax\n'
+                            // 'Location: $_location\n'
+                            // 'Event Category: ${CATEGORIES[_icon]}'
+                            children: <TextSpan> [
+                              TextSpan(text: 'Are you sure you want to create an event with these details?\n\n'),
+                              TextSpan(text: 'Event Name: ', style: BOLDED_NORMAL),
+                              TextSpan(text: '$_name\n'),
+                              TextSpan(text: 'Date: ', style: BOLDED_NORMAL),
+                              TextSpan(text: '${getDateText(_dateTime)}\n'),
+                              TextSpan(text: 'Time: ', style: BOLDED_NORMAL),
+                              TextSpan(text: '${_getTimeText()}\n'),
+                              TextSpan(text: 'Event Description: ', style: BOLDED_NORMAL),
+                              TextSpan(text: '$_description\n'),
+                              TextSpan(text: 'Telegram Chat URL: ', style: BOLDED_NORMAL),
+                              TextSpan(text: '$_telegramURL\n'),
+                              TextSpan(text: 'Pax: ', style: BOLDED_NORMAL),
+                              TextSpan(text: '$_pax\n'),
+                              TextSpan(text: 'Location: ', style: BOLDED_NORMAL),
+                              TextSpan(text: '$_location\n'),
+                              TextSpan(text: 'Event Category: ', style: BOLDED_NORMAL),
+                              TextSpan(text: '${CATEGORIES[_icon]}\n')
+                            ],
+                          ),
+
+                        ),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text("Cancel",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                )),
+                          ),
+                          TextButton(
+                            key: Key('confirmButton'),
+                            onPressed: () async {
+                              _dateTime = DateTime(_dateTime.year, _dateTime.month,
+                                  _dateTime.day, _time.hour, _time.minute);
+                              String _uid = user!.uid;
+                              DatabaseService db = DatabaseService(uid: _uid);
+                              String eventID = await db.createEventData(
+                                _location, _telegramURL,
+                                _name, _dateTime,
+                                _pax, _description, _icon,
+                              );
+                              print('Creating Event...');
+                              _formKey.currentState!.reset();
+                              Navigator.pop(context);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: BACKGROUND_COLOR,
+                                    content: Text('Successfully created an event!'),
+                                    action: SnackBarAction(
+                                      label: 'Undo',
+                                      onPressed: () async {
+                                        await DatabaseService.deleteEvent(eventID);
+                                      },
+                                    ),
+                                  )
+                              );
+                              // Go Back to Home Screen
+                              widget.jumpToPage(0);
+                            },
+                            child: Text("Confirm"),
+                          ),
+                        ],
+                      ),
                     );
-                    // Go Back to Home Screen
-                    widget.jumpToPage(0);
                   }
                 }
               ),
