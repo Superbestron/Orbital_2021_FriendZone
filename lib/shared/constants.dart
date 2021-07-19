@@ -25,7 +25,7 @@ var boxDecoration = BoxDecoration(
 const List<Image> IMAGE_LIST = [
   Image(image: AssetImage('assets/event_icons/Friends.png')),
   Image(image: AssetImage('assets/event_icons/Sports.png')),
-  Image(image: AssetImage('assets/event_icons/Study.png')),
+  Image(image: AssetImage('assets/event_icons/Study.png'), key: Key('Study')),
   Image(image: AssetImage('assets/event_icons/food.png')),
   // Image(image: AssetImage('assets/event_icons/Cocktail Glass.png')),
 ];

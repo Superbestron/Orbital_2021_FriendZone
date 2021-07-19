@@ -93,6 +93,7 @@ class _CreateEventState extends State<CreateEvent> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                key: Key('Name'),
                 decoration: textInputDecoration.copyWith(
                   hintText: 'Event Name',
                   prefixIcon: Icon(Icons.event),
@@ -112,6 +113,7 @@ class _CreateEventState extends State<CreateEvent> {
                     subtitle: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
+                        key: Key('Date'),
                         child: Text(getDateText(_dateTime)),
                         onPressed: () { pickDate(context); },
                           style: ElevatedButton.styleFrom(
@@ -131,6 +133,7 @@ class _CreateEventState extends State<CreateEvent> {
                     subtitle: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
+                        key: Key('Time'),
                         child: Text(_getTimeText()),
                         onPressed: () { pickTime(context); },
                         style: ElevatedButton.styleFrom(
@@ -146,6 +149,7 @@ class _CreateEventState extends State<CreateEvent> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                key: Key('Description'),
                 decoration: textInputDecoration.copyWith(hintText: 'Event Description'),
                 validator: (val) => val!.isEmpty ? 'Enter an event description' : null,
                 onChanged: (val) => setState(() { _description = val; }),
@@ -155,6 +159,7 @@ class _CreateEventState extends State<CreateEvent> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                key: Key('Telegram'),
                 decoration: textInputDecoration.copyWith(
                   hintText: 'Telegram Chat URL',
                   prefixIcon: Icon(Icons.message)
@@ -173,16 +178,17 @@ class _CreateEventState extends State<CreateEvent> {
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: DropdownButton(
-                        value: _pax,
-                        items: numbers.map((x) => x + 2).map((pax) {
-                          return DropdownMenuItem(
-                            value: pax,
-                            child: Text('$pax'),
-                          );
-                        }).toList(),
-                        onChanged: (val) {
-                          return setState(() { _pax = int.parse(val.toString()); });
-                        }
+                      key: Key('Pax'),
+                      value: _pax,
+                      items: numbers.map((x) => x + 2).map((pax) {
+                        return DropdownMenuItem(
+                          value: pax,
+                          child: Text('$pax'),
+                        );
+                      }).toList(),
+                      onChanged: (val) {
+                        return setState(() { _pax = int.parse(val.toString()); });
+                      }
                     ),
                   ),
                 ],
@@ -195,25 +201,26 @@ class _CreateEventState extends State<CreateEvent> {
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 2.5, 10, 20),
               child: DropdownButton(
-                  itemHeight: kMinInteractiveDimension,
-                  isDense: true,
-                  value: _location,
-                  items: LOCATIONS.map((location) {
-                    return DropdownMenuItem(
-                      value: location[0],
-                      child: SizedBox(
-                        child: Text('${location[0]}',
-                            overflow: TextOverflow.visible
-                        ),
-                        width: 270,
+                key: Key('Location'),
+                itemHeight: kMinInteractiveDimension,
+                isDense: true,
+                value: _location,
+                items: LOCATIONS.map((location) {
+                  return DropdownMenuItem(
+                    value: location[0],
+                    child: SizedBox(
+                      child: Text('${location[0]}',
+                          overflow: TextOverflow.visible
                       ),
-                    );
-                  }).toList(),
-                  onChanged: (val) {
-                    return setState(() {
-                      _location = val.toString();
-                    });
-                  }
+                      width: 270,
+                    ),
+                  );
+                }).toList(),
+                onChanged: (val) {
+                  return setState(() {
+                    _location = val.toString();
+                  });
+                }
               ),
             ),
             Padding(

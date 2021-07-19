@@ -116,6 +116,7 @@ class _HomeState extends State<Home> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
                       child: TextButton.icon(
+                        key: Key('Sign Out Button'),
                         icon: Icon(Icons.person, color: Colors.black),
                         label: Text('Sign Out', style: TextStyle(color: Colors.black)),
                         onPressed: () async {
@@ -136,6 +137,7 @@ class _HomeState extends State<Home> {
                                       )),
                                 ),
                                 TextButton(
+                                  key: Key('Confirm'),
                                   onPressed: () async {
                                     await _auth.signOut();
                                     ScaffoldMessenger.of(context)
@@ -170,7 +172,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 bottomNavigationBar: BottomNavigationBar(
-                  key: Key('bottom'),
+                  key: Key('Bottom Navigation Bar'),
                   currentIndex: _selectedIndex,
                   unselectedItemColor: Colors.black,
                   selectedItemColor: Colors.cyan,
@@ -185,7 +187,7 @@ class _HomeState extends State<Home> {
                       label: 'Maps',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.add),
+                      icon: Icon(Icons.add, key: Key('Home Create')),
                       label: 'Create',
                     ),
                     BottomNavigationBarItem(

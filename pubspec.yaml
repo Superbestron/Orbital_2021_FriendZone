@@ -54,11 +54,13 @@ dependencies:
   animated_text_kit: ^4.2.1
   flutter_bounce: ^1.1.0
   fake_cloud_firestore: ^1.1.2
-  rxdart: ^0.27.1
 
 dev_dependencies:
+  flutter_driver:
+    sdk: flutter
   flutter_test:
     sdk: flutter
+  test: ^1.15.4
 
 flutter_icons:
   android: launcher_icon
