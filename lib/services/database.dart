@@ -178,6 +178,13 @@ class DatabaseService {
       deleteEvent(event.eventID);
       event.attendees.forEach((attendee) async {
         UserData user = await getUserData(attendee);
+        if (!event.eventMarked) {
+          addPointsToUser(user.uid, 50);
+          if (user.uid == event.attendees[0]) {
+            // award double points if user is initiator
+            addPointsToUser(user.uid, 50);
+          }
+        }
         user.events.removeWhere((eventID) => eventID == event.eventID);
         updateUserDataWithID(
             user.uid,
