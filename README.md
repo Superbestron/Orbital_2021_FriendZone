@@ -76,7 +76,7 @@ In order to view, join and create events, you need to have a FriendZone account.
   * Have your own profile page to display to other users
 
 <p align="center">
-   <img src='https://user-images.githubusercontent.com/65549665/123063857-5987ce80-d440-11eb-9d02-09f6cc396d66.png' width=350/>
+   <img src='assets/docs/milestone_3/2.jpeg' width=350/>
 </p>
 
 Provide your **Full Name**, **Email Address** and **Password** to create a new account. Your name and email address cannot be empty, and your password must be at least 6-characters long. Ensure that both passwords entered are the same. Tap on “Register” to create your account. If you want to return to the Sign In page, tap on "Back to Sign In".
@@ -84,7 +84,7 @@ Provide your **Full Name**, **Email Address** and **Password** to create a new a
 ## Logging into your account
 If you already have an account, you can simply log into your account with your email and password. Tap “Sign In” to continue.
 <p align="center">
-   <img src='https://user-images.githubusercontent.com/65549665/123066599-c8febd80-d442-11eb-8676-6288bb47efdb.png' width=350/>
+   <img src='assets/docs/milestone_3/1.jpeg' width=350/>
 </p>
 
 ## Navigating the Event List Page
@@ -97,14 +97,14 @@ The Event List Page is the main “Home page” of FriendZone. All the upcoming 
 At the bottom of the screen is the Navigation Bar. There are 5 possible main pages for you to navigate to: Home, Maps, Create Event, Notifications and Profile Page. Tapping on these buttons will bring you to the respective screens
 
 <p align="center">
-   <img src='https://user-images.githubusercontent.com/65549665/123069206-285dcd00-d445-11eb-8eac-567240907343.png' width=350/>
+   <img src='assets/docs/milestone_3/3.jpeg' width=350/>
 </p>
 
 ## Joining (or Un-Joining) an Event
 After you have tapped on an event that you are interested to attend, you will be brought to the Event Details page. Here, even more event details are shown, like the event **Initiator** and **Description**. If you have friends that have already signed up for this event, it will be displayed as a tappable card with their **Name**, **Level** and **Profile Picture**. Tapping on the card will bring you to that particular user’s profile page.
 
 <p align="center">
-   <img src='https://user-images.githubusercontent.com/65549665/123069705-9bffda00-d445-11eb-9a71-4cdfcd67ae6f.png' width=350/>
+   <img src='assets/docs/milestone_3/4.jpeg' width=350/>
 </p>
 
 There are 2 buttons shown on the page, “Join Telegram” and “Confirm Attendance”. Tapping on “Join Telegram” will pop up a web link that brings you to the event telegram group chat, where you can chat with the event initiator or with other potential attendees. When you tap on “Confirm Attendance”, a dialog box will pop up, asking you if you want to confirm your attendance for the event. If you tap on “Confirm”, the event pax will be updated with your attendance and it will be immediately reflected on the event page. Consequently, the button will change colour to a lighter orange and the button text will change to “Revoke Attendance”.
@@ -116,7 +116,7 @@ There are 2 buttons shown on the page, “Join Telegram” and “Confirm Attend
 If you click on “Confirm”, the event pax will be updated with your attendance and it will be immediately reflected on the event page. Consequently, the button will change colour to a lighter orange and the button text will change to “Revoke Attendance”.
 
 <p align="center">
-   <img src='https://user-images.githubusercontent.com/65549665/123070803-abcbee00-d446-11eb-9d00-1fee8ab04043.png' width=300/>
+   <img src='assets/docs/milestone_3/5.jpeg' width=300/>
 </p>
 
 In the case where you have any last-minute plans and you cannot participate in the event that you have signed up for, simply tap on the “Revoke Attendance” button and a dialog box will pop up, asking you if you want to revoke your attendance for the event. If you tap on “Confirm”, the event pax will be updated with your withdrawal and it will be immediately reflected on the event page. _**Take note** that withdrawals are only possible if the current time is more than 48 hours away from the event to give others sufficient time to replace your slot._
@@ -128,7 +128,7 @@ In the case where you have any last-minute plans and you cannot participate in t
 If maximum capacity for a particular event is reached, instead of an orange button with a “Confirm Attendance” text, a grey button with an “Event Full” text will be shown, and tapping on it will give an error.
 
 <p align="center">
-   <img src='https://user-images.githubusercontent.com/65549665/123073854-60ffa580-d449-11eb-984d-eff31d3fbe00.png' width=300/>
+   <img src='assets/docs/milestone_3/6.jpeg' width=300/>
 </p>
 
 ## Maps
@@ -148,8 +148,8 @@ The Create Event screen can be accessed via tapping on the “Create Event” ta
   * **Icon**: First Icon from the left
 
 <p align="center">
-  <img src='https://user-images.githubusercontent.com/65549665/123074001-855b8200-d449-11eb-821e-e3c9ace9f290.png' width=300/>
-  <img src='https://user-images.githubusercontent.com/65549665/123074336-c6ec2d00-d449-11eb-9ff4-5661d1f835aa.png' width=300/>
+  <img src='assets/docs/milestone_3/7.jpeg' width=300/>
+  <img src='assets/docs/milestone_3/8.jpeg' width=300/>
 </p>
 
 For the rest of the other fields, it cannot be left blank except for the telegram link. Simply leave the telegram link field blank if you do not wish to create a Telegram group for this event. Otherwise, the link must begin with “t.me/joinchat/” in order for it to be valid. 
@@ -164,6 +164,14 @@ If you are the initiator of a particular event, you can tap on that event via th
 <p align="center">
   <img src='https://user-images.githubusercontent.com/65549665/123074986-60b3da00-d44a-11eb-9f73-4a5e879673c8.png' width=300/>
   <img src='https://user-images.githubusercontent.com/65549665/123078014-24ce4400-d44d-11eb-8c88-cdbd1e9a2eaa.png' width=300/>
+</p>
+
+## Mark Attendance
+Once the event has passed, the initiator will be able to see a button to mark the attendance when the initiator views the event page. After submitting the attendance, users who turn up for the event will be awarded 50 FriendZ points while those who are absent will be penalised with 20 FriendZ points.
+
+<p align="center">
+  <img src='assets/docs/milestone_3/9.jpeg' width=300/>
+  <img src='assets/docs/milestone_3/10.jpeg' width=300/>
 </p>
 
 ## Notifications
