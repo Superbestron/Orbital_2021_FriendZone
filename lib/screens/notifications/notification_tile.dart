@@ -7,6 +7,7 @@ import 'package:myapp/services/database.dart';
 import 'package:myapp/shared/constants.dart';
 import 'package:myapp/shared/loading_transparent.dart';
 import 'package:myapp/shared/widgets.dart';
+import 'package:provider/provider.dart';
 
 class NotificationTile extends StatefulWidget {
   final String uid;
@@ -68,7 +69,11 @@ class _NotificationTileState extends State<NotificationTile> {
                     backgroundColor: Colors.transparent,
                     // AppBar that is shown on event_page
                     appBar: buildAppBar('User\'s Profile'),
-                    body: ProfilePage(profileID: notification.additionalInfo['profileID']),
+                    body: StreamProvider<List<Event>?>.value(
+                      initialData: null,
+                      value: DatabaseService.events,
+                      child: ProfilePage(profileID: notification.additionalInfo['profileID']),
+                    )
                   )
                 ],
               ),
