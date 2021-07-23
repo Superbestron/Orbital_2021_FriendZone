@@ -25,6 +25,10 @@ Proposed level of achievement: **Artemis** <br>
 # About
 FriendZone is an interactive and user-friendly platform for users to find like-minded people and meet up for various events.
 
+# Installation
+1. Use android studio to run an emulator and run the app in dev mode OR
+2. ```flutter run build``` to build the apk and install the apk on a device
+
 # Key Features
 
 <img align="right" src="assets/docs/milestone_2/events_near_you_demo.gif" height="400">
