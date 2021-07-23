@@ -3,15 +3,6 @@
 Team Name: **Ariera** <br>
 Proposed level of achievement: **Artemis** <br>
 
-<p align='center'>
-  <i>Click</i>
-  <a href="https://www.youtube.com/watch?v=OnY5jBn64zk&ab_channel=NgTzeHenn">
-    <i>here</i>
-  </a>
-  <i>to watch our promotional video on YouTube</i>
-</p>
-
-
 <p align="center">
   <a href="https://github.com/Superbestron/Orbital_2021_FriendZone/blob/master/assets/docs/milestone_2/poster.png">
     <img src="https://github.com/Superbestron/Orbital_2021_FriendZone/blob/master/assets/docs/milestone_2/poster.png" width="50%" height=auto>
