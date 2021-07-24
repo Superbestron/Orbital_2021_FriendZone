@@ -110,25 +110,25 @@ class _EditEventState extends State<EditEvent> {
           fit: BoxFit.cover,
           clipBehavior: Clip.hardEdge,
         ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              leading: BackButton(color: Colors.black),
-              title: Text(
-                "Edit Event",
-                style: TextStyle(color: Colors.black),
-              ),
-              actions: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 15, 0),
-                  child: IMAGE_LIST[_icon],
-                ),
-              ],
-              toolbarHeight: 100.0,
+        Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            leading: BackButton(color: Colors.black),
+            title: Text(
+              "Edit Event",
+              style: TextStyle(color: Colors.black),
             ),
-            body: Form(
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 15, 0),
+                child: IMAGE_LIST[_icon],
+              ),
+            ],
+            toolbarHeight: 100.0,
+          ),
+          body: Container(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: Form(
               key: _formKey,
               child: ListView(
                 physics: BouncingScrollPhysics(),

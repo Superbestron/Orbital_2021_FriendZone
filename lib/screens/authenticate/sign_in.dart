@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myapp/services/auth.dart';
@@ -15,7 +16,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  final AuthService _auth = AuthService();
+  final AuthService _auth = AuthService(auth: FirebaseAuth.instance);
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
@@ -33,6 +34,7 @@ class _SignInState extends State<SignIn> {
           Center(child: SvgPicture.asset('assets/logo.svg')),
           const SizedBox(height: 20.0),
           TextFormField(
+            key: Key('Sign In Email'),
             decoration:
             textInputDecoration.copyWith(
               hintText: 'NUS Email',
@@ -46,6 +48,7 @@ class _SignInState extends State<SignIn> {
           ),
           const SizedBox(height: 20.0),
           TextFormField(
+            key: Key('Sign In Password'),
             decoration:
             textInputDecoration.copyWith(
               hintText: 'Password',
@@ -76,8 +79,6 @@ class _SignInState extends State<SignIn> {
                         context: context,
                         builder: (context) => AlertDialog(
                           title: Text("Reset Password"),
-                          // content: Text(
-                          //     'Are you sure you want to sign out?'),
                           content: SizedBox(
                             child: Column(
                               children: [
@@ -111,7 +112,7 @@ class _SignInState extends State<SignIn> {
                             ),
                             TextButton(
                               onPressed: () async {
-                                await AuthService().resetPassword(resetPasswordEmail);
+                                await _auth.resetPassword(resetPasswordEmail);
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(
                                   backgroundColor: BACKGROUND_COLOR,
@@ -137,6 +138,7 @@ class _SignInState extends State<SignIn> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: ElevatedButton(
+              key: Key('Sign In Button'),
               child: Text('Sign In', style: TextStyle(color: Colors.white)),
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
@@ -176,6 +178,7 @@ class _SignInState extends State<SignIn> {
               Text('Don\'t have an account?', style: NORMAL),
               const SizedBox(width: 15),
               GestureDetector(
+                key: Key('Register Gesture'),
                 child: Text('Register', style: BOLDED_NORMAL.copyWith(
                   color: ORANGE_1
                 )),

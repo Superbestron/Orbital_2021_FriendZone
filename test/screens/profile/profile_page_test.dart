@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,7 +20,7 @@ void main() {
     await tester.pumpWidget(
       StreamProvider<UserObj?>.value(
           initialData: UserObj(uid: '0'),
-          value: AuthService().user,
+          value: AuthService(auth: FirebaseAuth.instance).user,
           child: MaterialApp(
               home: StreamProvider<List<Event>?>.value(
                 initialData: null,

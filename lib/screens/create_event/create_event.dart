@@ -93,6 +93,7 @@ class _CreateEventState extends State<CreateEvent> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                key: Key('Name'),
                 decoration: textInputDecoration.copyWith(
                   hintText: 'Event Name',
                   prefixIcon: Icon(Icons.event),
@@ -112,6 +113,7 @@ class _CreateEventState extends State<CreateEvent> {
                     subtitle: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
+                        key: Key('Date'),
                         child: Text(getDateText(_dateTime)),
                         onPressed: () { pickDate(context); },
                           style: ElevatedButton.styleFrom(
@@ -131,6 +133,7 @@ class _CreateEventState extends State<CreateEvent> {
                     subtitle: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
+                        key: Key('Time'),
                         child: Text(_getTimeText()),
                         onPressed: () { pickTime(context); },
                         style: ElevatedButton.styleFrom(
@@ -146,6 +149,7 @@ class _CreateEventState extends State<CreateEvent> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                key: Key('Description'),
                 decoration: textInputDecoration.copyWith(hintText: 'Event Description'),
                 validator: (val) => val!.isEmpty ? 'Enter an event description' : null,
                 onChanged: (val) => setState(() { _description = val; }),
@@ -155,8 +159,9 @@ class _CreateEventState extends State<CreateEvent> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                key: Key('Telegram'),
                 decoration: textInputDecoration.copyWith(
-                  hintText: 'Telegram chat URL',
+                  hintText: 'Telegram Chat URL',
                   prefixIcon: Icon(Icons.message)
                 ),
                 validator: (val) => val!.isNotEmpty && !val.startsWith('t.me/joinchat/')
@@ -173,16 +178,17 @@ class _CreateEventState extends State<CreateEvent> {
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: DropdownButton(
-                        value: _pax,
-                        items: numbers.map((x) => x + 2).map((pax) {
-                          return DropdownMenuItem(
-                            value: pax,
-                            child: Text('$pax'),
-                          );
-                        }).toList(),
-                        onChanged: (val) {
-                          return setState(() { _pax = int.parse(val.toString()); });
-                        }
+                      key: Key('Pax'),
+                      value: _pax,
+                      items: numbers.map((x) => x + 2).map((pax) {
+                        return DropdownMenuItem(
+                          value: pax,
+                          child: Text('$pax'),
+                        );
+                      }).toList(),
+                      onChanged: (val) {
+                        return setState(() { _pax = int.parse(val.toString()); });
+                      }
                     ),
                   ),
                 ],
@@ -195,30 +201,31 @@ class _CreateEventState extends State<CreateEvent> {
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 2.5, 10, 20),
               child: DropdownButton(
-                  itemHeight: kMinInteractiveDimension,
-                  isDense: true,
-                  value: _location,
-                  items: LOCATIONS.map((location) {
-                    return DropdownMenuItem(
-                      value: location[0],
-                      child: SizedBox(
-                        child: Text('${location[0]}',
-                            overflow: TextOverflow.visible
-                        ),
-                        width: 270,
+                key: Key('Location'),
+                itemHeight: kMinInteractiveDimension,
+                isDense: true,
+                value: _location,
+                items: LOCATIONS.map((location) {
+                  return DropdownMenuItem(
+                    value: location[0],
+                    child: SizedBox(
+                      child: Text('${location[0]}',
+                          overflow: TextOverflow.visible
                       ),
-                    );
-                  }).toList(),
-                  onChanged: (val) {
-                    return setState(() {
-                      _location = val.toString();
-                    });
-                  }
+                      width: 270,
+                    ),
+                  );
+                }).toList(),
+                onChanged: (val) {
+                  return setState(() {
+                    _location = val.toString();
+                  });
+                }
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.5),
-              child: Text('Choose your event category: ', style: BOLDED_NORMAL),
+              child: Text('Choose your event category:', style: BOLDED_NORMAL),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -232,36 +239,101 @@ class _CreateEventState extends State<CreateEvent> {
             Padding(
               padding: const EdgeInsets.all(50.0),
               child: FloatingActionButton(
+                key: Key('floatingActionButton'),
                 backgroundColor: ORANGE_1,
                 focusColor: selectedColor,
                 tooltip: 'Create Event',
                 child: Icon(Icons.add, color: Colors.white),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    _dateTime = DateTime(_dateTime.year, _dateTime.month,
-                        _dateTime.day, _time.hour, _time.minute);
-                    String _uid = user!.uid;
-                    DatabaseService db = DatabaseService(uid: _uid);
-                    String eventID = await db.createEventData(
-                      _location, _telegramURL,
-                      _name, _dateTime,
-                      _pax, _description, _icon,
-                    );
-                    _formKey.currentState!.reset();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        backgroundColor: BACKGROUND_COLOR,
-                        content: Text('Successfully created an event!'),
-                        action: SnackBarAction(
-                          label: 'Undo',
-                          onPressed: () async {
-                            await DatabaseService.deleteEvent(eventID);
-                          },
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Row(
+                          children: [
+                            Text("Create Event"),
+                            const SizedBox(width: 10),
+                            Icon(Icons.create)
+                          ],
                         ),
-                      )
+                        content: RichText(
+                          text: TextSpan(
+                            style: NORMAL,
+                            // ''
+                            // 'Date: ${getDateText(_dateTime)}\n'
+                            // 'Time: '
+                            // 'Event Description: '
+                            // 'Telegram Chat URL: $_telegramURL\n'
+                            // 'Pax: $_pax\n'
+                            // 'Location: $_location\n'
+                            // 'Event Category: ${CATEGORIES[_icon]}'
+                            children: <TextSpan> [
+                              TextSpan(text: 'Are you sure you want to create an event with these details?\n\n'),
+                              TextSpan(text: 'Event Name: ', style: BOLDED_NORMAL),
+                              TextSpan(text: '$_name\n'),
+                              TextSpan(text: 'Date: ', style: BOLDED_NORMAL),
+                              TextSpan(text: '${getDateText(_dateTime)}\n'),
+                              TextSpan(text: 'Time: ', style: BOLDED_NORMAL),
+                              TextSpan(text: '${_getTimeText()}\n'),
+                              TextSpan(text: 'Event Description: ', style: BOLDED_NORMAL),
+                              TextSpan(text: '$_description\n'),
+                              TextSpan(text: 'Telegram Chat URL: ', style: BOLDED_NORMAL),
+                              TextSpan(text: '$_telegramURL\n'),
+                              TextSpan(text: 'Pax: ', style: BOLDED_NORMAL),
+                              TextSpan(text: '$_pax\n'),
+                              TextSpan(text: 'Location: ', style: BOLDED_NORMAL),
+                              TextSpan(text: '$_location\n'),
+                              TextSpan(text: 'Event Category: ', style: BOLDED_NORMAL),
+                              TextSpan(text: '${CATEGORIES[_icon]}\n')
+                            ],
+                          ),
+
+                        ),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text("Cancel",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                )),
+                          ),
+                          TextButton(
+                            key: Key('confirmButton'),
+                            onPressed: () async {
+                              _dateTime = DateTime(_dateTime.year, _dateTime.month,
+                                  _dateTime.day, _time.hour, _time.minute);
+                              String _uid = user!.uid;
+                              DatabaseService db = DatabaseService(uid: _uid);
+                              String eventID = await db.createEventData(
+                                _location, _telegramURL,
+                                _name, _dateTime,
+                                _pax, _description, _icon,
+                              );
+                              print('Creating Event...');
+                              _formKey.currentState!.reset();
+                              Navigator.pop(context);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: BACKGROUND_COLOR,
+                                    content: Text('Successfully created an event!'),
+                                    action: SnackBarAction(
+                                      label: 'Undo',
+                                      onPressed: () async {
+                                        await DatabaseService.deleteEvent(eventID);
+                                      },
+                                    ),
+                                  )
+                              );
+                              // Go Back to Home Screen
+                              widget.jumpToPage(0);
+                            },
+                            child: Text("Confirm"),
+                          ),
+                        ],
+                      ),
                     );
-                    // Go Back to Home Screen
-                    widget.jumpToPage(0);
                   }
                 }
               ),

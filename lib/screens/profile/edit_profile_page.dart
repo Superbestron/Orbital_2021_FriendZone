@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -233,7 +234,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         );
 
                         // update in firebase profile authentication
-                        await AuthService().updateDisplayName(_name);
+                        await AuthService(auth: FirebaseAuth.instance).updateDisplayName(_name);
 
                         // Go back to the profile page screen with the selected image
                         // (or default image if the user decides not to put an image)

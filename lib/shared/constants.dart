@@ -25,7 +25,7 @@ var boxDecoration = BoxDecoration(
 const List<Image> IMAGE_LIST = [
   Image(image: AssetImage('assets/event_icons/Friends.png')),
   Image(image: AssetImage('assets/event_icons/Sports.png')),
-  Image(image: AssetImage('assets/event_icons/Study.png')),
+  Image(image: AssetImage('assets/event_icons/Study.png'), key: Key('Study')),
   Image(image: AssetImage('assets/event_icons/food.png')),
   // Image(image: AssetImage('assets/event_icons/Cocktail Glass.png')),
 ];
@@ -104,8 +104,8 @@ Color? selectedColor = HexColor.fromHex('E08956');
 // Different text types
 const BOLDED_HEADING = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
 const TEXT_FIELD_HEADING = TextStyle(fontSize: 20);
-const BOLDED_NORMAL = TextStyle(fontWeight: FontWeight.bold, fontSize: 16);
-const NORMAL = TextStyle(fontSize: 16);
+const BOLDED_NORMAL = TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black);
+const NORMAL = TextStyle(fontSize: 16, color: Colors.black);
 
 // locations for selection
 const List LOCATIONS = [

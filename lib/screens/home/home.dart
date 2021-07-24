@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:myapp/models/event.dart';
 import 'package:myapp/screens/home/event_list.dart';
@@ -14,13 +16,19 @@ import 'package:myapp/shared/constants.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
+
+  static FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  static setFirebaseFirestore(FirebaseFirestore store) async {
+    firebaseFirestore = store;
+  }
+
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
-  final AuthService _auth = AuthService();
+  final AuthService _auth = AuthService(auth: FirebaseAuth.instance);
   PageController _pageController = PageController();
   late List<Widget> _children;
 
@@ -35,7 +43,7 @@ class _HomeState extends State<Home> {
     ];
     super.initState();
 
-    LocalNotificationService.initialize(_onItemTapped);
+    // LocalNotificationService.initialize(_onItemTapped);
 
     // gives you the message on which user taps
     // and it opened the app from terminated state
@@ -63,7 +71,7 @@ class _HomeState extends State<Home> {
       // _onItemTapped(int.parse(routeFromMessage));
     });
 
-    DatabaseService(uid: AuthService().userUid).saveDeviceToken();
+    DatabaseService(uid: _auth.userUid).saveDeviceToken();
   }
 
 
@@ -108,6 +116,7 @@ class _HomeState extends State<Home> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
                       child: TextButton.icon(
+                        key: Key('Sign Out Button'),
                         icon: Icon(Icons.person, color: Colors.black),
                         label: Text('Sign Out', style: TextStyle(color: Colors.black)),
                         onPressed: () async {
@@ -128,6 +137,7 @@ class _HomeState extends State<Home> {
                                       )),
                                 ),
                                 TextButton(
+                                  key: Key('Confirm'),
                                   onPressed: () async {
                                     await _auth.signOut();
                                     ScaffoldMessenger.of(context)
@@ -162,6 +172,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 bottomNavigationBar: BottomNavigationBar(
+                  key: Key('Bottom Navigation Bar'),
                   currentIndex: _selectedIndex,
                   unselectedItemColor: Colors.black,
                   selectedItemColor: Colors.cyan,
@@ -176,7 +187,7 @@ class _HomeState extends State<Home> {
                       label: 'Maps',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.add),
+                      icon: Icon(Icons.add, key: Key('Home Create')),
                       label: 'Create',
                     ),
                     BottomNavigationBarItem(
