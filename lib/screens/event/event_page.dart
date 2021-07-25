@@ -491,7 +491,7 @@ class _EventPageState extends State<EventPage> {
                                         padding: EdgeInsets.all(8),
                                         child: Text(
                                           "Mark Attendance",
-                                          style: TextStyle(fontSize: 12, color: Colors.black.withOpacity(1.0)),
+                                          style: TextStyle(color: Colors.black.withOpacity(1.0)),
                                           textAlign: TextAlign.center,
                                         ))
                                     ))

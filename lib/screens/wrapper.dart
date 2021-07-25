@@ -18,8 +18,8 @@ class Wrapper extends StatelessWidget {
     if (user == null) {
       return Authenticate();
       /// Uncomment these lines to enable email verification
-    // } else if (!_auth.checkEmailVerified()) {
-    //   return VerifyEmail(auth: _auth);
+    } else if (!_auth.checkEmailVerified()) {
+      return VerifyEmail(auth: _auth);
     } else {
       return Home();
     }

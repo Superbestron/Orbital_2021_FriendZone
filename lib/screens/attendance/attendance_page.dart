@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/models/user.dart';
 import 'package:myapp/services/database.dart';
+import 'package:myapp/shared/constants.dart';
 import 'package:myapp/shared/widgets.dart';
 import 'package:provider/provider.dart';
-
 import 'attendance_tile.dart';
 
 class AttendancePage extends StatefulWidget {
@@ -72,6 +72,15 @@ class _AttendancePageState extends State<AttendancePage> {
                             submit = true;
                           });
                           Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor: BACKGROUND_COLOR,
+                              content: Text('Event Attendance marked successfully!'),
+                              action: SnackBarAction(
+                                label: 'Dismiss',
+                                onPressed: () {},
+                              ),
+                              duration: Duration(seconds: 5)
+                          ));
                         },
                         child: Text(
                           "Submit",
