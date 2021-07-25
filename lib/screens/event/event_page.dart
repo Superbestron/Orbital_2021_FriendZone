@@ -187,7 +187,7 @@ class _EventPageState extends State<EventPage> {
                                         padding: EdgeInsets.all(2.0),
                                       ),
                                       onPressed: () async {
-                                        await launch(event.telegramURL);
+                                        await launch("https://${event.telegramURL}");
                                       }, // Link to Telegram
                                       child: ListTile(
                                         dense: true,
