@@ -18,7 +18,7 @@ FriendZone is an interactive and user-friendly platform for users to find like-m
 
 # Installation
 1. Use android studio to run an emulator and run the app in dev mode OR
-2. ```flutter run build``` to build the apk and install the apk on a device
+2. ```flutter build apk``` to build the apk and install the apk on a device. The apk is available at ```build/app/outputs/flutter-apk/apk-release.apk```
 
 # Key Features
 
