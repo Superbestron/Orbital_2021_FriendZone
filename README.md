@@ -4,8 +4,8 @@ Team Name: **Ariera** <br>
 Proposed level of achievement: **Artemis** <br>
 
 <p align="center">
-  <a href="https://github.com/Superbestron/Orbital_2021_FriendZone/blob/master/assets/docs/milestone_2/poster.png">
-    <img src="https://github.com/Superbestron/Orbital_2021_FriendZone/blob/master/assets/docs/milestone_2/poster.png" width="50%" height=auto>
+  <a href="assets/docs/milestone_3/final_poster.png">
+    <img src="assets/docs/milestone_3/final_poster.png" width="50%" height=auto>
   </a>
 </p>
   
