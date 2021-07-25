@@ -125,7 +125,14 @@ const List LOCATIONS = [
   ["Utown", 1.305438, 103.773062],
   ["Utown Aud 1", 1.303937, 103.773438],
   ["Yale-NUS college", 1.306938, 103.771812],
-  ["Yusof Ishak House", 1.298563, 103.774937]
+  ["Yusof Ishak House", 1.298563, 103.774937],
+  ["Eusoff Hall", 1.293813,103.770437],
+  ["Kent Ridge Hall", 1.291813,103.774812],
+  ["King Edward VII Hall", 1.292438,103.781063],
+  ["Raffles Hall", 1.300063,103.773938],
+  ["Sheares Hall", 1.291438,103.775688],
+  ["Temasek Hall", 1.292813,103.771438],
+  ["PGP House", 1.290687,103.780687]
 ];
 
 const DEFAULT_PROFILE_PIC = AssetImage('assets/default-profile-pic.jpeg');
