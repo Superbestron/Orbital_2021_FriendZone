@@ -48,8 +48,8 @@ const List<String> FACULTIES = [
 ];
 
 // Date/Time Formatting
-const List<String> MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const List<String> MONTHS = ['January', 'February', 'March', 'April', 'May',
+  'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 // TYPES OF NOTIFICATIONS
 const Map<String, Color> NOTIFICATION_TYPES =
