@@ -55,25 +55,28 @@ class _EventPageState extends State<EventPage> {
 
   Future getUsersAttending(bool isOver, UserObj self) async {
     List<dynamic> eventAttendees = event.attendees;
-    eventAttendees.remove(self.uid);
     if (isOver || isInitiator) {
       eventAttendees.forEach((attendee) {
-        DatabaseService.getUserData(attendee).then((attendeeData) {
-          setState(() {
-            allAttending.add(attendeeData);
+        if (attendee != self.uid) {
+          DatabaseService.getUserData(attendee).then((attendeeData) {
+            setState(() {
+              allAttending.add(attendeeData);
+            });
           });
-        });
+        }
       });
     } else {
       eventAttendees.forEach((attendee) {
-        DatabaseService.getUserData(attendee).then((attendeeData) {
-          bool isFriends = userData!.friends.contains(attendee);
-          if (isFriends) {
-            setState(() {
-              friendsAttending.add(attendeeData);
-            });
-          }
-        });
+        if (attendee != self.uid) {
+          DatabaseService.getUserData(attendee).then((attendeeData) {
+            bool isFriends = userData!.friends.contains(attendee);
+            if (isFriends) {
+              setState(() {
+                friendsAttending.add(attendeeData);
+              });
+            }
+          });
+        }
       });
     }
   }
