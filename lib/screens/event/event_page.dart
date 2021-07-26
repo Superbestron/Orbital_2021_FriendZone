@@ -95,7 +95,7 @@ class _EventPageState extends State<EventPage> {
     return StreamBuilder<Event>(
       stream: dbService.getEvent(event.eventID),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.connectionState == ConnectionState.active && snapshot.hasData) {
           event = snapshot.data!;
         }
         if (event.attendees.isNotEmpty) {

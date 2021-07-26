@@ -55,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return StreamBuilder<UserData>(
       stream: dbServiceUser.userData,
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.connectionState == ConnectionState.active && snapshot.hasData) {
           UserData userData = snapshot.data!;
           if (_profileImage == null) {
             _urlToImage(userData.profileImagePath);
@@ -89,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   : StreamBuilder<UserData>(
                     stream: dbServiceSelf.userData,
                     builder: (context, snapshot) {
-                      if (snapshot.hasData) {
+                      if (snapshot.connectionState == ConnectionState.active && snapshot.hasData) {
                         // redeclaration of all variables here for clarity
                         String meID = user.uid;
                         String otherID = widget.profileID;
@@ -320,7 +320,7 @@ Widget buildEventsAttended(List events, String uid, bool isSelf) =>
       stream: DatabaseService(uid: uid).userData,
       builder: (context, snapshot) {
         UserData? userdata;
-        if (snapshot.hasData) {
+        if (snapshot.connectionState == ConnectionState.active && snapshot.hasData) {
           userdata = snapshot.data!;
           // filter for events attended
           events = events.where((event) => userdata!.events.contains(event.eventID)).toList();
