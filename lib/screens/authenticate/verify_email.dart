@@ -97,7 +97,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                 padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
                 child: TextButton.icon(
                     icon: Icon(Icons.person, color: Colors.black),
-                    label: Text('Sign Out', style: TextStyle(color: Colors.black)),
+                    label: Text('Sign In', style: TextStyle(color: Colors.black)),
                     onPressed: () async { await widget.auth.signOut(); }
                 ),
               ),
