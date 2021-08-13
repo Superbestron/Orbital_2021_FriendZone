@@ -59,6 +59,9 @@ FriendZone is an interactive and user-friendly platform for users to find like-m
 
 </br></br></br></br></br></br></br></br></br></br></br></br>
 
+# User Guide
+Refer to our file user_guide.pdf for information on how to use our app.
+
 # Built with
 * [Flutter](https://flutter.dev/)
 * [Firebase](https://firebase.google.com/)
